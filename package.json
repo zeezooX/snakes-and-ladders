@@ -1,0 +1,15 @@
+{
+  "name": "snakes-and-ladders",
+  "version": "1.0.0",
+  "description": "Enozom Bootcamp Team C",
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
