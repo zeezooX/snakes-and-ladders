@@ -23,7 +23,7 @@ db.Tutorial = require("./tutorial.model.js")(sequelize, Sequelize);
 db.User = require("./user.model.js")(sequelize, Sequelize);
 db.Board = require("./board.model.js")(sequelize, Sequelize);
 db.Game = require("./game.model.js")(sequelize, Sequelize);
-
+db.GamePlayer = require("./gameplayer.model.js")(sequelize, Sequelize);
 db.Board.hasMany(db.Game, {
   foreignKey: "boardId",
 });
@@ -32,4 +32,6 @@ db.User.hasMany(db.Game, {
   foreignKey: "userId",
 });
 db.Game.belongsTo(db.User);
+db.Game.belongsToMany(db.User, { through: db.GamePlayer });
+db.User.belongsToMany(db.Game, { through: db.GamePlayer });
 module.exports = db;
