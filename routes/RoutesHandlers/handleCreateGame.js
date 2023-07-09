@@ -1,6 +1,6 @@
-import Game from "../../modules/game.js";
-import Board from "../../modules/board.js";
-import User from "../../modules/user.js";
+import Game from "../../oldModules/game.js";
+import Board from "../../oldModules/board.js";
+import User from "../../oldModules/user.js";
 import { Sequelize } from "sequelize";
 //const sequelize = new Sequelize();
 import jwt from "jsonwebtoken";

@@ -1,4 +1,4 @@
-import Game from "../../modules/game.js";
+import Game from "../../oldModules/game.js";
 import { Sequelize } from "sequelize";
 //const sequelize = new Sequelize();
 

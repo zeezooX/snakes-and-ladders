@@ -2,9 +2,9 @@ import express from "express";
 
 // const express = require("express");
 const router = express.Router();
-import User from "../modules/user.js";
-import Board from "../modules/board.js";
-import Game from "../modules/game.js";
+import User from "../oldModules/user.js";
+import Board from "../oldModules/board.js";
+import Game from "../oldModules/game.js";
 import handleRegister from "./RoutesHandlers/handleRegister.js";
 import handleLogin from "./RoutesHandlers/handleLogin.js";
 

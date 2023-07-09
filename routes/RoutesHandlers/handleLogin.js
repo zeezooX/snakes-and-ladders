@@ -1,5 +1,5 @@
 import { Sequelize } from "sequelize";
-import User from "../../modules/user.js";
+import User from "../../oldModules/user.js";
 //const sequelize = new Sequelize();
 import jwt from "jsonwebtoken";
 let user = {};

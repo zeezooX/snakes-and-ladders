@@ -1,5 +1,5 @@
 import { Sequelize, json } from "sequelize";
-import User from "../../modules/user.js";
+import User from "../../oldModules/user.js";
 import jwt from "jsonwebtoken";
 //const sequelize = new Sequelize();
 const handleRegister = (req, res) => {
