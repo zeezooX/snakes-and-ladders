@@ -6,7 +6,8 @@ import User from "../modules/user.js";
 import Board from "../modules/board.js";
 import Game from "../modules/game.js";
 
-router.route("/register");
+router.route("/register").post((req, res) => {});
+
 router.route("/login");
 router.route("/retrieveGames");
 router.route("/makeMove");
