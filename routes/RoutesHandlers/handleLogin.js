@@ -1,12 +1,12 @@
 import { Sequelize } from "sequelize";
-import User from "../../modules/user";
-const sequelize = new Sequelize();
+import User from "../../modules/user.js";
+//const sequelize = new Sequelize();
 import jwt from "jsonwebtoken";
 let user = {};
 const handleLogin = (req, res) => {
   let name = req.body.name;
   let password = req.body.password;
-  sequelize
+  /* sequelize
     .sync()
     .then(() => {
       User.findOne({
@@ -24,7 +24,7 @@ const handleLogin = (req, res) => {
     })
     .catch((error) => {
       console.error("Unable to create table : ", error);
-    });
+    });*/
   const payload = { user_id: user.userName };
   const secretKey = "qwertyuiop";
   const token = jwt.sign(payload, secretKey);

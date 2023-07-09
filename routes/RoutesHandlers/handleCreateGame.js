@@ -1,8 +1,8 @@
-import Game from "../../modules/game";
-import Board from "../../modules/board";
-import User from "../../modules/user";
+import Game from "../../modules/game.js";
+import Board from "../../modules/board.js";
+import User from "../../modules/user.js";
 import { Sequelize } from "sequelize";
-const sequelize = new Sequelize();
+//const sequelize = new Sequelize();
 import jwt from "jsonwebtoken";
 
 const handleCreateGame = (req, res) => {
@@ -26,15 +26,15 @@ const handleCreateGame = (req, res) => {
 
   const tokenToVerify = token;
 
-  jwt.verify(tokenToVerify, secretKey, (err, decoded) => {
+  return jwt.verify(tokenToVerify, "qwertyuiop", (err, decoded) => {
     if (err) {
       console.error("Token verification failed:", err.message);
     } else {
-      console.log("Decoded token:", decoded);
+      decoded === user.userName ? true : false;
     }
   });
 
-  sequelize
+  /*  sequelize
     .sync()
     .then(() => {
       Game.create({
@@ -49,7 +49,7 @@ const handleCreateGame = (req, res) => {
     })
     .catch((error) => {
       console.error("Unable to create table : ", error);
-    });
+    });*/
 };
 
 export default handleCreateGame;

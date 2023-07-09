@@ -1,12 +1,12 @@
-import Game from "../../modules/game";
+import Game from "../../modules/game.js";
 import { Sequelize } from "sequelize";
-const sequelize = new Sequelize();
+//const sequelize = new Sequelize();
 
 const retrieveGames = (req, res) => {
   let userId = req.body.id;
   // search databse for all the games with Id
   // return games
-  sequelize
+  /* sequelize
     .sync()
     .then(() => {
       Game.findAll({
@@ -23,7 +23,7 @@ const retrieveGames = (req, res) => {
     })
     .catch((error) => {
       console.error("Unable to create table : ", error);
-    });
+    });*/
 };
 
 export default retrieveGames;
