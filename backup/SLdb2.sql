@@ -16,6 +16,34 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `boardelements`
+--
+
+DROP TABLE IF EXISTS `boardelements`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `boardelements` (
+  `Id` int NOT NULL AUTO_INCREMENT,
+  `boardId` int DEFAULT NULL,
+  `type` enum('Ladder','Snake') NOT NULL,
+  `from` int NOT NULL,
+  `to` int NOT NULL,
+  PRIMARY KEY (`Id`),
+  KEY `boardId` (`boardId`),
+  CONSTRAINT `boardelements_ibfk_1` FOREIGN KEY (`boardId`) REFERENCES `boards` (`boardID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `boardelements`
+--
+
+LOCK TABLES `boardelements` WRITE;
+/*!40000 ALTER TABLE `boardelements` DISABLE KEYS */;
+/*!40000 ALTER TABLE `boardelements` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `boards`
 --
 
@@ -39,6 +67,37 @@ CREATE TABLE `boards` (
 LOCK TABLES `boards` WRITE;
 /*!40000 ALTER TABLE `boards` DISABLE KEYS */;
 /*!40000 ALTER TABLE `boards` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `gameplayer`
+--
+
+DROP TABLE IF EXISTS `gameplayer`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `gameplayer` (
+  `Id` int NOT NULL AUTO_INCREMENT,
+  `playerId` int DEFAULT NULL,
+  `gameId` int DEFAULT NULL,
+  `order` int NOT NULL,
+  `lastPosition` int NOT NULL,
+  `color` varchar(255) NOT NULL,
+  PRIMARY KEY (`Id`),
+  KEY `playerId` (`playerId`),
+  KEY `gameId` (`gameId`),
+  CONSTRAINT `gameplayer_ibfk_1` FOREIGN KEY (`playerId`) REFERENCES `users` (`userId`),
+  CONSTRAINT `gameplayer_ibfk_2` FOREIGN KEY (`gameId`) REFERENCES `games` (`Id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `gameplayer`
+--
+
+LOCK TABLES `gameplayer` WRITE;
+/*!40000 ALTER TABLE `gameplayer` DISABLE KEYS */;
+/*!40000 ALTER TABLE `gameplayer` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -95,31 +154,8 @@ CREATE TABLE `sequelizemeta` (
 
 LOCK TABLES `sequelizemeta` WRITE;
 /*!40000 ALTER TABLE `sequelizemeta` DISABLE KEYS */;
-INSERT INTO `sequelizemeta` VALUES ('20230709083222-test-model.js'),('20230709085224-board-user-model.js'),('20230709092744-game-mode.js'),('20230709094504-board-game.js'),('20230709100349-test-relationship.js'),('20230709113528-current-player.js');
+INSERT INTO `sequelizemeta` VALUES ('20230709083222-test-model.js'),('20230709085224-board-user-model.js'),('20230709092744-game-mode.js'),('20230709094504-board-game.js'),('20230709100349-test-relationship.js'),('20230709113528-current-player.js'),('20230709130352-game-player.js'),('20230709140521-board-elements.js');
 /*!40000 ALTER TABLE `sequelizemeta` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `tutorial`
---
-
-DROP TABLE IF EXISTS `tutorial`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `tutorial` (
-  `title` varchar(255) DEFAULT NULL,
-  `description` varchar(255) DEFAULT NULL,
-  `published` tinyint(1) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `tutorial`
---
-
-LOCK TABLES `tutorial` WRITE;
-/*!40000 ALTER TABLE `tutorial` DISABLE KEYS */;
-/*!40000 ALTER TABLE `tutorial` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -137,7 +173,7 @@ CREATE TABLE `tutorials` (
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -146,6 +182,7 @@ CREATE TABLE `tutorials` (
 
 LOCK TABLES `tutorials` WRITE;
 /*!40000 ALTER TABLE `tutorials` DISABLE KEYS */;
+INSERT INTO `tutorials` VALUES (1,'1','2',0,'2022-02-02 00:00:00','2022-02-02 00:00:00');
 /*!40000 ALTER TABLE `tutorials` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -184,4 +221,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-07-09 15:31:16
+-- Dump completed on 2023-07-09 18:51:03
