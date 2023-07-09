@@ -5,9 +5,17 @@ const router = express.Router();
 import User from "../modules/user.js";
 import Board from "../modules/board.js";
 import Game from "../modules/game.js";
+import handleRigester from "./RoutesHandlers/registerRoute.js";
+import handleLogin from "./RoutesHandlers/handleLogin.js";
 
-router.route("/register");
-router.route("/login");
+router.route("/register").post((req, res) => {
+  handleRigester(req, res);
+});
+
+router.route("/login").post((req, res) => {
+  handleLogin(req, res);
+});
+
 router.route("/retrieveGames");
 router.route("/makeMove");
 router.route("/getGame");
