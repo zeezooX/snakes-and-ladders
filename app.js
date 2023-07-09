@@ -1,6 +1,6 @@
-import User from "./modules/user.js";
-import Board from "./modules/board.js";
-import Game from "./modules/game.js";
+import User from "./oldModules/user.js";
+import Board from "./oldModules/board.js";
+import Game from "./oldModules/game.js";
 import express from "express";
 import mysql from "mysql2";
 import Sequelize from "sequelize";
@@ -9,7 +9,7 @@ import mainRouter from "./routes/route.js";
 const app = express();
 app.use(express.json());
 
-const sequelize = new Sequelize("SLdb", "root", "xAist692#HSB", {
+const sequelize = new Sequelize("mydb", "root", "", {
   host: "localhost",
   dialect: "mysql",
 });
