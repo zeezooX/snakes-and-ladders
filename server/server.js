@@ -25,15 +25,16 @@ const handleJoinGame = require("./app/routes/RoutesHandlers/handleJoinGame.js");
 const handleLeaveGame = require("./app/routes/RoutesHandlers/handleLeaveGame.js");
 const handleCreateGame = require("./app/routes/RoutesHandlers/handleCreateGame.js");
 
-//app.post("/makeMove", auth, handleMakeMove);
-app.post("./login", handleLogin);
-//router.route("/register").post(handleRegister);
-//router.route("/login").post(handleLogin);
-/*router.route("/retrieveGames").get(handleRetrieveGames);
-router.route("/getGame").get(handleGetGames);
-router.route("/joinGame").post(handleJoinGame);
-router.route("/leaveGame").post(handleLeaveGame);
-router.route("/createGame").post(handleCreateGame);*/
+app.post("/makeMove", auth, handleMakeMove);
+app.post("/login", handleLogin);
+app.post("/register", handleRegister);
+app.get("/retrieveGames", auth, handleRetrieveGames);
+app.get("/getGame", auth, handleGetGames);
+app.get("/getGame", auth, handleGetGames);
+app.post("/joinGame", auth, handleJoinGame);
+app.post("/leaveGame", auth, handleLeaveGame);
+app.post("/createGame", auth, handleCreateGame);
+
 const db = require("./app/models");
 
 // db.sequelize.sync()
@@ -55,7 +56,7 @@ const db = require("./app/models");
 // });
 
 //require("./app/routes/routes.js")(app);
-app.use(require("./app/routes/routes.js"));
+// app.use(require("./app/routes/routes.js"));
 app.use((error, req, res, next) => {
   res.status(500).json({ message: " exception : " + error });
 });

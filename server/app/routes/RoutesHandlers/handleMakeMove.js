@@ -1,8 +1,11 @@
 const db = require("../../models");
 const Game = db.Game;
 const GP = db.GamePlayer;
-const handleMakeMove = async (req, res) => {
+const ELEM = db.BoardElement;
+const handleMakeMove = async (req, res, next) => {
+  const makeMove = () => Math.ceil(Math.random() * 6);
   let gameID = req.body.gameID;
+
   let dice = 1;
   let game = await Game.findOne({
     where: {
@@ -11,11 +14,12 @@ const handleMakeMove = async (req, res) => {
   });
 
   try {
-    if (game) {
-      // newGame = {...game};
+    if (game && game.status === "ACTIVE") {
       dice = makeMove();
 
       const currentPlayer = game.currentPlayer;
+      const boardId = game.boardId;
+
       const gp = await GP.findOne({
         where: { gameID: gameID, playerId: currentPlayer },
       });
@@ -26,10 +30,18 @@ const handleMakeMove = async (req, res) => {
       const nextGp = await GP.findOne({
         where: { gameID: gameID, order: nextOrder },
       });
+      newPos = Math.min(99, dice + oldPosition);
 
+      const elem = await ELEM.findOne({
+        where: { boardId: boardId, from: newPos },
+      });
+      const newPos = 0;
+      if (elem) {
+        newPos = elem.to;
+      }
       await GP.update(
         {
-          lastPosition: Math.min(99, dice + oldPosition),
+          lastPosition: newPos,
         },
         {
           where: { playerId: currentPlayer },
