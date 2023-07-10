@@ -1,22 +1,22 @@
 {
   "development": {
     "username": "root",
-    "password": "1234",
-    "database": "testdb",
+    "password": "Xdesignerstrange2022",
+    "database": "mydb",
     "host": "localhost",
     "dialect": "mysql"
   },
   "test": {
     "username": "root",
-    "password": "1234",
-    "database": "testdb",
+    "password": "Xdesignerstrange2022",
+    "database": "mydb",
     "host": "localhost",
     "dialect": "mysql"
   },
   "production": {
     "username": "root",
-    "password": "1234",
-    "database": "testdb",
+    "password": "Xdesignerstrange2022",
+    "database": "mydb",
     "host": "localhost",
     "dialect": "mysql"
   }
