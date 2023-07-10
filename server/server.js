@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const auth = require("./middlewares/auth");
+const socketAuth = require('./middlewares/socketAuth')
 
 const app = express();
 
@@ -15,16 +16,14 @@ const socketIO = require('socket.io')(http, {
       origin: "*"
   }
 });
-global.io = socketIO
-
-socketIO.on('connection', (socket) => {
+const fetchTurn = require('./app/socket')
+socketIO.use(socketAuth).on('connection', (socket) => {
   console.log(`${socket.id} just connected!`);
+  socket.on('turn-load', (gameId, callback) => {
 
-  socket.on('x', (data) => {
-    socketIO.emit('server_event',{
-            f1: PORT,
-            f2: data.field_1
-        })
+
+    const response = {}
+    callback(response)
   });
 
   socket.on('disconnect', () => {

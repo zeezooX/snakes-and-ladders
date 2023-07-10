@@ -10,7 +10,7 @@ const handleMakeMove = (socket) => {
       let gameID = parseInt(req.body.gameID);
       console.log(gameID);
       if(isNaN(gameID)){
-        throw new Error("failed parsing, make sure to include a 'gameID' field");
+        throw new Error("failed parsing, make sure to include a proper 'gameID'");
       }
       const dice = rollDice();
       let game = await Game.findOne({
@@ -92,9 +92,9 @@ const handleMakeMove = (socket) => {
           include: [{
           model: User,
           required: true,
-          attributes:['userName']
+          attributes:['userId','userName']
          }]
-         ,where:{gameID:9},
+         ,where:{gameID:gameID},
          attributes:['color','lastPosition']});
 
         const last_player_index = players.findIndex((p)=>p['User.userName'] === authUserName)
@@ -102,8 +102,8 @@ const handleMakeMove = (socket) => {
  
         socket.to(gameID).emit('turn-update',
         {
-          players:players,
-          last_move:{
+          // timestamp:now,
+          move:{
             player_index : last_player_index,
             dice_outcome: dice,
             from: oldPosition,
