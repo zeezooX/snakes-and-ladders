@@ -16,7 +16,6 @@ const handleLeaveGame = async (req, res, next) => {
     await GamePlayer.destroy({ where: { playerId } });
     let gamePlayers = await GamePlayer.findAll({ where: { gameId } });
     gamePlayers.forEach((playerr) => {
-      console.log(playerr.order, player.order);
       if (playerr.order > player.order) {
         GamePlayer.update(
           { order: playerr.order - 1 },
