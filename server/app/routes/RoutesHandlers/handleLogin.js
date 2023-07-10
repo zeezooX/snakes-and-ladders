@@ -6,7 +6,7 @@ const handleLogin = async (req, res, next) => {
   let { userName, password } = req.body;
   let user = await User.findOne({
     where: {
-      userName,
+      userName: userName,
     },
   });
   try {
