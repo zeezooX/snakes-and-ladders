@@ -30,18 +30,18 @@ const handleRegister = require("./RoutesHandlers/handleRegister.js");
 const handleLogin = require("./RoutesHandlers/handleLogin.js");
 const handleRetrieveGames = require("./RoutesHandlers/handleRetrieveGames.js");
 const handleMakeMove = require("./RoutesHandlers/handleMakeMove.js");
-const handleGetGame = require("./RoutesHandlers/handleGetGame.js");
+const handleGetGames = require("./RoutesHandlers/handleGetGames.js");
 const handleJoinGame = require("./RoutesHandlers/handleJoinGame.js");
 const handleLeaveGame = require("./RoutesHandlers/handleLeaveGame.js");
 const handleCreateGame = require("./RoutesHandlers/handleCreateGame.js");
 
-router.route("/register").post(handleRegister);
+/*router.route("/register").post(handleRegister);
 router.route("/login").post(handleLogin);
 router.route("/retrieveGames").get(handleRetrieveGames);
 router.route("/makeMove").post(handleMakeMove);
-router.route("/getGame").get(handleGetGame);
+router.route("/getGame").get(handleGetGames);
 router.route("/joinGame").post(handleJoinGame);
 router.route("/leaveGame").post(handleLeaveGame);
-router.route("/createGame").post(handleCreateGame);
+router.route("/createGame").post(handleCreateGame);*/
 
 module.exports = router;

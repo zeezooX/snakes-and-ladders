@@ -28,7 +28,7 @@ module.exports = (sequelize, Sequelize) => {
       },
     },
     {
-      tableName: "boardelemnts",
+      tableName: "boardelements",
       modelName: "BoardElement",
     }
   );
