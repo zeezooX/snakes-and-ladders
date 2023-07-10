@@ -42,7 +42,11 @@ module.exports = class Game {
 
   makeMove() {
     var dice = Math.ceil(Math.random() * 6);
+    this.currentPositions[this.turn] = this.currentPositions[this.turn] + dice;
+    if (this.currentPositions[this.turn] == 100) {
+      this.gameState = FINISHED;
+    }
     // TODO: makeMove() implemetation
     return dice;
   }
-}
+};

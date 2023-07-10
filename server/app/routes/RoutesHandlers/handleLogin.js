@@ -3,12 +3,13 @@ const User = db.User;
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 const handleLogin = async (req, res, next) => {
-  let { userName, password } = req.body;
+  let { userName, password } = req?.body;
   // let name = req.body.name;
   // let password = req.body.password;
+  console.log(req.body);
   let user = await User.findOne({
     where: {
-      userName,
+      userName: userName,
     },
   });
   try {
