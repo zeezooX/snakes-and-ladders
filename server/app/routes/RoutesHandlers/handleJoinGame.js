@@ -11,7 +11,7 @@ const handleJoinGame = async (req, res, next) => {
     let user = User.findByPk(playerId);
     if (!user) throw new Error("Player Doesn't Exist");
     let players = await GamePlayer.findAll({ where: { gameId } });
-    let playerOrder = 2;
+    let playerOrder = 1;
     players.forEach((player) => {
       if (player.order >= playerOrder) playerOrder = player.order + 1;
     });
@@ -33,6 +33,7 @@ const handleJoinGame = async (req, res, next) => {
     );
     if (num != 1) throw new Error("Can't Update Game");
     res.status(200).send({ createdGamePlayer });
+    // emit room-update event to that room
   } catch (e) {
     next(e);
   }

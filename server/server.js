@@ -1,7 +1,6 @@
 const express = require("express");
 const cors = require("cors");
 const auth = require("./middlewares/auth");
-const handleMakeMove = require("./app/routes/RoutesHandlers/handleMakeMove");
 
 const app = express();
 
@@ -10,11 +9,13 @@ var corsOptions = {
 };
 app.use(cors(corsOptions));
 
+const http = require('http').Server(app);
 const socketIO = require('socket.io')(http, {
   cors: {
       origin: "*"
   }
 });
+global.io = socketIO
 
 socketIO.on('connection', (socket) => {
   console.log(`${socket.id} just connected!`);
@@ -55,7 +56,11 @@ const handleJoinGame = require("./app/routes/RoutesHandlers/handleJoinGame.js");
 const handleLeaveGame = require("./app/routes/RoutesHandlers/handleLeaveGame.js");
 const handleCreateGame = require("./app/routes/RoutesHandlers/handleCreateGame.js");
 const handleGetGame = require("./app/routes/RoutesHandlers/handleGetGame.js");
-app.post("/makeMove", auth, handleMakeMove);
+const handleMock = require("./app/routes/RoutesHandlers/__handleMock");
+const handleMakeMove = require("./app/routes/RoutesHandlers/handleMakeMove");
+
+app.post("/test", handleMock);
+app.post("/makeMove", auth, handleMakeMove.create(socketIO));
 app.post("/login", handleLogin);
 app.post("/register", handleRegister);
 app.get("/retrieveGames", auth, handleRetrieveGames);
