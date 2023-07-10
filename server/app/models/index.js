@@ -19,7 +19,7 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-db.x = require("./tutorial.model.js")(sequelize, Sequelize);
+db.Tutorial = require("./tutorial.model.js")(sequelize, Sequelize);
 db.User = require("./user.model.js")(sequelize, Sequelize);
 db.Board = require("./board.model.js")(sequelize, Sequelize);
 db.Game = require("./game.model.js")(sequelize, Sequelize);

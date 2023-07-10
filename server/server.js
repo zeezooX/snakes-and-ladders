@@ -31,11 +31,12 @@ const db = require("./app/models");
 // });
 
 // simple route
-app.get("/", (req, res) => {
-  res.json({ message: "Welcome to bezkoder application." });
-});
+// app.get("/", (req, res) => {
+//   res.json({ message: "Welcome to bezkoder application." });
+// });
 
-require("./app/routes/turorial.routes")(app);
+//require("./app/routes/routes.js")(app);
+app.use(require("./app/routes/routes.js"));
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
