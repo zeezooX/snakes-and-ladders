@@ -25,19 +25,19 @@ db.Board = require("./board.model.js")(sequelize, Sequelize);
 db.Game = require("./game.model.js")(sequelize, Sequelize);
 db.GamePlayer = require("./gameplayer.model.js")(sequelize, Sequelize);
 db.BoardElement = require("./boardelement.model.js")(sequelize, Sequelize);
-db.Board.hasMany(db.Game, {
-  foreignKey: "boardId",
-});
-db.Game.belongsTo(db.Board);
-db.User.hasMany(db.Game, {
-  foreignKey: "userId",
-});
-db.Game.belongsTo(db.User);
-db.Game.belongsToMany(db.User, { through: db.GamePlayer });
-db.User.belongsToMany(db.Game, { through: db.GamePlayer });
+// db.Board.hasMany(db.Game, {
+//   foreignKey: "boardId",
+// });
+// db.Game.belongsTo(db.Board);
+// db.User.hasMany(db.Game, {
+//   foreignKey: "userId",
+// });
+// db.Game.belongsTo(db.User);
+// db.Game.belongsToMany(db.User, { through: db.GamePlayer });
+// db.User.belongsToMany(db.Game, { through: db.GamePlayer });
 
-db.Board.hasMany(db.BoardElement, {
-  foreignKey: "boardID",
-});
-db.BoardElement.belongsTo(db.Board);
+// db.Board.hasMany(db.BoardElement, {
+//   foreignKey: "boardID",
+// });
+// db.BoardElement.belongsTo(db.Board);
 module.exports = db;
