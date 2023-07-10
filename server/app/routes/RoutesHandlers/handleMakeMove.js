@@ -4,17 +4,21 @@ const GP = db.GamePlayer;
 const ELEM = db.BoardElement;
 const handleMakeMove = async (req, res, next) => {
   const makeMove = () => Math.ceil(Math.random() * 6);
-  let gameID = req.body.gameID;
-
+  let gameID = parseInt(req.body.gameID);
+  console.log(gameID);
   let dice = 1;
   let game = await Game.findOne({
     where: {
       Id: gameID,
     },
   });
-
+  console.log(game);
+  game = game?.dataValues;
+  console.log("-------------------------------");
+  console.log(game);
+  console.log(game.currentPlayer);
   try {
-    if (game && game.status === "ACTIVE") {
+    if (game && game.status === "active") {
       dice = makeMove();
 
       const currentPlayer = game.currentPlayer;
@@ -30,12 +34,11 @@ const handleMakeMove = async (req, res, next) => {
       const nextGp = await GP.findOne({
         where: { gameID: gameID, order: nextOrder },
       });
-      newPos = Math.min(99, dice + oldPosition);
+      const newPos = Math.min(99, dice + oldPosition);
 
       const elem = await ELEM.findOne({
         where: { boardId: boardId, from: newPos },
       });
-      const newPos = 0;
       if (elem) {
         newPos = elem.to;
       }
@@ -47,12 +50,13 @@ const handleMakeMove = async (req, res, next) => {
           where: { playerId: currentPlayer },
         }
       );
+      console.log("yooooo");
       await Game.update(
         {
           currentPlayer: nextGp.playerId,
         },
         {
-          where: { gameID: gameID },
+          where: { Id: gameID },
         }
       );
       if (dice + oldPosition >= 99) {
@@ -61,10 +65,11 @@ const handleMakeMove = async (req, res, next) => {
             status: "FINISHED",
           },
           {
-            where: { gameID: gameID },
+            where: { Id: gameID },
           }
         );
       }
+      res.status(200).json({ dice });
     } else {
       throw new Error("Game doesn't exist");
     }
