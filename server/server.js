@@ -4,7 +4,7 @@ const cors = require("cors");
 const app = express();
 
 var corsOptions = {
-  origin: "http://localhost:8081",
+  origin: "*",
 };
 
 app.use(cors(corsOptions));
@@ -25,17 +25,7 @@ const db = require("./app/models");
 //     console.log("Failed to sync db: " + err.message);
 //   });
 
-// // drop the table if it already exists
-// db.sequelize.sync({ force: true }).then(() => {
-//   console.log("Drop and re-sync db.");
-// });
 
-// simple route
-// app.get("/", (req, res) => {
-//   res.json({ message: "Welcome to bezkoder application." });
-// });
-
-//require("./app/routes/routes.js")(app);
 app.use(require("./app/routes/routes.js"));
 
 // set port, listen for requests
