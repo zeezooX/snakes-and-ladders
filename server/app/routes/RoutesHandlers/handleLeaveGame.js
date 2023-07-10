@@ -15,14 +15,14 @@ const handleLeaveGame = async (req, res, next) => {
     if (num != 1) throw new Error("Can't Update Game");
     await GamePlayer.destroy({ where: { playerId } });
     let gamePlayers = await GamePlayer.findAll({ where: { gameId } });
-    gamePlayers.forEach((playerr) => {
+    for (let playerr of gamePlayers) {
       if (playerr.order > player.order) {
-        GamePlayer.update(
+        await GamePlayer.update(
           { order: playerr.order - 1 },
           { where: { Id: gameId, playerId: playerr.playerId } }
         );
       }
-    });
+    }
     res.status(200).send("Done");
   } catch (e) {
     next(e);
