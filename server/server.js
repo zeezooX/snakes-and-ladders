@@ -6,8 +6,39 @@ const app = express();
 var corsOptions = {
   origin: "*",
 };
-
 app.use(cors(corsOptions));
+
+const socketIO = require('socket.io')(http, {
+  cors: {
+      origin: "*"
+  }
+});
+
+socketIO.on('connection', (socket) => {
+  console.log(`${socket.id} just connected!`);
+
+  socket.on('x', (data) => {
+    socketIO.emit('server_event',{
+            f1: PORT,
+            f2: data.field_1
+        })
+  });
+
+  socket.on('disconnect', () => {
+    console.log('someone disconnected');
+  });
+  let counter = 0 
+
+  // setInterval(()=>{
+  //     socket.emit('server_event',{
+  //         f1: PORT,
+  //         f2: `${counter}`
+  //     })
+  //     console.log(counter)
+  //     counter += 10
+  // },2000)
+});
+
 
 // parse requests of content-type - application/json
 app.use(express.json());
