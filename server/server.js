@@ -20,17 +20,16 @@ app.use(express.urlencoded({ extended: true }));
 const handleRegister = require("./app/routes/RoutesHandlers/handleRegister.js");
 const handleLogin = require("./app/routes/RoutesHandlers/handleLogin.js");
 const handleRetrieveGames = require("./app/routes/RoutesHandlers/handleRetrieveGames.js");
-const handleGetGames = require("./app/routes/RoutesHandlers/handleGetGames.js");
 const handleJoinGame = require("./app/routes/RoutesHandlers/handleJoinGame.js");
 const handleLeaveGame = require("./app/routes/RoutesHandlers/handleLeaveGame.js");
 const handleCreateGame = require("./app/routes/RoutesHandlers/handleCreateGame.js");
-
+const handleGetGame = require("./app/routes/RoutesHandlers/handleGetGame.js");
 app.post("/makeMove", auth, handleMakeMove);
 app.post("/login", handleLogin);
 app.post("/register", handleRegister);
 app.get("/retrieveGames", auth, handleRetrieveGames);
-app.get("/getGame", auth, handleGetGames);
-app.get("/getGame", auth, handleGetGames);
+
+app.get("/getGame", auth, handleGetGame);
 app.post("/joinGame", auth, handleJoinGame);
 app.post("/leaveGame", auth, handleLeaveGame);
 app.post("/createGame", auth, handleCreateGame);

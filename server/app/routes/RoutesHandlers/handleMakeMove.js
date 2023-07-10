@@ -4,20 +4,20 @@ const GP = db.GamePlayer;
 const ELEM = db.BoardElement;
 const handleMakeMove = async (req, res, next) => {
   const makeMove = () => Math.ceil(Math.random() * 6);
-  let gameID = parseInt(req.body.gameID);
-  console.log(gameID);
-  let dice = 1;
-  let game = await Game.findOne({
-    where: {
-      Id: gameID,
-    },
-  });
-  console.log(game);
-  game = game?.dataValues;
-  console.log("-------------------------------");
-  console.log(game);
-  console.log(game.currentPlayer);
   try {
+    let gameID = parseInt(req.body.gameID);
+    console.log(gameID);
+    let dice = 1;
+    let game = await Game.findOne({
+      where: {
+        Id: gameID,
+      },
+    });
+    console.log(game);
+    game = game?.dataValues;
+    console.log("-------------------------------");
+    console.log(game);
+    console.log(game.currentPlayer);
     if (game && game.status === "active") {
       dice = makeMove();
 
