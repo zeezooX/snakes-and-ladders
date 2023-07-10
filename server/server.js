@@ -27,7 +27,9 @@ const db = require("./app/models");
 
 
 app.use(require("./app/routes/routes.js"));
-
+app.use((error, req, res, next) => {
+  res.status(500).json({ message: " exception : " + error });
+});
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
