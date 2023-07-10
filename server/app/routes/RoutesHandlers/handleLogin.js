@@ -4,8 +4,6 @@ const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 const handleLogin = async (req, res, next) => {
   let { userName, password } = req.body;
-  // let name = req.body.name;
-  // let password = req.body.password;
   let user = await User.findOne({
     where: {
       userName,
@@ -18,7 +16,6 @@ const handleLogin = async (req, res, next) => {
         .createHash("md5")
         .update(password)
         .digest("hex");
-      console.log(hashedPassword);
       if (hashedPassword == user.password) {
         const token = jwt.sign(
           {
