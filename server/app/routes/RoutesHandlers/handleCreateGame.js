@@ -1,23 +1,30 @@
-const Game = require("../../modules/game");
-const Board = require("../../modules/board");
-const User = require("../../modules/user");
-
-const handleCreateGame = (req, res) => {
-    let username = req.body.username;
-    let noOfPlayers = req.body.noOfPlayers;
-    let boardID = req.body.boardID;
-
-    let gameID = 0;
-    // TODO: get last gameID from Games table and assign gameID
-
-    let board = new Board();
-    // TODO: get board from Board table using boardID
-
-    let user = new User();
-    // TODO: get user from User table using username
-
-    let game = new Game(gameID, board, noOfPlayers);
-    game.startGame(user);
+const db = require("../../models");
+const Game = db.Game;
+const GamePlayer = db.GamePlayer;
+const handleCreateGame = async (req, res, next) => {
+  let { currentPlayer, capacity, boardId, color } = req.body;
+  let game = {
+    currentPlayer,
+    playesNumber: 1,
+    capacity,
+    boardId,
+    date: new Date(),
+  };
+  try {
+    let createdGame = await Game.create(game);
+    let gamePlayer = {
+      color,
+      lastPosition: 0,
+      order: 1,
+      gameId: createdGame.Id,
+      playerId: currentPlayer,
+    };
+    let createdGamePlayer = await GamePlayer.create(gamePlayer);
+    if (!createdGamePlayer) throw new Error("No Player Created");
+    res.status(200).send({ createdGame });
+  } catch (e) {
+    next(e);
+  }
 };
 
 module.exports = handleCreateGame;
