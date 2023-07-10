@@ -37,7 +37,7 @@ module.exports = (sequelize, Sequelize) => {
     },
     {
       modelName: "GamePlayer",
-      tablaName: "gameplayer",
+      tableName: "gameplayer",
     }
   );
 

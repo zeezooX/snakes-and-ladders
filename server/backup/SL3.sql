@@ -57,7 +57,7 @@ CREATE TABLE `boards` (
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`boardID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -66,6 +66,7 @@ CREATE TABLE `boards` (
 
 LOCK TABLES `boards` WRITE;
 /*!40000 ALTER TABLE `boards` DISABLE KEYS */;
+INSERT INTO `boards` VALUES (1,'fff','paris','2022-02-02 00:00:00','2022-02-02 00:00:00');
 /*!40000 ALTER TABLE `boards` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -83,12 +84,14 @@ CREATE TABLE `gameplayer` (
   `order` int NOT NULL,
   `lastPosition` int NOT NULL,
   `color` varchar(255) NOT NULL,
+  `createdAt` date NOT NULL,
+  `updatedAt` date NOT NULL,
   PRIMARY KEY (`Id`),
   KEY `playerId` (`playerId`),
   KEY `gameId` (`gameId`),
   CONSTRAINT `gameplayer_ibfk_1` FOREIGN KEY (`playerId`) REFERENCES `users` (`userId`),
   CONSTRAINT `gameplayer_ibfk_2` FOREIGN KEY (`gameId`) REFERENCES `games` (`Id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -97,6 +100,7 @@ CREATE TABLE `gameplayer` (
 
 LOCK TABLES `gameplayer` WRITE;
 /*!40000 ALTER TABLE `gameplayer` DISABLE KEYS */;
+INSERT INTO `gameplayer` VALUES (2,1,9,1,0,'red','2023-07-10','2023-07-10');
 /*!40000 ALTER TABLE `gameplayer` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -113,16 +117,16 @@ CREATE TABLE `games` (
   `playesNumber` int NOT NULL,
   `capacity` int DEFAULT NULL,
   `status` enum('pending','active','finished') NOT NULL DEFAULT 'pending',
-  `createdAt` datetime NOT NULL,
-  `updatedAt` datetime NOT NULL,
   `BoardId` int NOT NULL,
   `currentPlayer` int NOT NULL,
+  `updatedAt` date NOT NULL,
+  `createdAt` date NOT NULL,
   PRIMARY KEY (`Id`),
   KEY `games_BoardId_foreign_idx` (`BoardId`),
   KEY `games_currentPlayer_foreign_idx` (`currentPlayer`),
   CONSTRAINT `games_BoardId_foreign_idx` FOREIGN KEY (`BoardId`) REFERENCES `boards` (`boardID`),
   CONSTRAINT `games_currentPlayer_foreign_idx` FOREIGN KEY (`currentPlayer`) REFERENCES `users` (`userId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -131,6 +135,7 @@ CREATE TABLE `games` (
 
 LOCK TABLES `games` WRITE;
 /*!40000 ALTER TABLE `games` DISABLE KEYS */;
+INSERT INTO `games` VALUES (9,'2023-07-10 11:16:48',1,3,'pending',1,1,'2023-07-10','2023-07-10');
 /*!40000 ALTER TABLE `games` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -154,7 +159,7 @@ CREATE TABLE `sequelizemeta` (
 
 LOCK TABLES `sequelizemeta` WRITE;
 /*!40000 ALTER TABLE `sequelizemeta` DISABLE KEYS */;
-INSERT INTO `sequelizemeta` VALUES ('20230709083222-test-model.js'),('20230709085224-board-user-model.js'),('20230709092744-game-mode.js'),('20230709094504-board-game.js'),('20230709100349-test-relationship.js'),('20230709113528-current-player.js'),('20230709130352-game-player.js'),('20230709140521-board-elements.js');
+INSERT INTO `sequelizemeta` VALUES ('20230709083222-test-model.js'),('20230709085224-board-user-model.js'),('20230709092744-game-mode.js'),('20230709094504-board-game.js'),('20230709100349-test-relationship.js'),('20230709113528-current-player.js'),('20230709130352-game-player.js'),('20230709140521-board-elements.js'),('20230710101724-remove-game-columns.js');
 /*!40000 ALTER TABLE `sequelizemeta` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -194,13 +199,13 @@ DROP TABLE IF EXISTS `users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `users` (
-  `userId` int NOT NULL AUTO_INCREMENT,
+  `userId` int NOT NULL AUTO_INCREMENT UNIQUE,
   `userName` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`userId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -209,6 +214,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
+INSERT INTO `users` VALUES (1,'sherin','81dc9bdb52d04dc20036dbd8313ed055','2022-02-02 00:00:00','2022-02-02 00:00:00');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -221,4 +227,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-07-09 18:51:03
+-- Dump completed on 2023-07-10 14:22:12
