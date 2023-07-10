@@ -1,0 +1,36 @@
+.container {
+  display: flex;
+  height: 100vh;
+  margin: auto;
+  align-items: center;
+  justify-content: center;
+  background-color: #c06363;
+}
+
+.container .card {
+  display: flex;
+  background-color: aliceblue;
+  width: 50%;
+  border-radius: 10px;
+}
+
+.container .card .left {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  padding: 10px;
+}
+
+.container .card .left .text {
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+.container .card .left .register {
+  width: 50%;
+  padding: 5px;
+  color: #c06363;
+  cursor: pointer;
+  background-color: aliceblue;
+  border: 1px solid #c06363;
+  margin-top: 5px;
+}
