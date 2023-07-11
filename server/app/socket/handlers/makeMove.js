@@ -92,16 +92,20 @@ const handleMakeMove =
                     next_player_index: int  //index in players 
                 }
                 */
-                let Players = await GP.findAll({
-                    raw:true,
+                let Players = await User.findAll({
+                    raw: true,
                     include: [{
-                    model: User,
-                    required: true,
-                    attributes:['userId','userName']
-                }]
-                ,where:{gameID:gameID},
-                attributes:['color','lastPosition','order']});
-                
+                      model: GP,
+                      required: true,
+                      attributes: ['color', 'lastPosition', 'order'],
+                      foreignKey: {
+                        name: 'playerId', // Name of the foreign key column in the User model
+                      },
+                      where: { gameID: gameID }
+                    }]
+                    , attributes: ['userId', 'userName']
+                  });
+                  
                 Players.sort((a,b)=>a.order-b.order)
 
                 const last_player_index = Players.findIndex((p) => p['User.userName'] === authUserName)
