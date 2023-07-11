@@ -8,7 +8,7 @@ import Register from "./pages/registerPage/Register";
 import Home from "./pages/homePage/Home";
 import axios from "axios";
 import Mock from "./pages/mockPage/Mock";
-import RetrieveGames from "./components/retrieveGames";
+//import RetrieveGames from "./components/retrieveGames";
 const App = () => {
   axios.defaults.baseURL = "http://localhost:8080/";
   const ProtectedRoute = ({ children }) => {

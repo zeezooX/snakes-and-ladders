@@ -19,7 +19,3 @@ export const rollDice = (gameId) => {
     gameId: gameId,
   });
 };
-
-/*
-
-*/
