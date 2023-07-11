@@ -1,0 +1,102 @@
+.container {
+  display: flex;
+  height: 100vh;
+  margin: auto;
+  align-items: center;
+  justify-content: center;
+  /*background: url(../../../public/assesrs/snake.png);*/
+  background-color: #9c5050;
+}
+
+.container .card {
+  display: flex;
+  background-color: #ffffff;
+  width: 50%;
+  height: 50%;
+  border-radius: 10px;
+}
+
+.container .card .left {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  padding: 10px;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.527), rgba(0, 0, 0, 0.5)),
+    url("https://cdn3.mycity4kids.com/images/article-images/web/headersV2/img-20190808-5d4be15b65355.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  border-radius: 10px;
+  margin-right: 5px;
+}
+
+.container .card .left h1 {
+  color: white;
+  font-weight: bolder;
+  font-size: 40px;
+  margin-top: 10px;
+  margin-bottom: 30px;
+  padding-left: 15px;
+}
+
+.container .card .left .reg {
+  color: white;
+  font-weight: bold;
+  padding-left: 15px;
+}
+
+.container .card .left .text {
+  margin-top: 10px;
+  margin-bottom: 55px;
+  font-size: 15px;
+  font-weight: bold;
+  color: white;
+  padding-left: 15px;
+}
+.container .card .left .register {
+  width: 50%;
+  padding: 5px;
+  color: white;
+  margin-top: 10px;
+  cursor: pointer;
+  background: none;
+  border: 1px solid #c06363;
+  font-weight: bold;
+  margin-left: 15px;
+}
+
+.container .card .right {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 50px;
+}
+.container .card .right h1 {
+  position: relative;
+  color: #464646;
+  margin-bottom: 20px;
+}
+
+.container .card .right form {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.container .card .right form input {
+  border: none;
+  border-bottom: 1px solid rgb(162, 69, 69);
+  padding: 5px 10px;
+}
+
+.container .card .right form input:focus {
+  outline: none;
+}
+
+.container .card .right form button {
+  width: 50%;
+  padding: 5px;
+  background: none;
+  border: 1px solid #c06363;
+  font-weight: bold;
+  cursor: pointer;
+}
