@@ -782,9 +782,13 @@ async function seed() {
     });
 
     await sequelize.sync({ force: true });
-
-    await Board.bulkCreate(boardData);
-    await BoardElement.bulkCreate(boardElementData);
+    
+    await Board.bulkCreate(boardData,{
+      ignoreDuplicates :true
+    });
+    await BoardElement.bulkCreate(boardElementData,{
+      ignoreDuplicates :true
+  });
 
     console.log("Seed data created successfully.");
 

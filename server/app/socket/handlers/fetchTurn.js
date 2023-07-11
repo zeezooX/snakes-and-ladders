@@ -10,13 +10,17 @@ const fetchTurn = async (game_id) => {
     let gameID = parseInt(game_id);
     console.log(gameID);
     if (isNaN(gameID)) {
-        throw new Error("failed parsing, make sure to include a proper 'gameID'");
+       return(`failed parsing ${game_id}, make sure to include a proper gameID`);
     }
     const game = await Game.findOne({
         where: {
             Id: gameID,
         },
     });
+    if(!game){
+        return(`No game exists with gameID: ${gameID}`)
+    }
+
     const currentPlayer = game.currentPlayer;
 
     let Players = await User.findAll({
