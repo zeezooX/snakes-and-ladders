@@ -32,6 +32,13 @@ const handleJoinGame = async (req, res, next) => {
       { where: { Id: gameId } }
     );
     if (num != 1) throw new Error("Can't Update Game");
+    if (game.playesNumber + 1 == game.capacity) {
+      let num = await Game.update(
+        { status: "active" },
+        { where: { Id: gameId } }
+      );
+      if (num != 1) throw new Error("Can't Update Game");
+    }
     res.status(200).send({ createdGamePlayer });
     // emit room-update event to that room
   } catch (e) {
