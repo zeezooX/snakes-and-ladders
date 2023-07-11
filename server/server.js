@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const auth = require("./middlewares/auth");
-const socketAuth = require('./middlewares/socketAuth')
+const socketAuth = require("./middlewares/socketAuth");
 
 const app = express();
 
@@ -10,26 +10,24 @@ var corsOptions = {
 };
 app.use(cors(corsOptions));
 
-const http = require('http').Server(app);
-const socketIO = require('socket.io')(http, {
+const http = require("http").Server(app);
+const socketIO = require("socket.io")(http, {
   cors: {
-      origin: "*"
-  }
+    origin: "*",
+  },
 });
-const fetchTurn = require('./app/socket')
-socketIO.use(socketAuth).on('connection', (socket) => {
+//const fetchTurn = require('./app/socket')
+socketIO.use(socketAuth).on("connection", (socket) => {
   console.log(`${socket.id} just connected!`);
-  socket.on('turn-load', (gameId, callback) => {
-
-
-    const response = {}
-    callback(response)
+  socket.on("turn-load", (gameId, callback) => {
+    const response = {};
+    callback(response);
   });
 
-  socket.on('disconnect', () => {
-    console.log('someone disconnected');
+  socket.on("disconnect", () => {
+    console.log("someone disconnected");
   });
-  let counter = 0 
+  let counter = 0;
 
   // setInterval(()=>{
   //     socket.emit('server_event',{
@@ -40,7 +38,6 @@ socketIO.use(socketAuth).on('connection', (socket) => {
   //     counter += 10
   // },2000)
 });
-
 
 // parse requests of content-type - application/json
 app.use(express.json());

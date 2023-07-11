@@ -11,6 +11,7 @@ const App = () => {
   axios.defaults.baseURL = "http://localhost:8080/";
   const ProtectedRoute = ({ children }) => {
     if (!sessionStorage.getItem("authenticated")) {
+      console.log(sessionStorage.getItem("authenticated"));
       return <Navigate to="/login" />;
     } else return children;
   };

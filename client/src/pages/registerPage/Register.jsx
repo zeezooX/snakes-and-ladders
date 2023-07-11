@@ -16,17 +16,19 @@ const Register = () => {
     setPerson(user);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
     const send = async () => {
-      let Isvalid = await axios.post(`/login`, person);
+      let Isvalid = await axios.post(`/register`, person);
       if (Isvalid?.data) {
-        sessionStorage.setItem("authenticated", Isvalid?.data?.token);
+        sessionStorage.setItem("authenticated", Isvalid?.data.token);
+        e.preventDefault();
         navigate(`/`);
       } else {
         alert("Wrong credentials");
       }
     };
     send();
+    e.preventDefault();
   };
   console.log(person);
   return (
@@ -65,7 +67,7 @@ const Register = () => {
                 type="password"
                 placeholder="password"
               />
-              <button onClick={handleSubmit}>register</button>
+              <button onClick={(e) => handleSubmit(e)}>register</button>
             </form>
           </div>
         </div>

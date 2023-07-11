@@ -1,15 +1,15 @@
 const db = require("../../models");
-const crypto = require('crypto');
+const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
 const User = db.User;
 const Op = db.Sequelize.Op;
 
 const handleRegister = (req, res) => {
-  let username = req.body.username;
+  let username = req.body.userName;
   let pw = req.body.password;
   const user = {
     userName: username,
-    password: crypto.createHash('md5').update(pw).digest('hex'),
+    password: crypto.createHash("md5").update(pw).digest("hex"),
   };
   User.create(user)
     .then((data) => {
@@ -24,8 +24,7 @@ const handleRegister = (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        message:
-          err.message || "Some error occurred while creating the user.",
+        message: err.message || "Some error occurred while creating the user.",
       });
     });
 };
