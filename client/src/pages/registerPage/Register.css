@@ -1,0 +1,101 @@
+.Register {
+  display: flex;
+  height: 100vh;
+  margin: auto;
+  align-items: center;
+  justify-content: center;
+  /*background: url(../../../public/assesrs/snake.png);*/
+  background-color: #9c5050;
+}
+
+.Register .card {
+  display: flex;
+  flex-direction: row-reverse;
+  background-color: #ffffff;
+  width: 50%;
+  height: 50%;
+  border-radius: 10px;
+}
+
+.Register .card .left {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  padding-left: 10px;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.527), rgba(0, 0, 0, 0.5)),
+    url(../../../public/assets/register.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+  border-radius: 10px;
+}
+
+.Register .card .left h1 {
+  color: white;
+  font-weight: bolder;
+  font-size: 40px;
+  margin-top: 20px;
+  margin-bottom: 45px;
+  padding-left: 15px;
+}
+
+.Register .card .left .log {
+  color: white;
+  font-weight: bold;
+  padding-left: 15px;
+}
+
+.Register .card .left .text {
+  margin-bottom: 35px;
+  font-size: 15px;
+  font-weight: bold;
+  color: white;
+  padding-left: 15px;
+}
+.Register .card .left .login {
+  width: 50%;
+  padding: 5px;
+  color: white;
+  margin-top: 10px;
+  cursor: pointer;
+  background: none;
+  border: 1px solid #c06363;
+  font-weight: bold;
+  margin-left: 15px;
+}
+
+.Register .card .right {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-right: 100px;
+}
+.Register .card .right h1 {
+  position: relative;
+  color: #464646;
+  margin-bottom: 20px;
+}
+
+.Register .card .right form {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.Register .card .right form input {
+  border: none;
+  border-bottom: 1px solid rgb(162, 69, 69);
+  padding: 5px 10px;
+}
+
+.Register .card .right form input:focus {
+  outline: none;
+}
+
+.Register .card .right form button {
+  width: 50%;
+  padding: 5px;
+  background: none;
+  border: 1px solid #c06363;
+  font-weight: bold;
+  cursor: pointer;
+}
