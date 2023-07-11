@@ -26,9 +26,9 @@ const handleMakeMove = (socket) => {
         const currentPlayer = game.currentPlayer;
         const authUserId = req.user.userId
         const authUserName = req.user.name
-        if(authUserId !== currentPlayer){
-          throw new Error("Not permitted! wait for your turn");
-        }
+        // if(authUserId !== currentPlayer){
+        //   throw new Error("Not permitted! wait for your turn");
+        // }
         const boardId = game.boardId;
         const gp = await GP.findOne({
           where: { gameID: gameID, playerId: currentPlayer },
@@ -41,6 +41,7 @@ const handleMakeMove = (socket) => {
           where: { gameID: gameID, order: nextOrder },
         });
         let newPos = dice + oldPosition;
+        let gameStatus = game.status
         if(newPos<=100){
           const elem = await ELEM.findOne({
             where: { boardId: boardId, from: newPos },
@@ -57,9 +58,10 @@ const handleMakeMove = (socket) => {
             }
           );
           if (newPos == 100) {
+            gameStatus = "FINISHED"
             await Game.update(
               {
-                status: "FINISHED",
+                status: gameStatus,
               },
               {
                 where: { Id: gameID },
@@ -77,49 +79,60 @@ const handleMakeMove = (socket) => {
           }
         );
 
-        res.status(200).json({ dice });
-        //emit turn-update event for that room
-        /*
-        turn-update:
-        {
-            players:   [{"User.userName","color","lastPosition"}]
-            last_move: {
-                player_index:   int,  // index
-                dice_outcome:   int,
-                from:           int,
-                to:             int     // if (to != (from + dice_outcome)) then it's special
-            }
-            next_player_index: int  //index in players 
-        }
-        */
-        const players = await GP.findAll({
+        let Players = await User.findAll({
           raw:true,
           include: [{
-          model: User,
+          model: GP,
           required: true,
-          attributes:['userId','userName']
-         }]
-         ,where:{gameID:gameID},
-         attributes:['color','lastPosition']});
-
-        const last_player_index = players.findIndex((p)=>p['User.userName'] === authUserName)
-        const next_player_index = players.findIndex((p)=>p['User.userName'] === nextGp.userName)
- 
-        socket.to(gameID).emit('turn-update',
-        {
-          move:{
-            player_index : last_player_index,
-            dice_outcome: dice,
-            from: oldPosition,
-            to: newPos
+          attributes:['color','lastPosition','order'],
+          foreignKey: {
+            name: 'playerId', // Name of the foreign key column in the User model
           },
-          next_player_index:next_player_index
-        })
+          where:{gameID:gameID}
+      }]
+      ,attributes:['userId','userName']});
+      
+      Players.sort((a,b)=>a.order-b.order)
+
+      const last_player_index = Players.findIndex((p) => p['User.userName'] === authUserName)
+      const next_player_index = Players.findIndex((p) => p['User.userName'] === nextGp.userName)
+
+      /*
+      {
+          game_status: string
+          board_id: int,
+          players:   [{name,color,position}],
+          pending_player_index: int,
+          move{
+              player_id: int,
+              dice_outcome: int,
+              intermediate_pos: int	// if no snake or ladder, it should be the same as final_pos
+              final_pos: int
+          }
+          }
+
+      */
+      
+          res.status(200).json({ game_status: gameStatus,
+          board_id: game.boardId,
+          players: Players,
+          pending_player_index: next_player_index,
+          move: {
+              player_index: last_player_index,
+              dice_outcome: dice,
+              from: oldPosition,
+              to: newPos
+          }
+          })
+        
+        
+
 
       } else {
         throw new Error("No such on-going game exists");
       }
     } catch (e) {
+      console.log(e)
       next(e);
     }
   }
