@@ -3,3 +3,5 @@ package-lock.json
 app/config/db.config.js
 config/config.json
 config/db.config.js
+server/config/db.config.js
+server/app/config/db.config.js
