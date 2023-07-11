@@ -8,11 +8,11 @@ module.exports = (sequelize, Sequelize) => {
         autoIncrement: true,
         primaryKey: true,
       },
-      date: {
+      creationDate: {
         type: Sequelize.DATE,
         allowNull: false,
       },
-      playesNumber: {
+      playersNumber: {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
@@ -38,6 +38,10 @@ module.exports = (sequelize, Sequelize) => {
           key: "userId",
         },
       },
+      lastPlayTime:{
+        type: Sequelize.DATE,
+        allowNull: false,
+      }
     },
     {
       tablaName: "games",

@@ -9,7 +9,7 @@ const handleLeaveGame = async (req, res, next) => {
     let game = await Game.findByPk(gameId);
     if (!game) throw new Error("Game Doesn't Exist");
     let num = await Game.update(
-      { playesNumber: game.playesNumber - 1 },
+      { playersNumber: game.playersNumber - 1 },
       { where: { Id: gameId } }
     );
     if (num != 1) throw new Error("Can't Update Game");

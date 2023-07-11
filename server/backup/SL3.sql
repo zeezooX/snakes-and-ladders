@@ -114,7 +114,7 @@ DROP TABLE IF EXISTS `games`;
 CREATE TABLE `games` (
   `Id` int NOT NULL AUTO_INCREMENT,
   `date` datetime NOT NULL,
-  `playesNumber` int NOT NULL,
+  `playersNumber` int NOT NULL,
   `capacity` int DEFAULT NULL,
   `status` enum('pending','active','finished') NOT NULL DEFAULT 'pending',
   `BoardId` int NOT NULL,

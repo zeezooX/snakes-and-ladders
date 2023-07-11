@@ -3,6 +3,7 @@ const Game = db.Game;
 const GP = db.GamePlayer;
 const ELEM = db.BoardElement;
 const User = db.User;
+
 const handleMakeMove = (socket) => {
   return async (req, res, next) => {
     const rollDice = () => Math.ceil(Math.random() * 6);
@@ -39,21 +40,34 @@ const handleMakeMove = (socket) => {
         const nextGp = await GP.findOne({
           where: { gameID: gameID, order: nextOrder },
         });
-        let newPos = Math.min(99, dice + oldPosition);
-        const elem = await ELEM.findOne({
-          where: { boardId: boardId, from: newPos },
-        });
-        if (elem) {
-          newPos = elem.to;
-        }
-        await GP.update(
-          {
-            lastPosition: newPos,
-          },
-          {
-            where: { playerId: currentPlayer },
+        let newPos = dice + oldPosition;
+        if(newPos<=100){
+          const elem = await ELEM.findOne({
+            where: { boardId: boardId, from: newPos },
+          });
+          if (elem) {
+            newPos = elem.to;
           }
-        );
+          await GP.update(
+            {
+              lastPosition: newPos,
+            },
+            {
+              where: { playerId: currentPlayer },
+            }
+          );
+          if (newPos == 100) {
+            await Game.update(
+              {
+                status: "FINISHED",
+              },
+              {
+                where: { Id: gameID },
+              }
+            );
+          }
+        }
+
         await Game.update(
           {
             currentPlayer: nextGp.playerId,
@@ -62,16 +76,7 @@ const handleMakeMove = (socket) => {
             where: { Id: gameID },
           }
         );
-        if (dice + oldPosition >= 100) {
-          await Game.update(
-            {
-              status: "FINISHED",
-            },
-            {
-              where: { Id: gameID },
-            }
-          );
-        }
+
         res.status(200).json({ dice });
         //emit turn-update event for that room
         /*
@@ -102,7 +107,6 @@ const handleMakeMove = (socket) => {
  
         socket.to(gameID).emit('turn-update',
         {
-          // timestamp:now,
           move:{
             player_index : last_player_index,
             dice_outcome: dice,
@@ -113,7 +117,7 @@ const handleMakeMove = (socket) => {
         })
 
       } else {
-        throw new Error("No such ongoing game exists");
+        throw new Error("No such on-going game exists");
       }
     } catch (e) {
       next(e);
