@@ -23,6 +23,13 @@ const handleLeaveGame = async (req, res, next) => {
         );
       }
     });
+    if (gamePlayers.length == 0) {
+      let num = await Game.update(
+        { status: "finished" },
+        { where: { Id: gameId } }
+      );
+      if (num != 1) throw new Error("Can't Update Game");
+    }
     res.status(200).send("Done");
   } catch (e) {
     next(e);
