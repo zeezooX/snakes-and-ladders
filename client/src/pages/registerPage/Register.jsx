@@ -1,7 +1,34 @@
 import "./Register.css";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
+  const navigate = useNavigate();
+  const [person, setPerson] = useState({
+    userName: "",
+    password: "",
+  });
+  const handleUser = (e) => {
+    const user = { ...person };
+    user[e.target.id] = e.target.value;
+    setPerson(user);
+  };
+
+  const handleSubmit = () => {
+    const send = async () => {
+      let Isvalid = await axios.post(`/login`, person);
+      if (Isvalid?.data) {
+        sessionStorage.setItem("authenticated", Isvalid);
+        navigate(`/`);
+      } else {
+        alert("Wrong credentials");
+      }
+    };
+    send();
+  };
+  console.log(person);
   return (
     <>
       <div className="Register">
@@ -22,9 +49,23 @@ const Register = () => {
           <div className="right">
             <h1 className="register">Register</h1>
             <form>
-              <input type="text" placeholder="username" />
-              <input type="password" placeholder="password" />
-              <button>register</button>
+              <input
+                id="userName"
+                onChange={(e) => {
+                  handleUser(e);
+                }}
+                type="text"
+                placeholder="username"
+              />
+              <input
+                id="password"
+                onChange={(e) => {
+                  handleUser(e);
+                }}
+                type="password"
+                placeholder="password"
+              />
+              <button onClick={handleSubmit}>register</button>
             </form>
           </div>
         </div>

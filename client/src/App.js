@@ -6,11 +6,11 @@ import {
 import Login from "./pages/loginPage/Login";
 import Register from "./pages/registerPage/Register";
 import Home from "./pages/homePage/Home";
-
-const user = false;
-function App() {
+import axios from "axios";
+const App = () => {
+  axios.defaults.baseURL = "http://localhost:8080/";
   const ProtectedRoute = ({ children }) => {
-    if (!user) {
+    if (!sessionStorage.getItem("authenticated")) {
       return <Navigate to="/login" />;
     } else return children;
   };
@@ -33,6 +33,6 @@ function App() {
     },
   ]);
   return <RouterProvider router={router} />;
-}
+};
 
 export default App;
