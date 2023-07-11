@@ -1,6 +1,7 @@
 import * as io from "../../socket/socket.js";
 import { useState, useEffect } from "react";
 import socketIO from "socket.io-client";
+//import RetrieveGames from "../../components/retrieveGames.js";
 const socket = socketIO.connect("http://localhost:8080");
 // const authToken = sessionStorage.getItem("authenticated");
 

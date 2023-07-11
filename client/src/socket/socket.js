@@ -17,7 +17,3 @@ export const loadTurn = (gameId, callback) => {
 export const rollDice = (gameId) => {
   socket.emit("make-move", gameId);
 };
-
-/*
-
-*/
