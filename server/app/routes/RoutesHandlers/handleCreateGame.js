@@ -5,17 +5,19 @@ const handleCreateGame = async (req, res, next) => {
   let { currentPlayer, capacity, boardId, color } = req.body;
   let game = {
     currentPlayer,
+    creationDate: new Date(),
     playersNumber: 1,
     capacity,
     boardId,
     date: new Date(),
+    lastPlayTime: new Date(),
   };
   try {
     let createdGame = await Game.create(game);
     let gamePlayer = {
       color,
       lastPosition: 0,
-      order: 0,
+      order: 1,
       gameId: createdGame.Id,
       playerId: currentPlayer,
     };
