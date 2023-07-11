@@ -16,8 +16,7 @@ const App = () => {
     if (!sessionStorage.getItem("authenticated")) {
       console.log(sessionStorage.getItem("authenticated"));
       return <Navigate to="/login" />;
-    } 
-    else return children;
+    } else return children;
   };
   const router = createBrowserRouter([
     {
@@ -41,11 +40,9 @@ const App = () => {
       element: <Game />,
     },
     {
-    },
-    {
       path: "/mock",
       element: <Mock />,
-    }
+    },
   ]);
   return <RouterProvider router={router} />;
 };
