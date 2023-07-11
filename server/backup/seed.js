@@ -50,7 +50,6 @@ const boardElementData = [
     from: 3,
     to: 20,
   },
-
   { Id: 2, boardID: 1, type: "Ladder", from: 6, to: 14 },
 
   {
@@ -656,6 +655,7 @@ const boardElementData = [
     to: 8,
   },
 
+
   ////////// BOARD 6
 
   //LADDER
@@ -792,5 +792,6 @@ async function seed() {
     console.error("Error seeding the database:", error);
   }
 }
+module.exports = seed;
 
 seed();
