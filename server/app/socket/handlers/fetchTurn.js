@@ -36,13 +36,15 @@ const fetchTurn = async (game_id) => {
             name: p.userName,
             color: p.GamePlayer.color,
             position: p.GamePlayer.lastPosition,
+            order:p.GamePlayer.order,
+            id: p.userId
         }
     })
 
     Players.sort((a, b) => a.order - b.order)
 
     const pending_player_index = Players.findIndex(
-        (p) => p['userId'] === currentPlayer
+        (p) => (p.id === currentPlayer)
     )
     const g = {
         game_status: game.status,

@@ -1,3 +1,4 @@
+require('dotenv').config();
 const { Sequelize } = require("sequelize");
 const db = require("../app/models");
 let Board = db.Board;
@@ -775,7 +776,7 @@ const boardElementData = [
 
 async function seed() {
   try {
-    const sequelize = new Sequelize("testdb", "root", "1234", {
+    const sequelize = new Sequelize("testdb", process.env.DBUSER, process.env.DBPASS, {
       host: "localhost",
       dialect: "mysql",
     });
