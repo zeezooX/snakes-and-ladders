@@ -5,10 +5,12 @@ const handleCreateGame = async (req, res, next) => {
   let { currentPlayer, capacity, boardId, color } = req.body;
   let game = {
     currentPlayer,
+    creationDate: new Date(),
     playersNumber: 1,
     capacity,
     boardId,
     date: new Date(),
+    lastPlayTime: new Date(),
   };
   try {
     let createdGame = await Game.create(game);
