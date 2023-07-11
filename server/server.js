@@ -28,7 +28,7 @@ socketIO.use(socketAuth).on("connection", (socket) => {
     socket.join(`team-C room-${gameId}`)
   })
   socket.on("load-game", (gameId, callback) => {
-    const response = fetchTurn(gameId).then(
+    fetchTurn(gameId).then(
       (game)=>{
         callback(game);
       }

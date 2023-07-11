@@ -2,7 +2,7 @@ import * as io from "../../socket/socket.js";
 import { useState, useEffect } from "react";
 import socketIO from "socket.io-client";
 //import RetrieveGames from "../../components/retrieveGames.js";
-const socket = socketIO.connect("http://localhost:8080");
+// const socket = socketIO.connect("http://localhost:8080");
 // const authToken = sessionStorage.getItem("authenticated");
 
 const Mock = () => {
@@ -19,14 +19,13 @@ const Mock = () => {
   useEffect(() => {
     // io.connect(socket);
     io.subscribeToRoom(
-      socket,
       9,
       handleUpdate,
       handleLoadResponse
     );
     // Clean up the subscription on component unmount
     return () => {
-      io.socket.off('chat message');
+      io.socket.off('disconnected');
     };
   }, []);
   const rollDice = () => {
@@ -35,7 +34,7 @@ const Mock = () => {
   };
 
   const loadGame = () => {
-    console.log("rolled the dice!")
+    console.log("sent a load-game event to the server!")
     io.loadTurn(9,handleLoadResponse)
   };
 

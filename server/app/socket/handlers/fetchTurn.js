@@ -7,6 +7,7 @@ const GP = db.GamePlayer;
 const ELEM = db.BoardElement;
 const User = db.User;
 const fetchTurn = async (game_id) => {
+    try{
     let gameID = parseInt(game_id);
     console.log(gameID);
     if (isNaN(gameID)) {
@@ -53,10 +54,14 @@ const fetchTurn = async (game_id) => {
     const g = {
         game_status: game.status,
         board_id: game.boardId,
+        pending_player_index: pending_player_index,
         players: Players,
-        pending_player_index: pending_player_index
     }
     console.log(g)
     return (g)
+}
+catch(e){
+    return `Error occured\n${e}`
+}
 }
 module.exports = fetchTurn;

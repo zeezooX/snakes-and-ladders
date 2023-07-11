@@ -3,12 +3,15 @@ import io from "socket.io-client";
 const authToken = sessionStorage.getItem("authenticated");
 export const socket = io("http://localhost:8080", {
   auth: { authToken },
+  autoConnect:false
 });
 
 export const subscribeToRoom = (gameId, turnUpdate, roomUpdate) => {
-  socket.on("room-update", roomUpdate);
-  socket.on("turn-update", turnUpdate);
-  socket.emit('join-game',gameId)
+    socket.connect().on('connect',()=>{
+    socket.on("room-update", roomUpdate);
+    socket.on("turn-update", turnUpdate);
+    socket.emit('join-game',gameId)
+  })
 };
 
 export const loadTurn = (gameId, callback) => {
