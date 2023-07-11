@@ -17,7 +17,7 @@ const handleCreateGame = async (req, res, next) => {
     let gamePlayer = {
       color,
       lastPosition: 0,
-      order: 0,
+      order: 1,
       gameId: createdGame.Id,
       playerId: currentPlayer,
     };
