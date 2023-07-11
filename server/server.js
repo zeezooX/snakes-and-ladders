@@ -17,18 +17,33 @@ const socketIO = require("socket.io")(http, {
   },
 });
 const fetchTurn = require("./app/socket/handlers/fetchTurn");
-
+const makeMove = require("./app/socket/handlers/makeMove")
 socketIO.use(socketAuth).on("connection", (socket) => {
   console.log(`${socket.id} just connected!`);
+  socket.on("join-game",(gameId)=>{
+    if(socket.rooms.has(`team-C room-${gameId}`)){
+      return
+    }
+    console.log(`${socket.id} joined (team-C room-${gameId})`)
+    socket.join(`team-C room-${gameId}`)
+  })
   socket.on("load-game", (gameId, callback) => {
-    const response = fetchTurn(gameId);
-    callback(response);
+    const response = fetchTurn(gameId).then(
+      (game)=>{
+        callback(game);
+      }
+    )
   });
 
-  socket.on("make-move", (game_id) => {
+  socket.on("make-move", (gameID) => {
     try {
-      const update = makeMove(game_id, socket.user);
-      socket.in(game_id).emit("turn-update", update);
+      makeMove(gameID, socket.user).then(
+        (update)=>{
+          console.log(`${socket.id} made a move in (team-C room-${gameID})`)
+          console.log(update)
+          socket.in(`team-C room-`+gameID).emit("turn-update", update);
+        }
+      );
     } catch (e) {
       console.log(e);
     }
@@ -91,6 +106,6 @@ app.use((error, req, res, next) => {
 });
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => {
+http.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });

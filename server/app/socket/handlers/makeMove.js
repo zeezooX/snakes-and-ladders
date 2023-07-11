@@ -4,13 +4,12 @@ const GP = db.GamePlayer;
 const ELEM = db.BoardElement;
 const User = db.User;
 
-const handleMakeMove =
+const makeMove =
     async (game_id,user) => {
         const rollDice = () => Math.ceil(Math.random() * 6);
-        try {
             let gameID = parseInt(game_id);
             if (isNaN(gameID)) {
-                throw new Error("failed parsing, make sure to include a proper 'gameID'");
+                return(`failed parsing ${game_id}, make sure to include a proper gameID field`);
             }
             const dice = rollDice();
             let game = await Game.findOne({
@@ -25,7 +24,7 @@ const handleMakeMove =
                 const authUserId = user.userId
                 const authUserName = user.name
                 if (authUserId !== currentPlayer) {
-                    throw new Error("Not permitted! wait for your turn");
+                    return("No! Wait for your turn");
                 }
                 const boardId = game.boardId;
                 const gp = await GP.findOne({
@@ -108,8 +107,8 @@ const handleMakeMove =
                   
                 Players.sort((a,b)=>a.order-b.order)
 
-                const last_player_index = Players.findIndex((p) => p['User.userName'] === authUserName)
-                const next_player_index = Players.findIndex((p) => p['User.userName'] === nextGp.userName)
+                const last_player_index = Players.findIndex((p) => p['Users.userName'] === authUserName)
+                const next_player_index = Players.findIndex((p) => p['Users.userName'] === nextGp.userName)
 
                 /*
                 {
@@ -140,10 +139,8 @@ const handleMakeMove =
                     },
                 }
             } else {
-                throw new Error("No such on-going game exists");
+                 return ("No such on-going game exists");
             }
-        } catch (e) {
-            next(e);
-        }
+        
     }
-module.exports.create = handleMakeMove;
+module.exports = makeMove;
