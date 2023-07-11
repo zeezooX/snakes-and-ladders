@@ -4,7 +4,7 @@ const auth = require("./middlewares/auth");
 const socketAuth = require("./middlewares/socketAuth");
 
 const app = express();
-
+const seed = require("./backup/seed");
 var corsOptions = {
   origin: "*",
 };
@@ -16,26 +16,25 @@ const socketIO = require("socket.io")(http, {
     origin: "*",
   },
 });
-const fetchTurn = require('./app/socket/handlers/fetchTurn')
+const fetchTurn = require("./app/socket/handlers/fetchTurn");
 
-socketIO.use(socketAuth).on('connection', (socket) => {
+socketIO.use(socketAuth).on("connection", (socket) => {
   console.log(`${socket.id} just connected!`);
-  socket.on('load-game', (gameId, callback) => {
-    const response = fetchTurn(gameId)
-    callback(response)
+  socket.on("load-game", (gameId, callback) => {
+    const response = fetchTurn(gameId);
+    callback(response);
   });
 
-  socket.on('make-move',(game_id)=>{
-    try{
-      const update = makeMove(game_id,socket.user) 
-      socket.in(game_id).emit('turn-update',update)
+  socket.on("make-move", (game_id) => {
+    try {
+      const update = makeMove(game_id, socket.user);
+      socket.in(game_id).emit("turn-update", update);
+    } catch (e) {
+      console.log(e);
     }
-    catch(e){
-      console.log(e)
-    }
-  })
+  });
 
-  socket.on('disconnect', () => {
+  socket.on("disconnect", () => {
     console.log(`${socket.id} disconnected`);
   });
   let counter = 0;
@@ -95,3 +94,4 @@ const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });
+// seed();
