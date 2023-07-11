@@ -4,8 +4,8 @@ const Game = db.Game;
 const GP = db.GamePlayer;
 const ELEM = db.BoardElement;
 const User = db.User;
-const fetchTurn = async (gameID)=>{
-    let gameID = parseInt(gameID);
+const fetchTurn = async (game_id)=>{
+    let gameID = parseInt(game_id);
     console.log(gameID);
     if(isNaN(gameID)){
         throw new Error("failed parsing, make sure to include a proper 'gameID'");

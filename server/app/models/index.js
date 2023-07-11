@@ -45,7 +45,7 @@ db.Game.belongsTo(db.User,{
 // db.Game.belongsToMany(db.User, { through: db.GamePlayer });
 // db.User.belongsToMany(db.Game, { through: db.GamePlayer });
 
-db.GamePlayer.hasOne(db.User,{
+db.GamePlayer.hasMany(db.User,{
   foreignKey: "userId",
   targetKey:"playerId"
 })
@@ -54,14 +54,15 @@ db.User.belongsTo(db.GamePlayer,{
   targetKey:"playerId"
 })
 
-db.GamePlayer.hasMany(db.Game,{
-  foreignKey: "Id",
-  targetKey: "gameId"
-})
-db.Game.belongsTo(db.GamePlayer,{
-  foreignKey: "Id",
-  targetKey: "gameId"
-})
+// db.Game.hasMany(db.GamePlayer,{
+//   foreignKey: "gameId",
+//   targetKey: "Id"
+// })
+
+// db.GamePlayer.belongsTo(db.Game,{
+//   foreignKey: "gameId",
+//   targetKey: "Id"
+// })
 
 db.Board.hasMany(db.BoardElement, {
   foreignKey: "boardId",

@@ -16,11 +16,12 @@ const socketIO = require("socket.io")(http, {
     origin: "*",
   },
 });
-//const fetchTurn = require('./app/socket')
+const fetchTurn = require("./app/socket/handlers/fetchTurn");
+
 socketIO.use(socketAuth).on("connection", (socket) => {
   console.log(`${socket.id} just connected!`);
-  socket.on("turn-load", (gameId, callback) => {
-    const response = {};
+  socket.on("load-game", (gameId, callback) => {
+    const response = fetchTurn(gameId);
     callback(response);
   });
 
