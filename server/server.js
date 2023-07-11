@@ -4,7 +4,7 @@ const auth = require("./middlewares/auth");
 const socketAuth = require("./middlewares/socketAuth");
 
 const app = express();
-
+const seed = require("./backup/seed");
 var corsOptions = {
   origin: "*",
 };
@@ -109,3 +109,4 @@ const PORT = process.env.PORT || 8080;
 http.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });
+// seed();

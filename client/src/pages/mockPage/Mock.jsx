@@ -1,5 +1,9 @@
 import * as io from "../../socket/socket.js";
 import { useState, useEffect } from "react";
+import socketIO from "socket.io-client";
+const socket = socketIO.connect("http://localhost:8080");
+// const authToken = sessionStorage.getItem("authenticated");
+
 const Mock = () => {
   const [message, setMessage] = useState(null);
   const [game, setGame] = useState(null);
@@ -12,7 +16,9 @@ const Mock = () => {
     setGame(game);
   }
   useEffect(() => {
+    // io.connect(socket);
     io.subscribeToRoom(
+      socket,
       9,
       handleUpdate,
       handleLoadResponse
