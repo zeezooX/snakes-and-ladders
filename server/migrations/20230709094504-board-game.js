@@ -19,7 +19,7 @@ module.exports = {
         type: Sequelize.DATE,
         allowNull: false,
       },
-      playesNumber: {
+      playersNumber: {
         type: Sequelize.INTEGER,
         allowNull: false,
       },

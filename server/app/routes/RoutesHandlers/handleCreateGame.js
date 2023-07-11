@@ -5,7 +5,7 @@ const handleCreateGame = async (req, res, next) => {
   let { currentPlayer, capacity, boardId, color } = req.body;
   let game = {
     currentPlayer,
-    playesNumber: 1,
+    playersNumber: 1,
     capacity,
     boardId,
     date: new Date(),
