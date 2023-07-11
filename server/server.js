@@ -16,7 +16,7 @@ const socketIO = require("socket.io")(http, {
     origin: "*",
   },
 });
-const fetchTurn = require('./app/socket')
+//const fetchTurn = require('./app/socket')
 socketIO.use(socketAuth).on('connection', (socket) => {
   console.log(`${socket.id} just connected!`);
   socket.on('turn-load', (gameId, callback) => {
