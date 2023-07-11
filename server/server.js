@@ -17,26 +17,23 @@ const socketIO = require("socket.io")(http, {
   },
 });
 //const fetchTurn = require('./app/socket')
-socketIO.use(socketAuth).on('connection', (socket) => {
+socketIO.use(socketAuth).on("connection", (socket) => {
   console.log(`${socket.id} just connected!`);
-  socket.on('turn-load', (gameId, callback) => {
-
-
-    const response = {}
-    callback(response)
+  socket.on("turn-load", (gameId, callback) => {
+    const response = {};
+    callback(response);
   });
 
-  socket.on('make-move',(game_id)=>{
-    try{
-      const update = makeMove(game_id,socket.user) 
-      socket.in(game_id).emit('turn-update',update)
+  socket.on("make-move", (game_id) => {
+    try {
+      const update = makeMove(game_id, socket.user);
+      socket.in(game_id).emit("turn-update", update);
+    } catch (e) {
+      console.log(e);
     }
-    catch(e){
-      console.log(e)
-    }
-  })
+  });
 
-  socket.on('disconnect', () => {
+  socket.on("disconnect", () => {
     console.log(`${socket.id} disconnected`);
   });
   let counter = 0;

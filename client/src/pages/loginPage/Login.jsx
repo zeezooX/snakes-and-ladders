@@ -17,20 +17,22 @@ const Login = () => {
   };
 
   const handleSubmit = (e) => {
-    const send = async () => {
-      let Isvalid = await axios.post(`/login`, person);
-      console.log("dsfjkdsfjks");
-      console.log(Isvalid);
-      if (Isvalid?.data) {
-        sessionStorage.setItem("authenticated", Isvalid?.data.token);
-        navigate(`/`);
-        e.preventDefault();
-      } else {
-        alert("Wrong credentials");
-      }
-    };
-    send();
-    e.preventDefault();
+    if (person.userName && person.password) {
+      const send = async () => {
+        let Isvalid = await axios.post(`/login`, person);
+        console.log("dsfjkdsfjks");
+        console.log(Isvalid);
+        if (Isvalid?.data) {
+          sessionStorage.setItem("authenticated", Isvalid?.data.token);
+          navigate(`/`);
+          e.preventDefault();
+        } else {
+          alert("Wrong credentials");
+        }
+      };
+      send();
+      e.preventDefault();
+    }
   };
 
   console.log(person);

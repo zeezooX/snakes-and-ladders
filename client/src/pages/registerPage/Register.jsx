@@ -17,18 +17,20 @@ const Register = () => {
   };
 
   const handleSubmit = (e) => {
-    const send = async () => {
-      let Isvalid = await axios.post(`/register`, person);
-      if (Isvalid?.data) {
-        sessionStorage.setItem("authenticated", Isvalid?.data.token);
-        e.preventDefault();
-        navigate(`/`);
-      } else {
-        alert("Wrong credentials");
-      }
-    };
-    send();
-    e.preventDefault();
+    if (person.userName && person.password) {
+      const send = async () => {
+        let Isvalid = await axios.post(`/register`, person);
+        if (Isvalid?.data) {
+          sessionStorage.setItem("authenticated", Isvalid?.data.token);
+          e.preventDefault();
+          navigate(`/`);
+        } else {
+          alert("Wrong credentials");
+        }
+      };
+      send();
+      e.preventDefault();
+    }
   };
   console.log(person);
   return (
