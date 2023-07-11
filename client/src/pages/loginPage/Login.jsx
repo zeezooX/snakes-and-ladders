@@ -20,7 +20,7 @@ const Login = () => {
     const send = async () => {
       let Isvalid = await axios.post(`/login`, person);
       if (Isvalid?.data) {
-        sessionStorage.setItem("authenticated", Isvalid);
+        sessionStorage.setItem("authenticated", Isvalid?.data?.token);
         navigate(`/`);
       } else {
         alert("Wrong credentials");
