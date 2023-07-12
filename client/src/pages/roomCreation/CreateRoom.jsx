@@ -44,46 +44,42 @@ const CreateRoom = () => {
     <>
       <div className="createRoom">
         <h2 className="chooseMap">Choose a map</h2>
-        <div onChange={onChangeRadio}>
-          <div className="mapsContainer">
-            <div className="map">
-              <input class="input-hidden" type="radio" id="1" name="board" />
-              <label htmlFor="1">
-                <img src={board1} alt="" />
-              </label>
-            </div>
-            <div className="map">
-              <input class="input-hidden" type="radio" id="2" name="board" />
-              <label htmlFor="2">
-                <img src={board2} alt="" />
-              </label>
-            </div>
-            <div className="map">
-              <input class="input-hidden" type="radio" id="3" name="board" />
-              <label htmlFor="3">
-                <img src={board3} alt="" />
-              </label>
-            </div>
+        <div onChange={onChangeRadio} className="mapsContainer">
+          <div className="map">
+            <input class="input-hidden" type="radio" id="1" name="board" />
+            <label htmlFor="1">
+              <img src={board1} alt="" />
+            </label>
           </div>
-          <div className="mapsContainer">
-            <div className="map">
-              <input class="input-hidden" type="radio" id="4" name="board" />
-              <label htmlFor="4">
-                <img src={board4} alt="" />
-              </label>
-            </div>
-            <div className="map">
-              <input class="input-hidden" type="radio" id="5" name="board" />
-              <label htmlFor="5">
-                <img src={board5} alt="" />
-              </label>
-            </div>
-            <div className="map">
-              <input class="input-hidden" type="radio" id="6" name="board" />
-              <label htmlFor="6">
-                <img src={board6} alt="" />
-              </label>
-            </div>
+          <div className="map">
+            <input class="input-hidden" type="radio" id="2" name="board" />
+            <label htmlFor="2">
+              <img src={board2} alt="" />
+            </label>
+          </div>
+          <div className="map">
+            <input class="input-hidden" type="radio" id="3" name="board" />
+            <label htmlFor="3">
+              <img src={board3} alt="" />
+            </label>
+          </div>
+          <div className="map">
+            <input class="input-hidden" type="radio" id="4" name="board" />
+            <label htmlFor="4">
+              <img src={board4} alt="" />
+            </label>
+          </div>
+          <div className="map">
+            <input class="input-hidden" type="radio" id="5" name="board" />
+            <label htmlFor="5">
+              <img src={board5} alt="" />
+            </label>
+          </div>
+          <div className="map">
+            <input class="input-hidden" type="radio" id="6" name="board" />
+            <label htmlFor="6">
+              <img src={board6} alt="" />
+            </label>
           </div>
         </div>
         <div onChange={onChangeText} className="playerNumbers">
