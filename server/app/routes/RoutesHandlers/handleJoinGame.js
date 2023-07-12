@@ -2,9 +2,15 @@ const db = require("../../models");
 const GamePlayer = db.GamePlayer;
 const Game = db.Game;
 const User = db.User;
+const colors = require("../helpers/colors")
+const isPlayerGaming = require("../helpers/isPlayerGaming")
 const handleJoinGame = async (req, res, next) => {
-  let { playerId, gameId, color } = req.body;
+  const playerId = req.user.userId
+  const {gameId} = req.body;
   try {
+    if(isPlayerGaming(playerId)){
+      throw new Error("You are already in a game")
+    }
     let game = await Game.findByPk(gameId);
     if (!game) throw new Error("Game Doesn't Exist");
     if (game.playersNumber == game.capacity) throw new Error("Game Is Full");
@@ -15,9 +21,8 @@ const handleJoinGame = async (req, res, next) => {
     players.forEach((player) => {
       if (player.order >= playerOrder) playerOrder = player.order + 1;
     });
-    players.forEach((player) => {
-      if (player.color == color) throw new Error("Choose Another Color");
-    });
+    const color = colors[playerOrder-1]
+
     let gamePlayer = {
       playerId,
       gameId,

@@ -20,13 +20,25 @@ const fetchTurn = require("./app/socket/handlers/fetchTurn");
 const makeMove = require("./app/socket/handlers/makeMove");
 socketIO.use(socketAuth).on("connection", (socket) => {
   console.log(`${socket.id} just connected!`);
-  socket.on("join-game", (gameId) => {
-    if (socket.rooms.has(`team-C room-${gameId}`)) {
-      return;
+  socket.on("join-game",async (gameId)=>{
+    if(socket.rooms.has(`team-C room-${gameId}`)){
+      return
     }
-    console.log(`${socket.id} joined (team-C room-${gameId})`);
-    socket.join(`team-C room-${gameId}`);
-  });
+    const actual_game_id = await isPlayerGaming(socket.user.userId)
+    console.log(actual_game_id)
+    console.log(gameId)
+    if(actual_game_id !== gameId){
+      console.log(`${socket.id} attempted to join another room!`)
+      return
+    }
+
+    console.log(`${socket.id} joined (team-C room-${gameId})`)
+    socket.join(`team-C room-${gameId}`)
+    // notify room
+    fetchTurn(gameId).then((data)=>{
+      socket.emit('room-update',data)
+    })
+  })
   socket.on("load-game", (gameId, callback) => {
     fetchTurn(gameId).then((game) => {
       callback(game);
@@ -74,18 +86,11 @@ app.get("/retrieveGames", auth, handleRetrieveGames);
 
 app.get("/getGame", auth, handleGetGame);
 app.post("/joinGame", auth, handleJoinGame);
-app.post("/leaveGame", auth, handleLeaveGame);
+app.post("/leaveGame", auth, handleLeaveGame.create(socketIO));
 app.post("/createGame", auth, handleCreateGame);
 
 const db = require("./app/models");
-
-// db.sequelize.sync()
-//   .then(() => {
-//     console.log("Synced db.");
-//   })
-//   .catch((err) => {
-//     console.log("Failed to sync db: " + err.message);
-//   });
+const isPlayerGaming = require("./app/routes/helpers/isPlayerGaming");
 
 app.use((error, req, res, next) => {
   res.status(500).json({ message: " exception : " + error });

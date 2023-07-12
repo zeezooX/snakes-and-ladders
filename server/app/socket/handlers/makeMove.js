@@ -31,7 +31,7 @@ const makeMove =
             const oldPosition = gp.lastPosition;
 
             const currentOrder = gp.order;
-            const nextOrder = (currentOrder) % game.capacity + 1;
+            const nextOrder = (currentOrder) % game.playersNumber + 1;
             const nextGp = await GP.findOne({
                 where: { gameID: gameID, order: nextOrder },
             });
