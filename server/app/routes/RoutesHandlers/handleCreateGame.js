@@ -1,25 +1,34 @@
 const db = require("../../models");
+const colors = require("../helpers/colors");
 const Game = db.Game;
 const GamePlayer = db.GamePlayer;
+const isPlayerGaming = require("../helpers/isPlayerGaming")
 const handleCreateGame = async (req, res, next) => {
-  let { currentPlayer, capacity, boardId, color } = req.body;
+  let {capacity, boardId } = req.body;
+  if(capacity>10 || capacity<2){
+    throw new Error("Invalid Capacity");
+  }
+  if(isPlayerGaming(req.user.userId)){
+    throw new Error("You are already in a game");
+  }
+
   let game = {
-    currentPlayer,
+    currentPlayer:req.user.userId,
     creationDate: new Date(),
     playersNumber: 1,
     capacity,
     boardId,
-    date: new Date(),
-    lastPlayTime: new Date(),
+    lastPlayTime: new Date()
   };
+  const color = colors[0]
   try {
     let createdGame = await Game.create(game);
     let gamePlayer = {
-      color,
+      color:color,
       lastPosition: 0,
       order: 1,
       gameId: createdGame.Id,
-      playerId: currentPlayer,
+      playerId: req.user.userId,
     };
     let createdGamePlayer = await GamePlayer.create(gamePlayer);
     if (!createdGamePlayer) throw new Error("No Player Created");

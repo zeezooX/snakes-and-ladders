@@ -773,6 +773,7 @@ const boardElementData = [
   },
 ];
 
+
 async function seed() {
   try {
     const sequelize = new Sequelize(
@@ -802,3 +803,6 @@ async function seed() {
   }
 }
 module.exports = seed;
+
+
+

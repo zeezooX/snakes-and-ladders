@@ -22,6 +22,7 @@ const Register = () => {
         let Isvalid = await axios.post(`/register`, person);
         if (Isvalid?.data) {
           sessionStorage.setItem("authenticated", Isvalid?.data.token);
+          sessionStorage.setItem("username", person.userName);
           e.preventDefault();
           navigate(`/`);
         } else {
@@ -38,7 +39,7 @@ const Register = () => {
       <div className="Register">
         <div className="card">
           <div className="left">
-            <h2>Snakes and Ladders</h2>
+            <h1>Snakes and Ladders</h1>
             <p className="text">
               Lorem ipsum, dolor sit amet consectetur adipisicing elit. Esse
               omnis, vero assumenda nobis cum accusantium consectetur!

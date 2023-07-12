@@ -24,6 +24,7 @@ const Login = () => {
         console.log(Isvalid);
         if (Isvalid?.data) {
           sessionStorage.setItem("authenticated", Isvalid?.data.token);
+          sessionStorage.setItem("username", person.userName);
           navigate(`/`);
           e.preventDefault();
         } else {
@@ -41,7 +42,7 @@ const Login = () => {
       <div className="container">
         <div className="card">
           <div className="left">
-            <h2>Snakes and Ladders</h2>
+            <h1>Snakes and Ladders</h1>
             <p className="text">
               Lorem ipsum, dolor sit amet consectetur adipisicing elit. Esse
               omnis, vero assumenda nobis cum accusantium consectetur!
