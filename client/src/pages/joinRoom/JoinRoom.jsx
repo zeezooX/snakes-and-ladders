@@ -15,9 +15,10 @@ const JoinRoom = () => {
       "x-access-token": sessionStorage.getItem("authenticated"),
     };
     axios
-      .get(`/createGame?status=pending`, { headers: headers })
+      .get(`/retrieveGames?status=pending`, { headers: headers })
       .then((res) => {
         console.log("RESPONSE RECEIVED: ", res);
+        setGames(res.data);
       })
       .catch((err) => {
         console.log("AXIOS ERROR: ", err);
