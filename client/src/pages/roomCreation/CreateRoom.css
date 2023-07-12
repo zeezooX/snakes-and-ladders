@@ -1,0 +1,102 @@
+.createRoom {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100vh;
+  margin: auto;
+  align-items: center;
+  justify-content: center;
+  background: url("../../../public/assets/blur2.png");
+  background-size: cover;
+}
+.createRoom .chooseMap {
+  position: relative;
+  margin-bottom: 50px;
+  bottom: 50px;
+  font-weight: bold;
+  font-family: "Permanent Marker", cursive;
+  font-size: 70px;
+  color: rgb(53, 100, 6);
+}
+.createRoom .mapsContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+}
+.createRoom .mapsContainer .map {
+  position: relative;
+  bottom: 80px;
+  width: 200px;
+  height: 200px;
+  cursor: pointer;
+}
+
+/*.createRoom .mapsContainer .map input [type="radio"] {
+  -webkit-appearance: none;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  width: 100%;
+  cursor: pointer;
+}*/
+.input-hidden {
+  position: absolute;
+  left: -9999px;
+}
+
+input[type="radio"]:checked + label > img {
+  border: 1px solid #fff;
+  box-shadow: 0 0 3px 3px #090;
+  cursor: pointer;
+}
+
+/* Stuff after this is only to make things more pretty */
+input[type="radio"] + label > img {
+  width: 180px;
+  height: 180px;
+  transition: 500ms all;
+  cursor: pointer;
+}
+
+input[type="radio"]:checked + label > img {
+  transform: rotateZ(-10deg) rotateX(10deg);
+}
+
+/*.createRoom .mapsContainer .map img {
+  width: 150px;
+  height: 150px;
+}*/
+
+.playerNumbers {
+  position: relative;
+  bottom: 65px;
+  border: none;
+}
+.playerNumbers input {
+  background: none;
+  font-size: 35px;
+  font-weight: bold;
+  border: none;
+  text-align: center;
+  font-family: "Gaegu", cursive;
+}
+.playerNumbers input:focus {
+  outline: none;
+}
+
+.createRoom button {
+  position: relative;
+  border: none;
+  cursor: pointer;
+  font-size: 30px;
+  font-family: "Permanent Marker", cursive;
+  background: rgb(53, 100, 6);
+  color: #fff;
+  border-radius: 10px;
+  padding: 10px;
+  bottom: 30px;
+  -webkit-box-shadow: 14px 17px 26px -4px rgba(53, 100, 60, 1);
+  box-shadow: 14px 17px 26px -4px rgba(53, 100, 60, 1);
+}

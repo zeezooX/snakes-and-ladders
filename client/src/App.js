@@ -9,6 +9,8 @@ import Home from "./pages/homePage/Home";
 import axios from "axios";
 import Game from "./pages/game-page";
 import Mock from "./pages/mockPage/Mock";
+import CreateRoom from "./pages/roomCreation/CreateRoom";
+import JoinRoom from "./pages/joinRoom/JoinRoom";
 
 const App = () => {
   axios.defaults.baseURL = "http://localhost:8080/";
@@ -42,6 +44,14 @@ const App = () => {
     {
       path: "/mock",
       element: <Mock />,
+    },
+    {
+      path: "/createRoom",
+      element: <CreateRoom />,
+    },
+    {
+      path: "/joinRoom",
+      element: <JoinRoom />,
     },
   ]);
   return <RouterProvider router={router} />;
