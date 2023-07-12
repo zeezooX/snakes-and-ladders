@@ -65,6 +65,7 @@ function Game() {
   }, [progress]);
   const handleRoomUpdate = (gameObject) => {
     console.log("gameObject");
+    console.log(gameObject);
     setGame(gameObject);
   };
   function rollDice(elComeOut) {
@@ -89,8 +90,7 @@ function Game() {
           sessionStorage.getItem("username")
         );
         if (
-          game.players[game.pending_player_index].name ==
-          sessionStorage.getItem("username")
+          game.players[game.pending_player_index].name == sessionStorage.getItem("username")
         ) {
           io.rollDice(gameId);
         }
@@ -117,7 +117,7 @@ function Game() {
   // }, []);
   return (
     <>
-      {!game ? null : (
+      {!game ? <div>The game is being loaded ...</div> : (
         <div className={styles.gameContainer}>
           <div className={styles.playersList}>
             <table className={styles.playersTable}>
