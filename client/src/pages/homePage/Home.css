@@ -105,11 +105,12 @@
 .button__text {
   position: relative;
   z-index: 3;
-  font-size: 32px;
+  font-size: 35px;
   font-weight: bold;
-  letter-spacing: 4px;
+  letter-spacing: 1px;
   color: var(--base_color);
   transition: all 0.3s ease;
+  font-family: "Gaegu", cursive;
 }
 .character {
   position: relative;
