@@ -32,7 +32,7 @@ const handleJoinGame = async (req, res, next) => {
       { where: { Id: gameId } }
     );
     if (num != 1) throw new Error("Can't Update Game");
-    if (game.playesNumber + 1 == game.capacity) {
+    if (game.playersNumber + 1 == game.capacity) {
       let num = await Game.update(
         { status: "active" },
         { where: { Id: gameId } }
