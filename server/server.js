@@ -48,10 +48,10 @@ socketIO.use(socketAuth).on("connection", (socket) => {
 
   socket.on("make-move", (gameID) => {
     try {
-      makeMove(gameID, socket.user).then((update) => {
+      makeMove(gameID, socket.user, socketIO).then((update) => {
         console.log(`${socket.id} made a move in (team-C room-${gameID})`);
         console.log(update);
-        socket.in(`team-C room-` + `${gameID}`).emit("turn-update", update);
+        socketIO.in(`team-C room-` + `${gameID}`).emit("turn-update", update);
       });
     } catch (e) {
       console.log(e);
