@@ -7,6 +7,8 @@ import board5 from "../../boardImages/board5.jpg";
 import board6 from "../../boardImages/board6.jpeg";
 import axios from "axios";
 import React, { useState } from "react";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const CreateRoom = () => {
   const [board, setBoard] = useState(-1);
@@ -20,11 +22,11 @@ const CreateRoom = () => {
   };
   const handleClick = (e) => {
     if (board === -1) {
-      alert("Choose a Map");
+      toast.error("Choose a Map");
       return;
     }
     if (isNaN(capacity) || capacity > 10 || capacity < 2) {
-      alert("Enter Capacity");
+      toast.error("Invalid Capacity");
       return;
     }
     const headers = {
@@ -43,6 +45,7 @@ const CreateRoom = () => {
   return (
     <>
       <div className="createRoom">
+      <ToastContainer />
         <h2 className="chooseMap">Choose a map</h2>
         <div onChange={onChangeRadio} className="mapsContainer">
           <div className="map">

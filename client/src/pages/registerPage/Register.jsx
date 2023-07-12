@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Register = () => {
   const navigate = useNavigate();
@@ -19,6 +21,7 @@ const Register = () => {
   const handleSubmit = (e) => {
     if (person.userName && person.password) {
       const send = async () => {
+        try{
         let Isvalid = await axios.post(`/register`, person);
         if (Isvalid?.data) {
           sessionStorage.setItem("authenticated", Isvalid?.data.token);
@@ -26,8 +29,12 @@ const Register = () => {
           e.preventDefault();
           navigate(`/`);
         } else {
-          alert("Wrong credentials");
+          toast.error("Wrong Credentials");
         }
+      }
+      catch{
+        toast.error("Duplicate Username")
+      }
       };
       send();
       e.preventDefault();
@@ -37,6 +44,7 @@ const Register = () => {
   return (
     <>
       <div className="Register">
+      <ToastContainer />
         <div className="card">
           <div className="left">
             <h1>Snakes and Ladders</h1>

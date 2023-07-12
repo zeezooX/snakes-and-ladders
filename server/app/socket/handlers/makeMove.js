@@ -21,9 +21,9 @@ const makeMove =
         if (game && game.status.toUpperCase() === "ACTIVE") {
             const currentPlayer = game.currentPlayer;
             const authUserId = user.userId
-            // if (authUserId !== currentPlayer) {
-            //     return ("No! Wait for your turn");
-            // }
+            if (authUserId !== currentPlayer) {
+                return ("No! Wait for your turn");
+            }
             const boardId = game.boardId;
             const gp = await GP.findOne({
                 where: { gameID: gameID, playerId: currentPlayer },
@@ -31,7 +31,7 @@ const makeMove =
             const oldPosition = gp.lastPosition;
 
             const currentOrder = gp.order;
-            const nextOrder = (currentOrder) % game.playersNumber + 1;
+            const nextOrder = ((currentOrder) % game.playersNumber) + 1;
             const nextGp = await GP.findOne({
                 where: { gameID: gameID, order: nextOrder },
             });
@@ -75,17 +75,13 @@ const makeMove =
                     where: { Id: gameID },
                 }
             );
-            console.log("setting time out !!!!!!!!!!!!!!")
             setTimeout(async (t,gameID)=>{
-                console.log("call back !!!!!!!!!!!!!!")
                 const g = await Game.findOne({where:{Id: gameID}})
-                console.log(g)
                 if(!g){
                     return
                 }
                 const lastPlay = g.lastPlayTime
                 if(lastPlay && (new Date(t).toISOString().slice(0, -4)===lastPlay.toISOString().slice(0, -4))){
-                    console.log("the bot is playing")
                     makeMove(gameID,{
                         userId:nextGp.userId
                     }).then(()=>{
@@ -125,7 +121,7 @@ const makeMove =
             Players.sort((a, b) => a.order - b.order)
 
             const last_player_index = Players.findIndex((p) => p.id === authUserId)
-            const next_player_index = Players.findIndex((p) => p.id === nextGp.userId)
+            const next_player_index = Players.findIndex((p) => p.id === nextGp.playerId)
 
             /*
             {
