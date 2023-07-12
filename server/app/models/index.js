@@ -1,6 +1,17 @@
 const dbConfig = require("../config/db.config.js");
 
 const Sequelize = require("sequelize");
+
+// Override timezone formatting
+Sequelize.DATE.prototype._stringify = function _stringify(date, options) {
+  date = this._applyTimezone(date, options);
+
+  // Z here means current timezone, _not_ UTC
+  // return date.format('YYYY-MM-DD HH:mm:ss.SSS Z');
+  return date.format('YYYY-MM-DD HH:mm:ss.SSS');
+};
+
+
 const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
   host: dbConfig.HOST,
   dialect: dbConfig.dialect,
@@ -29,7 +40,7 @@ db.Board.hasMany(db.Game, {
   foreignKey: "boardId",
   targetKey: "boardID"
 });
-db.Game.belongsTo(db.Board,{
+db.Game.belongsTo(db.Board, {
   foreignKey: "boardId",
   targetKey: "boardID"
 });
@@ -37,7 +48,7 @@ db.User.hasOne(db.Game, {
   foreignKey: "currentPlayer",
   targetKey: "userId"
 });
-db.Game.belongsTo(db.User,{
+db.Game.belongsTo(db.User, {
   foreignKey: "currentPlayer",
   targetKey: "userId"
 });
@@ -45,13 +56,13 @@ db.Game.belongsTo(db.User,{
 // db.Game.belongsToMany(db.User, { through: db.GamePlayer });
 // db.User.belongsToMany(db.Game, { through: db.GamePlayer });
 
-db.GamePlayer.hasMany(db.User,{
+db.GamePlayer.hasMany(db.User, {
   foreignKey: "userId",
-  targetKey:"playerId"
+  targetKey: "playerId"
 })
-db.User.belongsTo(db.GamePlayer,{
+db.User.belongsTo(db.GamePlayer, {
   foreignKey: "userId",
-  targetKey:"playerId"
+  targetKey: "playerId"
 })
 
 // db.Game.hasMany(db.GamePlayer,{
@@ -68,7 +79,7 @@ db.Board.hasMany(db.BoardElement, {
   foreignKey: "boardId",
   targetKey: "boardID"
 });
-db.BoardElement.belongsTo(db.Board,{
+db.BoardElement.belongsTo(db.Board, {
   foreignKey: "boardId",
   targetKey: "boardID"
 });
