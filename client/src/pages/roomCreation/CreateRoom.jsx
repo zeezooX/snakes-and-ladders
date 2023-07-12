@@ -6,6 +6,13 @@ import board4 from "../../boardImages/board4.jpg";
 import board5 from "../../boardImages/board5.jpg";
 import board6 from "../../boardImages/board6.jpeg";
 const CreateRoom = () => {
+  const handleClick = (e) => {
+    // e.preventDefault();
+    const headers = {
+      // 'Content-Type': 'application/json',
+      'x-access-token': sessionStorage.getItem("authenticated")
+    }
+  }
   return (
     <>
       <div className="createRoom">
@@ -53,7 +60,7 @@ const CreateRoom = () => {
         <div className="playerNumbers">
           <input type="text" placeholder="Enter players number:" />
         </div>
-        <button>Create</button>
+        <button onClick={handleClick}>Create</button>
       </div>
     </>
   );
