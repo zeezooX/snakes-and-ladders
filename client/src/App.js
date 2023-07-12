@@ -39,6 +39,8 @@ const App = () => {
     {
       path: "/game",
       element: <Game />,
+    },
+    {
       path: "/mock",
       element: <Mock />,
     },

@@ -1,30 +1,43 @@
 .gameContainer {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
+  height: 100vh;
+  background-color: rgb(206, 141, 206);
 }
-.playersList > div:first-child {
+.gameContainer > div:first-child {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: justify;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
-  font-size: 1.4rem;
-  padding: 1rem;
-}
-.player {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  padding: 1rem;
+  padding: 0 1rem;
 }
-.player > div:first-child {
+.playersTable {
+  width: 100%;
+  text-align: left;
+  background-color: #fff;
+  overflow-y: scroll;
+  border-radius: 1rem;
+  border: solid black 2px;
+  border-collapse: separate;
+  border-spacing: 0;
+  overflow: hidden;
+}
+.playersTable th {
+  font-size: 1.3rem;
+  background-color: rgb(141, 206, 206);
+}
+.playersTable td {
+  font-size: 1.3rem;
+  background-color: #f2f2f2;
+}
+.playersTable td,
+.playersTable th {
+  padding: 0.5rem;
+  border: solid black 1px;
+}
+.player > td:first-child {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -38,4 +51,49 @@
   width: 20px;
   height: 20px;
   border-radius: 50%;
+}
+.timerDiceContainer {
+  padding: 1rem;
+  margin: 0 auto;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -ms-flex-pack: distribute;
+  justify-content: space-around;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+.timer div {
+  width: 150px;
+  height: 150px;
+  background-color: rgb(172, 169, 169);
+  border-radius: 50%;
+  position: relative;
+}
+.timer div div {
+  width: 120px;
+  height: 120px;
+  background-color: #fff;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  font-size: 1.5rem;
 }
