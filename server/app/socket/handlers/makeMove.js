@@ -141,37 +141,21 @@ const makeMove = async (game_id, user, io) => {
             const last_player_index = Players.findIndex((p) => p.id === authUserId)
             const next_player_index = Players.findIndex((p) => p.id === nextGp.playerId)
 
-    /*
-            {
-                game_status: string
-                board_id: int,
-                players:   [{name,color,position}],
-                pending_player_index: int,
-                move{
-                    player_id: int,
-                    dice_outcome: int,
-                    intermediate_pos: int	// if no snake or ladder, it should be the same as final_pos
-                    final_pos: int
-                }
-                }
 
-            */
+            return {
+                game_status: gameStatus,
+                pending_player_index: next_player_index,
+                lastPlayTime: t,
+                move: {
+                    player_index: last_player_index,
+                    dice_outcome: dice,
+                    from: oldPosition,
+                    to: newPos
+                }
+            }
+        } else {
+            return ("No such on-going game exists");
+        }
 
-    return {
-      game_status: gameStatus,
-      board_id: game.boardId,
-      players: Players,
-      pending_player_index: next_player_index,
-      lastPlayTime: t,
-      move: {
-        player_index: last_player_index,
-        dice_outcome: dice,
-        from: oldPosition,
-        to: newPos,
-      },
-    };
-  } else {
-    return "No such on-going game exists";
-  }
-};
+    }
 module.exports = makeMove;
