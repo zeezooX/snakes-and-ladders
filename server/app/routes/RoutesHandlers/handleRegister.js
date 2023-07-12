@@ -15,7 +15,7 @@ const handleRegister = (req, res) => {
     .then((data) => {
       const token = jwt.sign(
         {
-          userId: 0,
+          userId: data.userId,
           name: user.userName,
         },
         "SnakeAndLaddersTeamC"
