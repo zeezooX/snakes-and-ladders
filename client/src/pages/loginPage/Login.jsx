@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -19,16 +21,20 @@ const Login = () => {
   const handleSubmit = (e) => {
     if (person.userName && person.password) {
       const send = async () => {
-        let Isvalid = await axios.post(`/login`, person);
-        console.log("dsfjkdsfjks");
-        console.log(Isvalid);
-        if (Isvalid?.data) {
-          sessionStorage.setItem("authenticated", Isvalid?.data.token);
-          sessionStorage.setItem("username", person.userName);
-          navigate(`/`);
-          e.preventDefault();
-        } else {
-          alert("Wrong credentials");
+        try {
+          let Isvalid = await axios.post(`/login`, person);
+          console.log("dsfjkdsfjks");
+          console.log(Isvalid);
+          if (Isvalid?.data) {
+            sessionStorage.setItem("authenticated", Isvalid?.data.token);
+            sessionStorage.setItem("username", person.userName);
+            navigate(`/`);
+            e.preventDefault();
+          } else {
+            alert("Wrong credentials");
+          }
+        } catch {
+          toast.error("Invalid Credentials")
         }
       };
       send();
@@ -40,6 +46,7 @@ const Login = () => {
   return (
     <>
       <div className="container">
+      <ToastContainer />
         <div className="card">
           <div className="left">
             <h1>Snakes and Ladders</h1>

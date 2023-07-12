@@ -7,6 +7,7 @@ const Home = () => {
     <>
       <div className="homeContainer">
         <h2 className="welcome">Welcome {sessionStorage.getItem("username")}</h2>
+        <h4 className="welcome">Log Out</h4>
         <div className="buttonContainer">
           <Link to="./createRoom" class="button button--hoo">
             <div class="button__wrapper">
