@@ -10,7 +10,7 @@ const Mock = () => {
   const [game, setGame] = useState(null);
   const handleTurnUpdate = (data) => {
     console.log(data);
-    setMessage("aaaaa");
+    setMessage(data.lastPlayTime);
   };
   const handleRoomUpdate = (game) => {
     console.log(game);

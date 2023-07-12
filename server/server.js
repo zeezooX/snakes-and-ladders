@@ -21,25 +21,25 @@ const makeMove = require("./app/socket/handlers/makeMove");
 socketIO.use(socketAuth).on("connection", (socket) => {
   console.log(`${socket.id} just connected!`);
 
-  socket.on("join-game",async (gameId)=>{
-    if(socket.rooms.has(`team-C room-${gameId}`)){
-      return
+  socket.on("join-game", async (gameId) => {
+    if (socket.rooms.has(`team-C room-${gameId}`)) {
+      return;
     }
-    const actual_game_id = await isPlayerGaming(socket.user.userId)
-    console.log(actual_game_id)
-    console.log(gameId)
-    if(actual_game_id !== gameId){
-      console.log(`${socket.id} attempted to join another room!`)
-      return
+    const actual_game_id = await isPlayerGaming(socket.user.userId);
+    console.log(actual_game_id);
+    console.log(gameId);
+    if (actual_game_id !== gameId) {
+      console.log(`${socket.id} attempted to join another room!`);
+      return;
     }
 
-    console.log(`${socket.id} joined (team-C room-${gameId})`)
-    socket.join(`team-C room-${gameId}`)
+    console.log(`${socket.id} joined (team-C room-${gameId})`);
+    socket.join(`team-C room-${gameId}`);
     // notify room
-    fetchTurn(gameId).then((data)=>{
-      socket.emit('room-update',data)
-    })
-  })
+    fetchTurn(gameId).then((data) => {
+      socket.emit("room-update", data);
+    });
+  });
   socket.on("load-game", (gameId, callback) => {
     fetchTurn(gameId).then((game) => {
       callback(game);
@@ -48,10 +48,10 @@ socketIO.use(socketAuth).on("connection", (socket) => {
 
   socket.on("make-move", (gameID) => {
     try {
-      makeMove(gameID, socket.user).then((update) => {
+      makeMove(gameID, socket.user, socketIO).then((update) => {
         console.log(`${socket.id} made a move in (team-C room-${gameID})`);
         console.log(update);
-        socket.in(`team-C room-` + `${gameID}`).emit("turn-update", update);
+        socketIO.in(`team-C room-` + `${gameID}`).emit("turn-update", update);
       });
     } catch (e) {
       console.log(e);
