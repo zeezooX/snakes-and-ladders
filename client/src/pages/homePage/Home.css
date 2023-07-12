@@ -9,10 +9,28 @@
   background: url("../../../public/assets/blur2.png");
   background-size: cover;
 }
+.homeContainer .logout {
+  position: relative;
+  bottom: 160px;
+  background: none;
+  border: 1px solid rgb(53, 100, 6);
+  border-radius: 10px;
+  text-align: center;
+  cursor: pointer;
+}
+.homeContainer .logout:hover {
+  background: rgb(53, 100, 6);
+  color: white;
+}
+.homeContainer .logout span {
+  position: relative;
+  left: 10%;
+  top: 15%;
+}
 
 .welcome {
   position: relative;
-  bottom: 150px;
+  bottom: 110px;
   font-weight: bold;
   font-family: "Permanent Marker", cursive;
   font-size: 60px;
@@ -570,5 +588,5 @@
   justify-content: center;
 }
 .button:not(:last-child) {
-  margin-bottom: 80px;
+  margin-bottom: 100px;
 }

@@ -1,11 +1,20 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./Home.css";
 
 const Home = () => {
-  // let user = "Mo'men";
+  const navigate = useNavigate();
+
+  const logout = () => {
+    sessionStorage.clear();
+    navigate("/login");
+  };
   return (
     <>
       <div className="homeContainer">
+        <button onClick={logout} className="logout">
+          <span class="material-symbols-outlined">logout</span>
+        </button>
+
         <h1 className="welcome">
           Welcome {sessionStorage.getItem("username")}
         </h1>
