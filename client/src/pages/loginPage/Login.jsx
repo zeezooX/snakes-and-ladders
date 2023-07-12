@@ -24,6 +24,7 @@ const Login = () => {
         console.log(Isvalid);
         if (Isvalid?.data) {
           sessionStorage.setItem("authenticated", Isvalid?.data.token);
+          sessionStorage.setItem("username", person.userName);
           navigate(`/`);
           e.preventDefault();
         } else {

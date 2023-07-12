@@ -1,4 +1,4 @@
-require('dotenv').config();
+require("dotenv").config();
 const { Sequelize } = require("sequelize");
 const db = require("../app/models");
 let Board = db.Board;
@@ -656,7 +656,6 @@ const boardElementData = [
     to: 8,
   },
 
-
   ////////// BOARD 6
 
   //LADDER
@@ -775,29 +774,35 @@ const boardElementData = [
 ];
 
 
-// async function seed() {
-//   try {
-//     const sequelize = new Sequelize("testdb", process.env.DBUSER, process.env.DBPASS, {
-//       host: "localhost",
-//       dialect: "mysql",
-//     });
+async function seed() {
+  try {
+    const sequelize = new Sequelize(
+      "testdb",
+      process.env.DBUSER,
+      process.env.DBPASS,
+      {
+        host: "localhost",
+        dialect: "mysql",
+      }
+    );
 
-//     await sequelize.sync({ force: true });
-    
-//     await Board.bulkCreate(boardData,{
-//       ignoreDuplicates :true
-//     });
-//     await BoardElement.bulkCreate(boardElementData,{
-//       ignoreDuplicates :true
-//   });
+    await sequelize.sync({ force: true });
 
-//     console.log("Seed data created successfully.");
+    await Board.bulkCreate(boardData, {
+      ignoreDuplicates: true,
+    });
+    await BoardElement.bulkCreate(boardElementData, {
+      ignoreDuplicates: true,
+    });
 
-//     await sequelize.close();
-//   } catch (error) {
-//     console.error("Error seeding the database:", error);
-//   }
-// }
-// module.exports = seed;
+    console.log("Seed data created successfully.");
 
-// seed();
+    await sequelize.close();
+  } catch (error) {
+    console.error("Error seeding the database:", error);
+  }
+}
+module.exports = seed;
+
+
+

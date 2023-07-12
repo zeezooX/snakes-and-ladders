@@ -2,11 +2,11 @@ import { Link } from "react-router-dom";
 import "./Home.css";
 
 const Home = () => {
-  let user = "Mo'men";
+  // let user = "Mo'men";
   return (
     <>
       <div className="homeContainer">
-        <h2 className="welcome">Welcome {user}</h2>
+        <h2 className="welcome">Welcome {sessionStorage.getItem("username")}</h2>
         <div className="buttonContainer">
           <Link to="./createRoom" class="button button--hoo">
             <div class="button__wrapper">

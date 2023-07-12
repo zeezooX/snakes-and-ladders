@@ -22,6 +22,7 @@ const Register = () => {
         let Isvalid = await axios.post(`/register`, person);
         if (Isvalid?.data) {
           sessionStorage.setItem("authenticated", Isvalid?.data.token);
+          sessionStorage.setItem("username", person.userName);
           e.preventDefault();
           navigate(`/`);
         } else {
