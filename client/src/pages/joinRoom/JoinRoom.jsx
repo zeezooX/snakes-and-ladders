@@ -26,7 +26,7 @@ const JoinRoom = () => {
       .catch((err) => {
         console.log("AXIOS ERROR: ", err);
       });
-  });
+  }, []);
 
   return (
     <>
@@ -39,17 +39,16 @@ const JoinRoom = () => {
                 <input
                   className="input-hidden"
                   type="radio"
-                  id={`${games.indexOf(G)}`}
+                  id={`${G.Id}`}
                   name="board"
                 />
-                <label htmlFor={`${games.indexOf(G)}`}>
+                <label htmlFor={`${G.Id}`}>
                   <img src={boards[G?.boardId - 1]} alt="" />
                 </label>
                 <span>{`players joined ${G?.playersNumber}/${G?.capacity}`}</span>
               </div>
             ))}
         </div>
-
         <button>Join</button>
       </div>
     </>
