@@ -43,7 +43,7 @@ const JoinRoom = () => {
                   name="board"
                 />
                 <label htmlFor={`${games.indexOf(G)}`}>
-                  <img src={boards[G?.boardId]} alt="" />
+                  <img src={boards[G?.boardId - 1]} alt="" />
                 </label>
                 <span>{`players joined ${G?.playersNumber}/${G?.capacity}`}</span>
               </div>
