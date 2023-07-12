@@ -64,6 +64,7 @@ const makeMove = async (game_id, user, io) => {
       }
     }
 
+
     const t = Date.now();
     await Game.update(
       {
@@ -136,8 +137,9 @@ const makeMove = async (game_id, user, io) => {
 
     Players.sort((a, b) => a.order - b.order);
 
-    const last_player_index = Players.findIndex((p) => p.id === authUserId);
-    const next_player_index = Players.findIndex((p) => p.id === nextGp.userId);
+
+            const last_player_index = Players.findIndex((p) => p.id === authUserId)
+            const next_player_index = Players.findIndex((p) => p.id === nextGp.playerId)
 
     /*
             {

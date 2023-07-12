@@ -39,7 +39,11 @@ const App = () => {
     },
     {
       path: "/game",
-      element: <Game />,
+      element: (
+        <ProtectedRoute>
+          <Game />
+        </ProtectedRoute>
+      ),
     },
     {
       path: "/mock",
@@ -47,11 +51,19 @@ const App = () => {
     },
     {
       path: "/createRoom",
-      element: <CreateRoom />,
+      element: (
+        <ProtectedRoute>
+          <CreateRoom />
+        </ProtectedRoute>
+      ),
     },
     {
       path: "/joinRoom",
-      element: <JoinRoom />,
+      element: (
+        <ProtectedRoute>
+          <JoinRoom />,
+        </ProtectedRoute>
+      ),
     },
   ]);
   return <RouterProvider router={router} />;
