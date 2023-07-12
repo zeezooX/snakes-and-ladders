@@ -23,6 +23,41 @@ function Game() {
       color: "blue",
       lastPosition: 2,
     },
+    {
+      userName: "Rewan",
+      color: "blue",
+      lastPosition: 2,
+    },
+    {
+      userName: "Rewan",
+      color: "blue",
+      lastPosition: 2,
+    },
+    {
+      userName: "Rewan",
+      color: "blue",
+      lastPosition: 2,
+    },
+    {
+      userName: "Rewan",
+      color: "blue",
+      lastPosition: 2,
+    },
+    {
+      userName: "Rewan",
+      color: "blue",
+      lastPosition: 2,
+    },
+    {
+      userName: "Rewan",
+      color: "blue",
+      lastPosition: 2,
+    },
+    {
+      userName: "Rewan",
+      color: "blue",
+      lastPosition: 2,
+    },
   ]);
   function rollDice(elDiceOne, elComeOut) {
     var diceOne = Math.floor(Math.random() * 6 + 1);

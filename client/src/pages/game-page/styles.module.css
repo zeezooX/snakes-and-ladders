@@ -34,7 +34,7 @@
 }
 .playersTable td,
 .playersTable th {
-  padding: 0.5rem;
+  padding: 0.25rem;
   border: solid black 1px;
 }
 .player > td:first-child {

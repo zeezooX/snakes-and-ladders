@@ -1,3 +1,4 @@
+require('dotenv').config();
 const { Sequelize } = require("sequelize");
 const db = require("../app/models");
 let Board = db.Board;
@@ -775,15 +776,19 @@ const boardElementData = [
 
 async function seed() {
   try {
-    const sequelize = new Sequelize("testdb", "root", "1234", {
+    const sequelize = new Sequelize("testdb", process.env.DBUSER, process.env.DBPASS, {
       host: "localhost",
       dialect: "mysql",
     });
 
     await sequelize.sync({ force: true });
-
-    await Board.bulkCreate(boardData);
-    await BoardElement.bulkCreate(boardElementData);
+    
+    await Board.bulkCreate(boardData,{
+      ignoreDuplicates :true
+    });
+    await BoardElement.bulkCreate(boardElementData,{
+      ignoreDuplicates :true
+  });
 
     console.log("Seed data created successfully.");
 

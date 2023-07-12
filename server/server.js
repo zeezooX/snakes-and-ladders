@@ -16,19 +16,39 @@ const socketIO = require("socket.io")(http, {
     origin: "*",
   },
 });
+<<<<<<< HEAD
 //const fetchTurn = require("./app/socket/handlers/fetchTurn");
 
+=======
+const fetchTurn = require("./app/socket/handlers/fetchTurn");
+const makeMove = require("./app/socket/handlers/makeMove")
+>>>>>>> fea0a2d8cd6a7319b1ba3154316849f21c06978a
 socketIO.use(socketAuth).on("connection", (socket) => {
   console.log(`${socket.id} just connected!`);
+  socket.on("join-game",(gameId)=>{
+    if(socket.rooms.has(`team-C room-${gameId}`)){
+      return
+    }
+    console.log(`${socket.id} joined (team-C room-${gameId})`)
+    socket.join(`team-C room-${gameId}`)
+  })
   socket.on("load-game", (gameId, callback) => {
-    const response = fetchTurn(gameId);
-    callback(response);
+    fetchTurn(gameId).then(
+      (game)=>{
+        callback(game);
+      }
+    )
   });
 
-  socket.on("make-move", (game_id) => {
+  socket.on("make-move", (gameID) => {
     try {
-      const update = makeMove(game_id, socket.user);
-      socket.in(game_id).emit("turn-update", update);
+      makeMove(gameID, socket.user).then(
+        (update)=>{
+          console.log(`${socket.id} made a move in (team-C room-${gameID})`)
+          console.log(update)
+          socket.in(`team-C room-`+gameID).emit("turn-update", update);
+        }
+      );
     } catch (e) {
       console.log(e);
     }
@@ -37,16 +57,6 @@ socketIO.use(socketAuth).on("connection", (socket) => {
   socket.on("disconnect", () => {
     console.log(`${socket.id} disconnected`);
   });
-  let counter = 0;
-
-  // setInterval(()=>{
-  //     socket.emit('server_event',{
-  //         f1: PORT,
-  //         f2: `${counter}`
-  //     })
-  //     console.log(counter)
-  //     counter += 10
-  // },2000)
 });
 
 // parse requests of content-type - application/json
@@ -91,7 +101,7 @@ app.use((error, req, res, next) => {
 });
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => {
+http.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });
 // seed();

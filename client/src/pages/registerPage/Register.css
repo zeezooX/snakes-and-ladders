@@ -10,8 +10,8 @@
   -webkit-box-pack: center;
   -ms-flex-pack: center;
   justify-content: center;
-  /*background: url(../../../public/assesrs/snake.png);*/
-  background-color: #9c5050;
+  background: url("../../../public/assets/rsz_1snakes_and_ladders_board_game_a4.png");
+  background-size: cover;
 }
 
 .Register .card {
@@ -53,18 +53,20 @@
   color: white;
   font-weight: bolder;
   margin-top: 20px;
-  margin-bottom: 45px;
+  margin-bottom: 35px;
   padding-left: 15px;
 }
 
 .Register .card .left .log {
   color: white;
   font-weight: bold;
+  font-size: 22px;
   padding-left: 15px;
 }
 
 .Register .card .left .text {
-  margin-bottom: 35px;
+  margin-top: 10px;
+  margin-bottom: 55px;
   font-size: 15px;
   font-weight: bold;
   color: white;
@@ -79,6 +81,7 @@
   background: none;
   border: 1px solid #c06363;
   font-weight: bold;
+  font-size: 20px;
   margin-left: 15px;
 }
 
@@ -98,6 +101,7 @@
 .Register .card .right h1 {
   position: relative;
   color: #464646;
+  font-size: 40px;
   margin-bottom: 20px;
 }
 
@@ -115,6 +119,8 @@
 .Register .card .right form input {
   border: none;
   border-bottom: 1px solid rgb(162, 69, 69);
+  font-size: larger;
+  font-weight: bold;
   padding: 5px 10px;
 }
 
@@ -128,5 +134,6 @@
   background: none;
   border: 1px solid #c06363;
   font-weight: bold;
+  font-size: 20px;
   cursor: pointer;
 }

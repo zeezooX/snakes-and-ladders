@@ -5,3 +5,6 @@ config/config.json
 config/db.config.js
 server/config/db.config.js
 server/app/config/db.config.js
+server/config/db.config.js
+server/app/utils/flatten.js
+server/.env

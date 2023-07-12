@@ -10,7 +10,7 @@ const handleMakeMove = (socket) => {
     try {
       let gameID = parseInt(req.body.gameID);
       console.log(gameID);
-      if(isNaN(gameID)){
+      if (isNaN(gameID)) {
         throw new Error("failed parsing, make sure to include a proper 'gameID'");
       }
       const dice = rollDice();
@@ -34,6 +34,7 @@ const handleMakeMove = (socket) => {
           where: { gameID: gameID, playerId: currentPlayer },
         });
         const oldPosition = gp.lastPosition;
+        
 
         const currentOrder = gp.order;
         const nextOrder = (currentOrder) % game.capacity + 1;
@@ -42,7 +43,7 @@ const handleMakeMove = (socket) => {
         });
         let newPos = dice + oldPosition;
         let gameStatus = game.status
-        if(newPos<=100){
+        if (newPos <= 100) {
           const elem = await ELEM.findOne({
             where: { boardId: boardId, from: newPos },
           });
@@ -80,52 +81,54 @@ const handleMakeMove = (socket) => {
         );
 
         let Players = await User.findAll({
-          raw:true,
+          raw: true,
           include: [{
-          model: GP,
-          required: true,
-          attributes:['color','lastPosition','order'],
-          foreignKey: {
-            name: 'playerId', // Name of the foreign key column in the User model
-          },
-          where:{gameID:gameID}
-      }]
-      ,attributes:['userId','userName']});
-      
-      Players.sort((a,b)=>a.order-b.order)
+            model: GP,
+            required: true,
+            attributes: ['color', 'lastPosition', 'order'],
+            foreignKey: {
+              name: 'playerId', // Name of the foreign key column in the User model
+            },
+            where: { gameID: gameID }
+          }]
+          , attributes: ['userId', 'userName']
+        });
 
-      const last_player_index = Players.findIndex((p) => p['User.userName'] === authUserName)
-      const next_player_index = Players.findIndex((p) => p['User.userName'] === nextGp.userName)
+        Players.sort((a, b) => a.order - b.order)
 
-      /*
-      {
-          game_status: string
-          board_id: int,
-          players:   [{name,color,position}],
-          pending_player_index: int,
-          move{
-              player_id: int,
-              dice_outcome: int,
-              intermediate_pos: int	// if no snake or ladder, it should be the same as final_pos
-              final_pos: int
-          }
-          }
+        const last_player_index = Players.findIndex((p) => p['User.userName'] === authUserName)
+        const next_player_index = Players.findIndex((p) => p['User.userName'] === nextGp.userName)
 
-      */
-      
-          res.status(200).json({ game_status: gameStatus,
+        /*
+        {
+            game_status: string
+            board_id: int,
+            players:   [{name,color,position}],
+            pending_player_index: int,
+            move{
+                player_id: int,
+                dice_outcome: int,
+                intermediate_pos: int	// if no snake or ladder, it should be the same as final_pos
+                final_pos: int
+            }
+            }
+  
+        */
+
+        res.status(200).json({
+          game_status: gameStatus,
           board_id: game.boardId,
           players: Players,
           pending_player_index: next_player_index,
           move: {
-              player_index: last_player_index,
-              dice_outcome: dice,
-              from: oldPosition,
-              to: newPos
+            player_index: last_player_index,
+            dice_outcome: dice,
+            from: oldPosition,
+            to: newPos
           }
-          })
-        
-        
+        })
+
+
 
 
       } else {
