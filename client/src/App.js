@@ -61,7 +61,7 @@ const App = () => {
       path: "/joinRoom",
       element: (
         <ProtectedRoute>
-          <JoinRoom />,
+          <JoinRoom />
         </ProtectedRoute>
       ),
     },

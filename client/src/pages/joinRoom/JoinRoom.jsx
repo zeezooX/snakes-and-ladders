@@ -31,7 +31,7 @@ const JoinRoom = () => {
   return (
     <>
       <div className="createRoom">
-        <h2 className="chooseRoom">Choose a game</h2>
+        <h2 className="chooseRoom">Join a game</h2>
         <div className="mapsContainer">
           {games.length !== 0 &&
             games.map((G) => (
