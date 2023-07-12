@@ -9,7 +9,7 @@ const Mock = () => {
   const [message, setMessage] = useState(null);
   const [game, setGame] = useState(null);
   const handleUpdate = (data)=>{
-    // console.log(data);
+    console.log(data);
     setMessage(data);
   }
   const handleLoadResponse = (game)=>{
@@ -51,6 +51,9 @@ const Mock = () => {
       <br/>
       <h3>
       pending_player_index: {game.pending_player_index}
+      </h3>
+      <h3>
+      last_play_time: {(Date.now() - new Date(game.lastPlayTime))/1000}
       </h3>
       <br/>
       <table>

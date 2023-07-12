@@ -16,8 +16,13 @@ const socketIO = require("socket.io")(http, {
     origin: "*",
   },
 });
+<<<<<<< HEAD
+//const fetchTurn = require("./app/socket/handlers/fetchTurn");
+
+=======
 const fetchTurn = require("./app/socket/handlers/fetchTurn");
 const makeMove = require("./app/socket/handlers/makeMove")
+>>>>>>> fea0a2d8cd6a7319b1ba3154316849f21c06978a
 socketIO.use(socketAuth).on("connection", (socket) => {
   console.log(`${socket.id} just connected!`);
   socket.on("join-game",(gameId)=>{
@@ -52,16 +57,6 @@ socketIO.use(socketAuth).on("connection", (socket) => {
   socket.on("disconnect", () => {
     console.log(`${socket.id} disconnected`);
   });
-  let counter = 0;
-
-  // setInterval(()=>{
-  //     socket.emit('server_event',{
-  //         f1: PORT,
-  //         f2: `${counter}`
-  //     })
-  //     console.log(counter)
-  //     counter += 10
-  // },2000)
 });
 
 // parse requests of content-type - application/json

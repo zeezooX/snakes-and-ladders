@@ -56,6 +56,7 @@ const fetchTurn = async (game_id) => {
         board_id: game.boardId,
         pending_player_index: pending_player_index,
         players: Players,
+        lastPlayTime: game.lastPlayTime
     }
     console.log(g)
     return (g)

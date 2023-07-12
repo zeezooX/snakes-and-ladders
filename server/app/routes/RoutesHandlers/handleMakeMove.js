@@ -34,6 +34,7 @@ const handleMakeMove = (socket) => {
           where: { gameID: gameID, playerId: currentPlayer },
         });
         const oldPosition = gp.lastPosition;
+        
 
         const currentOrder = gp.order;
         const nextOrder = (currentOrder) % game.capacity + 1;
