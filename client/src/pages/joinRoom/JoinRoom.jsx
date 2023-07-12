@@ -5,7 +5,24 @@ import board3 from "../../boardImages/board3.png";
 import board4 from "../../boardImages/board4.jpg";
 import board5 from "../../boardImages/board5.jpg";
 import board6 from "../../boardImages/board6.jpeg";
+import { useEffect, useState } from "react";
+import axios from "axios";
+
 const JoinRoom = () => {
+  const [games, setGames] = useState([]);
+  useEffect(() => {
+    const headers = {
+      "x-access-token": sessionStorage.getItem("authenticated"),
+    };
+    axios
+      .get(`/createGame?status=pending`, { headers: headers })
+      .then((res) => {
+        console.log("RESPONSE RECEIVED: ", res);
+      })
+      .catch((err) => {
+        console.log("AXIOS ERROR: ", err);
+      });
+  }, []);
   return (
     <>
       <div className="createRoom">
