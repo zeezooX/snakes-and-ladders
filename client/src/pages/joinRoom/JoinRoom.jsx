@@ -9,6 +9,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 const JoinRoom = () => {
+  const boards = [board1, board2, board3, board4, board5, board6];
+
   const [games, setGames] = useState([]);
   useEffect(() => {
     const headers = {
@@ -19,58 +21,33 @@ const JoinRoom = () => {
       .then((res) => {
         console.log("RESPONSE RECEIVED: ", res);
         setGames(res.data);
+        console.log(games);
       })
       .catch((err) => {
         console.log("AXIOS ERROR: ", err);
       });
-  }, []);
+  });
+
   return (
     <>
       <div className="createRoom">
-        <h2 className="chooseMap">Choose a game</h2>
+        <h2 className="chooseRoom">Choose a game</h2>
         <div className="mapsContainer">
-          <div className="map">
-            <input class="input-hidden" type="radio" id="1" name="board" />
-            <label htmlFor="1">
-              <img src={board1} alt="" />
-            </label>
-            <span>Ahmed's room (3/5)</span>
-          </div>
-          <div className="map">
-            <input class="input-hidden" type="radio" id="2" name="board" />
-            <label htmlFor="2">
-              <img src={board2} alt="" />
-            </label>
-            <span>Ahmed's room (3/5)</span>
-          </div>
-          <div className="map">
-            <input class="input-hidden" type="radio" id="3" name="board" />
-            <label htmlFor="3">
-              <img src={board3} alt="" />
-            </label>
-            <span>Ahmed's room (3/5)</span>
-          </div>
-          <div className="map">
-            <input class="input-hidden" type="radio" id="4" name="board" />
-            <label htmlFor="4">
-              <img src={board4} alt="" />
-            </label>
-            <span>Ahmed's room (3/5)</span>
-          </div>
-          <div className="map">
-            <input class="input-hidden" type="radio" id="5" name="board" />
-            <label htmlFor="5">
-              <img src={board5} alt="" />
-            </label>
-            <span>Ahmed's room (3/5)</span>
-          </div>
-          <div className="map">
-            <input class="input-hidden" type="radio" id="6" name="board" />
-            <label htmlFor="6">
-              <img src={board6} alt="" />
-            </label>
-            <span>Ahmed's room (3/5)</span>
-          </div>
+          {games.length !== 0 &&
+            games.map((G) => (
+              <div className="map" key={G?.Id}>
+                <input
+                  className="input-hidden"
+                  type="radio"
+                  id={`${games.indexOf(G)}`}
+                  name="board"
+                />
+                <label htmlFor={`${games.indexOf(G)}`}>
+                  <img src={boards[G?.boardId]} alt="" />
+                </label>
+                <span>{`players joined ${G?.playersNumber}/${G?.capacity}`}</span>
+              </div>
+            ))}
         </div>
 
         <button>Join</button>

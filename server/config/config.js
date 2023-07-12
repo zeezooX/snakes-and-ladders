@@ -1,40 +1,25 @@
-require('dotenv').config();
+require("dotenv").config();
 
 module.exports = {
-  "development": {
-<<<<<<< HEAD:server/config/config.json
-    "username": "root",
-    "password": "root",
-=======
-    "username": process.env.DBUSER,
-    "password": process.env.DBPASS,
->>>>>>> fea0a2d8cd6a7319b1ba3154316849f21c06978a:server/config/config.js
-    "database": "testdb",
-    "host": "localhost",
-    "dialect": "mysql"
+  development: {
+    username: process.env.DBUSER,
+    password: process.env.DBPASS,
+    database: "testdb",
+    host: "localhost",
+    dialect: "mysql",
   },
-  "test": {
-<<<<<<< HEAD:server/config/config.json
-    "username": "root",
-    "password": "root",
-=======
-    "username": process.env.DBUSER,
-    "password": process.env.DBPASS,
->>>>>>> fea0a2d8cd6a7319b1ba3154316849f21c06978a:server/config/config.js
-    "database": "testdb",
-    "host": "localhost",
-    "dialect": "mysql"
+  test: {
+    username: process.env.DBUSER,
+    password: process.env.DBPASS,
+    database: "testdb",
+    host: "localhost",
+    dialect: "mysql",
   },
-  "production": {
-<<<<<<< HEAD:server/config/config.json
-    "username": "root",
-    "password": "root",
-=======
-    "username": process.env.DBUSER,
-    "password": process.env.DBPASS,
->>>>>>> fea0a2d8cd6a7319b1ba3154316849f21c06978a:server/config/config.js
-    "database": "testdb",
-    "host": "localhost",
-    "dialect": "mysql"
-  }
-}
+  production: {
+    username: process.env.DBUSER,
+    password: process.env.DBPASS,
+    database: "testdb",
+    host: "localhost",
+    dialect: "mysql",
+  },
+};
