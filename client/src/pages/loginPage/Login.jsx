@@ -41,7 +41,7 @@ const Login = () => {
       <div className="container">
         <div className="card">
           <div className="left">
-            <h1>Snakes and Ladders</h1>
+            <h2>Snakes and Ladders</h2>
             <p className="text">
               Lorem ipsum, dolor sit amet consectetur adipisicing elit. Esse
               omnis, vero assumenda nobis cum accusantium consectetur!
