@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -23,8 +23,6 @@ const Login = () => {
       const send = async () => {
         try {
           let Isvalid = await axios.post(`/login`, person);
-          console.log("dsfjkdsfjks");
-          console.log(Isvalid);
           if (Isvalid?.data) {
             sessionStorage.setItem("authenticated", Isvalid?.data.token);
             sessionStorage.setItem("username", person.userName);
@@ -34,7 +32,7 @@ const Login = () => {
             alert("Wrong credentials");
           }
         } catch {
-          toast.error("Invalid Credentials")
+          toast.error("Invalid Credentials");
         }
       };
       send();
@@ -46,7 +44,7 @@ const Login = () => {
   return (
     <>
       <div className="container">
-      <ToastContainer />
+        <ToastContainer />
         <div className="card">
           <div className="left">
             <h1>Snakes and Ladders</h1>

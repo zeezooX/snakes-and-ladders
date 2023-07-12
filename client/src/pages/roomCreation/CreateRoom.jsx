@@ -7,8 +7,8 @@ import board5 from "../../boardImages/board5.jpg";
 import board6 from "../../boardImages/board6.jpeg";
 import axios from "axios";
 import React, { useState } from "react";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const CreateRoom = () => {
   const [board, setBoard] = useState(-1);
@@ -45,7 +45,7 @@ const CreateRoom = () => {
   return (
     <>
       <div className="createRoom">
-      <ToastContainer />
+        <ToastContainer />
         <h2 className="chooseMap">Choose a map</h2>
         <div onChange={onChangeRadio} className="mapsContainer">
           <div className="map">
