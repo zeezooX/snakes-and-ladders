@@ -1,7 +1,11 @@
 const db = require("../../models");
+const fetchTurn = require("../../socket/handlers/fetchTurn");
 const GamePlayer = db.GamePlayer;
 const Game = db.Game;
-const handleLeaveGame = async (req, res, next) => {
+require("dotenv").config()
+
+const handleLeaveGame = (socket) => {
+return async (req, res, next) => {
   const { playerId, gameId } = req.body;
   try {
     let player = await GamePlayer.findOne({ where: { playerId, gameId } });
@@ -32,9 +36,14 @@ const handleLeaveGame = async (req, res, next) => {
       if (num != 1) throw new Error("Can't Update Game");
     }
     res.status(200).send("Done");
+
+    fetchTurn(gameId).then((data)=>{
+      socket.in(process.env.ROOMPREFIX+String(gameId)).emit('room-update', data)
+    });
   } catch (e) {
     next(e);
   }
+}
 };
 
-module.exports = handleLeaveGame;
+module.exports.create = handleLeaveGame;

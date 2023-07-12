@@ -65,15 +65,15 @@ db.User.belongsTo(db.GamePlayer, {
   targetKey: "playerId"
 })
 
-// db.Game.hasMany(db.GamePlayer,{
-//   foreignKey: "gameId",
-//   targetKey: "Id"
-// })
+db.Game.hasMany(db.GamePlayer,{
+  foreignKey: "gameId",
+  targetKey: "Id"
+})
 
-// db.GamePlayer.belongsTo(db.Game,{
-//   foreignKey: "gameId",
-//   targetKey: "Id"
-// })
+db.GamePlayer.belongsTo(db.Game,{
+  foreignKey: "gameId",
+  targetKey: "Id"
+})
 
 db.Board.hasMany(db.BoardElement, {
   foreignKey: "boardId",

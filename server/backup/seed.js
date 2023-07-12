@@ -774,29 +774,30 @@ const boardElementData = [
   },
 ];
 
-async function seed() {
-  try {
-    const sequelize = new Sequelize("testdb", process.env.DBUSER, process.env.DBPASS, {
-      host: "localhost",
-      dialect: "mysql",
-    });
 
-    await sequelize.sync({ force: true });
+// async function seed() {
+//   try {
+//     const sequelize = new Sequelize("testdb", process.env.DBUSER, process.env.DBPASS, {
+//       host: "localhost",
+//       dialect: "mysql",
+//     });
+
+//     await sequelize.sync({ force: true });
     
-    await Board.bulkCreate(boardData,{
-      ignoreDuplicates :true
-    });
-    await BoardElement.bulkCreate(boardElementData,{
-      ignoreDuplicates :true
-  });
+//     await Board.bulkCreate(boardData,{
+//       ignoreDuplicates :true
+//     });
+//     await BoardElement.bulkCreate(boardElementData,{
+//       ignoreDuplicates :true
+//   });
 
-    console.log("Seed data created successfully.");
+//     console.log("Seed data created successfully.");
 
-    await sequelize.close();
-  } catch (error) {
-    console.error("Error seeding the database:", error);
-  }
-}
-module.exports = seed;
+//     await sequelize.close();
+//   } catch (error) {
+//     console.error("Error seeding the database:", error);
+//   }
+// }
+// module.exports = seed;
 
-seed();
+// seed();
