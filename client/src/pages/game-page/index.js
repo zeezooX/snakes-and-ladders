@@ -12,6 +12,7 @@ function Game() {
   let [game, setGame] = useState(null);
   let diceRef = useRef(null);
   let rollRef = useRef(null);
+  let [timeOutId, setTimeOutId] = useState(null);
   //   const g = {
   //     game_status: game.status,
   //     board_id: game.boardId,
@@ -28,38 +29,70 @@ function Game() {
   // }
   useEffect(() => {
     io.subscribeToRoom(gameId, handleTurnUpdate, handleRoomUpdate);
+    return () => {
+      if (timeOutId) clearInterval(timeOutId);
+    };
   }, []);
   const handleTurnUpdate = (gameTurnObject) => {
+    if (timeOutId) setTimeOutId(null);
+    clearInterval(timeOutId);
+    setProgress(0);
     console.log(gameTurnObject);
+    const {
+      game_status,
+      board_id,
+      pending_player_index,
+      players,
+      lastPlayTime,
+    } = gameTurnObject;
+    rollDice(gameTurnObject.move.dice_outcome);
+    setGame({
+      game_status,
+      board_id,
+      pending_player_index,
+      players,
+      lastPlayTime,
+    });
+    let id = setInterval(() => {
+      setProgress((prevProgress) =>
+        prevProgress >= 10 ? 0 : prevProgress + 1
+      );
+    }, 1000);
+    setTimeOutId(id);
   };
+  useEffect(() => {
+    console.log(progress);
+  }, [progress]);
   const handleRoomUpdate = (gameObject) => {
-    console.log(gameObject);
+    console.log("gameObject");
     setGame(gameObject);
   };
-  function rollDice(elDiceOne, elComeOut) {
-    var diceOne = Math.floor(Math.random() * 6 + 1);
-    for (var i = 1; i <= 6; i++) {
+  function rollDice(elComeOut) {
+    var elDiceOne = diceRef.current;
+    for (let i = 1; i <= 6; i++) {
       elDiceOne.classList.remove("show-" + i);
-      if (diceOne === i) {
+      console.log(elComeOut, i);
+      if (elComeOut == i) {
         elDiceOne.classList.add("show-" + i);
+        console.log(elDiceOne.classList);
       }
     }
   }
   useEffect(() => {
     if (diceRef.current && rollRef.current && canvasRef.current && game) {
-      var elDiceOne = diceRef.current;
-      console.log(elDiceOne);
       var elComeOut = rollRef.current;
       console.log(elComeOut);
 
       elComeOut.onclick = function () {
-        console.log();
+        console.log(
+          game.players[game.pending_player_index].name,
+          sessionStorage.getItem("username")
+        );
         if (
-          game.players[game.pending_player_index].userName ==
-          localStorage.getItem("userName")
+          game.players[game.pending_player_index].name ==
+          sessionStorage.getItem("username")
         ) {
           io.rollDice(gameId);
-          // rollDice(elDiceOne, elComeOut);
         }
       };
       const canvas = canvasRef.current;
@@ -71,17 +104,17 @@ function Game() {
       };
     }
   }, [diceRef.current, rollRef.current, canvasRef.current, game]);
-  React.useEffect(() => {
-    const timer = setInterval(() => {
-      setProgress((prevProgress) =>
-        prevProgress >= 10 ? 0 : prevProgress + 1
-      );
-    }, 1000);
+  // React.useEffect(() => {
+  //   const timer = setInterval(() => {
+  //     setProgress((prevProgress) =>
+  //       prevProgress >= 10 ? 0 : prevProgress + 1
+  //     );
+  //   }, 1000);
 
-    return () => {
-      clearInterval(timer);
-    };
-  }, []);
+  //   return () => {
+  //     clearInterval(timer);
+  //   };
+  // }, []);
   return (
     <>
       {!game ? null : (
@@ -94,19 +127,18 @@ function Game() {
               </thead>
               <tbody>
                 {game.players.map((player) => (
-                  <tr className={styles.player}>
+                  <tr
+                    className={styles.player}
+                    style={{
+                      color:
+                        player.name ==
+                        game.players[game.pending_player_index].name
+                          ? "rgb(141, 206, 206)"
+                          : "black",
+                    }}
+                  >
                     <td>
-                      <div
-                        style={{
-                          color:
-                            player.name ==
-                            game.players[game.pending_player_index].userName
-                              ? "rgb(141, 206, 206)"
-                              : "black",
-                        }}
-                      >
-                        {player.name}
-                      </div>
+                      <div>{player.name}</div>
                       <div
                         className={styles.playerColor}
                         style={{ backgroundColor: player.color }}

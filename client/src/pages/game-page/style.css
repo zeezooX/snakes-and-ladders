@@ -65,27 +65,27 @@
   transform: rotateX(720deg) rotateZ(-720deg);
 }
 
-.show-6 {
+.show-2 {
   -webkit-transform: rotateX(-900deg) rotateZ(1080deg);
   transform: rotateX(-900deg) rotateZ(1080deg);
 }
 
-.show-3 {
+.show-6 {
   -webkit-transform: rotateY(-450deg) rotateZ(-1440deg);
   transform: rotateY(-450deg) rotateZ(-1440deg);
 }
 
-.show-4 {
+.show-3 {
   -webkit-transform: rotateY(810deg) rotateZ(720deg);
   transform: rotateY(810deg) rotateZ(720deg);
 }
 
-.show-5 {
+.show-4 {
   -webkit-transform: rotateX(-810deg) rotateZ(-1080deg);
   transform: rotateX(-810deg) rotateZ(-1080deg);
 }
 
-.show-2 {
+.show-5 {
   -webkit-transform: rotateX(450deg) rotateZ(-720deg);
   transform: rotateX(450deg) rotateZ(-720deg);
 }
