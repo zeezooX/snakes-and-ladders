@@ -20,6 +20,7 @@ const fetchTurn = require("./app/socket/handlers/fetchTurn");
 const makeMove = require("./app/socket/handlers/makeMove");
 socketIO.use(socketAuth).on("connection", (socket) => {
   console.log(`${socket.id} just connected!`);
+
   socket.on("join-game",async (gameId)=>{
     if(socket.rooms.has(`team-C room-${gameId}`)){
       return
@@ -50,7 +51,7 @@ socketIO.use(socketAuth).on("connection", (socket) => {
       makeMove(gameID, socket.user).then((update) => {
         console.log(`${socket.id} made a move in (team-C room-${gameID})`);
         console.log(update);
-        socket.in(`team-C room-` + gameID).emit("turn-update", update);
+        socket.in(`team-C room-` + `${gameID}`).emit("turn-update", update);
       });
     } catch (e) {
       console.log(e);
@@ -77,6 +78,7 @@ const handleCreateGame = require("./app/routes/RoutesHandlers/handleCreateGame.j
 const handleGetGame = require("./app/routes/RoutesHandlers/handleGetGame.js");
 const handleMock = require("./app/routes/RoutesHandlers/__handleMock");
 const handleMakeMove = require("./app/routes/RoutesHandlers/handleMakeMove");
+const handleCurrentGame = require("./app/routes/RoutesHandlers/handleCurrentGame");
 
 app.post("/test", handleMock);
 app.post("/makeMove", auth, handleMakeMove.create(socketIO));
@@ -88,12 +90,12 @@ app.get("/getGame", auth, handleGetGame);
 app.post("/joinGame", auth, handleJoinGame);
 app.post("/leaveGame", auth, handleLeaveGame.create(socketIO));
 app.post("/createGame", auth, handleCreateGame);
-
+app.get("/currentGame", auth, handleCurrentGame);
 const db = require("./app/models");
 const isPlayerGaming = require("./app/routes/helpers/isPlayerGaming");
 
 app.use((error, req, res, next) => {
-  res.status(500).json({ message: " exception : " + error });
+  res.status(error.status ?? 500).json({ message: " exception : " + error });
 });
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;

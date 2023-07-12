@@ -1,0 +1,95 @@
+.createRoom {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin: auto;
+  align-items: center;
+  justify-content: center;
+  background: url("../../../public/assets/blur2.png");
+  background-size: cover;
+  min-height: 100vh;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+.createRoom .chooseMap {
+  position: relative;
+  margin-bottom: 50px;
+  margin-top: 10px;
+  bottom: 50px;
+  padding-top: 40px;
+  font-weight: bold;
+  font-family: "Permanent Marker", cursive;
+  font-size: 70px;
+  color: rgb(53, 100, 6);
+}
+.createRoom .mapsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  width: 70%;
+}
+.createRoom .mapsContainer .map {
+  position: relative;
+  bottom: 80px;
+  width: 200px;
+  height: 200px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+.createRoom .mapsContainer .map span {
+  position: relative;
+  bottom: 10px;
+}
+
+/*.createRoom .mapsContainer .map input [type="radio"] {
+    -webkit-appearance: none;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    width: 100%;
+    cursor: pointer;
+  }*/
+.input-hidden {
+  position: absolute;
+  left: -9999px;
+}
+
+input[type="radio"]:checked + label > img {
+  border: 1px solid #fff;
+  box-shadow: 0 0 3px 3px #090;
+  cursor: pointer;
+}
+
+/* Stuff after this is only to make things more pretty */
+input[type="radio"] + label > img {
+  width: 180px;
+  height: 180px;
+  transition: 500ms all;
+  cursor: pointer;
+}
+
+input[type="radio"]:checked + label > img {
+  transform: rotateZ(-10deg) rotateX(10deg);
+}
+
+/*.createRoom .mapsContainer .map img {
+    width: 150px;
+    height: 150px;
+  }*/
+
+.createRoom button {
+  position: relative;
+  border: none;
+  cursor: pointer;
+  font-size: 30px;
+  font-family: "Permanent Marker", cursive;
+  background: rgb(53, 100, 6);
+  color: #fff;
+  border-radius: 10px;
+  padding: 10px;
+  bottom: 30px;
+  -webkit-box-shadow: 14px 17px 26px -4px rgba(53, 100, 60, 1);
+  box-shadow: 14px 17px 26px -4px rgba(53, 100, 60, 1);
+}
