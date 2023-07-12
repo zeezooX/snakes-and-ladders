@@ -38,7 +38,13 @@
   padding: 10px;
   background-image: -o-linear-gradient(rgba(0, 0, 0, 0.527), rgba(0, 0, 0, 0.5)),
     url("https://cdn3.mycity4kids.com/images/article-images/web/headersV2/img-20190808-5d4be15b65355.jpg");
-  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.527)), to(rgba(0, 0, 0, 0.5))),
+  background-image: -webkit-gradient(
+      linear,
+      left top,
+      left bottom,
+      from(rgba(0, 0, 0, 0.527)),
+      to(rgba(0, 0, 0, 0.5))
+    ),
     url("https://cdn3.mycity4kids.com/images/article-images/web/headersV2/img-20190808-5d4be15b65355.jpg");
   background-image: linear-gradient(rgba(0, 0, 0, 0.527), rgba(0, 0, 0, 0.5)),
     url("https://cdn3.mycity4kids.com/images/article-images/web/headersV2/img-20190808-5d4be15b65355.jpg");
@@ -47,12 +53,13 @@
   margin-right: 5px;
 }
 
-.container .card .left h2 {
-  color: white;
+.container .card .left h1 {
+  color: #ffffff;
   font-weight: bolder;
   margin-top: 10px;
   margin-bottom: 30px;
   padding-left: 15px;
+  font-family: "Gaegu", cursive;
 }
 
 .container .card .left .reg {
@@ -65,11 +72,12 @@
 
 .container .card .left .text {
   margin-top: 10px;
-  margin-bottom: 55px;
+  margin-bottom: 40px;
   font-size: 15px;
   font-weight: bold;
   color: white;
   padding-left: 15px;
+  font-family: "Gaegu", cursive;
 }
 .container .card .left .register {
   width: 50%;
@@ -103,6 +111,7 @@
   color: #464646;
   font-size: 40px;
   margin-bottom: 20px;
+  font-family: "Gaegu", cursive;
 }
 
 .container .card .right form {

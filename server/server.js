@@ -16,39 +16,30 @@ const socketIO = require("socket.io")(http, {
     origin: "*",
   },
 });
-<<<<<<< HEAD
-//const fetchTurn = require("./app/socket/handlers/fetchTurn");
-
-=======
 const fetchTurn = require("./app/socket/handlers/fetchTurn");
-const makeMove = require("./app/socket/handlers/makeMove")
->>>>>>> fea0a2d8cd6a7319b1ba3154316849f21c06978a
+const makeMove = require("./app/socket/handlers/makeMove");
 socketIO.use(socketAuth).on("connection", (socket) => {
   console.log(`${socket.id} just connected!`);
-  socket.on("join-game",(gameId)=>{
-    if(socket.rooms.has(`team-C room-${gameId}`)){
-      return
+  socket.on("join-game", (gameId) => {
+    if (socket.rooms.has(`team-C room-${gameId}`)) {
+      return;
     }
-    console.log(`${socket.id} joined (team-C room-${gameId})`)
-    socket.join(`team-C room-${gameId}`)
-  })
+    console.log(`${socket.id} joined (team-C room-${gameId})`);
+    socket.join(`team-C room-${gameId}`);
+  });
   socket.on("load-game", (gameId, callback) => {
-    fetchTurn(gameId).then(
-      (game)=>{
-        callback(game);
-      }
-    )
+    fetchTurn(gameId).then((game) => {
+      callback(game);
+    });
   });
 
   socket.on("make-move", (gameID) => {
     try {
-      makeMove(gameID, socket.user).then(
-        (update)=>{
-          console.log(`${socket.id} made a move in (team-C room-${gameID})`)
-          console.log(update)
-          socket.in(`team-C room-`+gameID).emit("turn-update", update);
-        }
-      );
+      makeMove(gameID, socket.user).then((update) => {
+        console.log(`${socket.id} made a move in (team-C room-${gameID})`);
+        console.log(update);
+        socket.in(`team-C room-` + gameID).emit("turn-update", update);
+      });
     } catch (e) {
       console.log(e);
     }

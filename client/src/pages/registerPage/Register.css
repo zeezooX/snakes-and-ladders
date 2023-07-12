@@ -41,7 +41,13 @@
   padding-left: 10px;
   background-image: -o-linear-gradient(rgba(0, 0, 0, 0.527), rgba(0, 0, 0, 0.5)),
     url(../../../public/assets/register.png);
-  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.527)), to(rgba(0, 0, 0, 0.5))),
+  background-image: -webkit-gradient(
+      linear,
+      left top,
+      left bottom,
+      from(rgba(0, 0, 0, 0.527)),
+      to(rgba(0, 0, 0, 0.5))
+    ),
     url(../../../public/assets/register.png);
   background-image: linear-gradient(rgba(0, 0, 0, 0.527), rgba(0, 0, 0, 0.5)),
     url(../../../public/assets/register.png);
@@ -50,12 +56,13 @@
   padding: 10px;
 }
 
-.Register .card .left h2 {
+.Register .card .left h1 {
   color: white;
   font-weight: bolder;
-  margin-top: 20px;
-  margin-bottom: 35px;
+  margin-top: 10px;
+  margin-bottom: 30px;
   padding-left: 15px;
+  font-family: "Gaegu", cursive;
 }
 
 .Register .card .left .log {
@@ -68,17 +75,19 @@
 
 .Register .card .left .text {
   margin-top: 10px;
-  margin-bottom: 55px;
+  margin-bottom: 30px;
   font-size: 15px;
   font-weight: bold;
   color: white;
   padding-left: 15px;
+  font-family: "Gaegu", cursive;
 }
 .Register .card .left .login {
   width: 50%;
   padding: 5px;
   color: white;
   margin-top: 10px;
+  margin-bottom: 15px;
   cursor: pointer;
   background: none;
   border: 1px solid #c06363;
@@ -106,6 +115,7 @@
   color: #464646;
   font-size: 40px;
   margin-bottom: 20px;
+  font-family: "Gaegu", cursive;
 }
 
 .Register .card .right form {
