@@ -29,8 +29,6 @@ const CreateRoom = () => {
               <img src={board3} alt="" />
             </label>
           </div>
-        </div>
-        <div className="mapsContainer">
           <div className="map">
             <input class="input-hidden" type="radio" id="4" name="board" />
             <label htmlFor="4">
