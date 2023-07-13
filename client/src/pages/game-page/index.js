@@ -100,8 +100,16 @@ function Game() {
     console.log("gameObject");
     console.log(gameObject);
     setGame(gameObject);
-    setMsg(`It's ${gameObject.players[gameObject.pending_player_index].name}'s turn`);
-    // forceUpdate();
+    if(gameObject.game_status.toLowerCase()==="pending" && gameObject.players){
+      setMsg(`Waiting for more players [${gameObject.players.length}/${gameObject.game_capacity}] ...`);
+    }
+    else if(gameObject.game_status.toLowerCase()==="finished" && gameObject.players){
+      const W = gameObject.players.findIndex((a)=>Number(a.position) === 100)
+      setMsg(`${W.name} HAS WON !`); 
+    }
+    else{
+      setMsg(`It's ${gameObject.players[gameObject.pending_player_index].name}'s turn`);
+    }
     }
   };
   function rollDice(elComeOut) {
