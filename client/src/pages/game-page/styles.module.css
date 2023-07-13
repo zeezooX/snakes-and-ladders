@@ -3,6 +3,9 @@
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   height: 100vh;
+  background: url("../../../public/assets/blur2.png");
+  background-size: cover;
+  background-attachment: fixed;
   background-color: rgb(206, 141, 206);
 }
 .gameContainer > div:first-child {
