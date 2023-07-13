@@ -9,6 +9,23 @@
     1px 1px 0 black;
   font-size: 18px;
 }
+.leaveGame {
+  position: relative;
+  margin-bottom: 10px;
+  bottom: 100px;
+  cursor: pointer;
+  background: none;
+  color: rgb(53, 100, 6);
+  font-weight: bold;
+  padding: 5px;
+  font-size: 20px;
+  border-radius: 10px;
+}
+.leaveGame:hover {
+  color: #fff;
+  text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black,
+    1px 1px 0 black;
+}
 .dice {
   position: relative;
   width: 100px;

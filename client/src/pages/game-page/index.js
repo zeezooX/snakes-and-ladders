@@ -196,6 +196,27 @@ function Game() {
       };
     }
   }, [diceRef.current, rollRef.current, canvasRef.current, game]);
+  const leaveGame = (e) => {
+    const headers = {
+      "x-access-token": sessionStorage.getItem("authenticated"),
+    };
+    axios
+      .post(
+        `/leaveGame`,
+        {
+          gameId: gameId,
+        },
+        { headers: headers }
+      )
+      .then((res) => {
+        console.log("RESPONSE RECEIVED: ", res);
+        navigate("/");
+      })
+      .catch((err) => {
+        console.log("AXIOS ERROR: ", err);
+      });
+    e.preventDefault();
+  };
 
   return (
     <>
@@ -236,6 +257,9 @@ function Game() {
           <canvas ref={canvasRef} width={749} height={749} />
 
           <div className={styles.timerDiceContainer}>
+            <button className="leaveGame" onClick={(e) => leaveGame(e)}>
+              Leave
+            </button>
             <div className="msg" id="msssg">
               {msg}
             </div>
