@@ -13,6 +13,25 @@ return async (req, res, next) => {
     if (!player) throw new Error("Player Not in The Game");
     let game = await Game.findByPk(gameId);
     if (!game) throw new Error("Game Doesn't Exist");
+
+    if(game.currentPlayer === parseInt(playerId)){
+      
+      // set currentPlayer to the player with order++
+      const currentOrder = player.order;
+      const nextOrder = (currentOrder % game.playersNumber) + 1;
+      const nextGp = await GamePlayer.findOne({
+        where: { gameID: gameId, order: nextOrder },
+      });
+      if(!nextGp) throw new Error("Can't find next player in order")
+      await Game.update(
+        {
+          currentPlayer: nextGp.playerId,
+        },
+        {
+          where: { Id: gameId },
+        }
+      );
+    }
     let num = await Game.update(
       { playersNumber: game.playersNumber - 1 },
       { where: { Id: gameId } }
@@ -20,20 +39,31 @@ return async (req, res, next) => {
     if (num != 1) throw new Error("Can't Update Game");
     await GamePlayer.destroy({ where: { playerId } });
     let gamePlayers = await GamePlayer.findAll({ where: { gameId } });
-    gamePlayers.forEach((playerr) => {
+    for(const playerr of gamePlayers){
+      console.log(player.order);
       if (playerr.order > player.order) {
         console.log(playerr.order, player.order);
-        GamePlayer.update(
+        await GamePlayer.update(
           { order: playerr.order - 1 },
           { where: { Id: gameId, playerId: playerr.playerId } }
         );
       }
-    });
-    if (gamePlayers.length == 0) {
+    }
+    // gamePlayers.forEach((playerr) => {
+    //   if (playerr.order > player.order) {
+    //     console.log(playerr.order, player.order);
+    //     GamePlayer.update(
+    //       { order: playerr.order - 1 },
+    //       { where: { Id: gameId, playerId: playerr.playerId } }
+    //     );
+    //   }
+    // });
+    if (gamePlayers.length <= 1 && game.status.toLowerCase()!="pending") {
       let num = await Game.update(
         { status: "finished" },
         { where: { Id: gameId } }
       );
+      GamePlayer.destroy({where:{gameId:gameId}})
       if (num != 1) throw new Error("Can't Update Game");
     }
     res.status(200).send("Done");

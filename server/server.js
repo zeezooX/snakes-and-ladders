@@ -37,7 +37,7 @@ socketIO.use(socketAuth).on("connection", (socket) => {
     socket.join(`team-C room-${gameId}`);
     // notify room
     fetchTurn(gameId).then((data) => {
-      socket.in(`team-C room-` + `${gameID}`).emit("room-update", data);
+      socket.in(`team-C room-` + `${gameId}`).emit("room-update", data);
     });
   });
   socket.on("load-game", (gameId, callback) => {
@@ -87,7 +87,6 @@ const handleLeaveGame = require("./app/routes/RoutesHandlers/handleLeaveGame.js"
 const handleCreateGame = require("./app/routes/RoutesHandlers/handleCreateGame.js");
 const handleGetGame = require("./app/routes/RoutesHandlers/handleGetGame.js");
 const handleMock = require("./app/routes/RoutesHandlers/__handleMock");
-const handleMakeMove = require("./app/routes/RoutesHandlers/handleMakeMove");
 const handleCurrentGame = require("./app/routes/RoutesHandlers/handleCurrentGame");
 
 app.post("/test", handleMock);

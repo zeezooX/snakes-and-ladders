@@ -35,6 +35,7 @@ const makeMove = async (game_id, user, io) => {
     const nextGp = await GP.findOne({
       where: { gameID: gameID, order: nextOrder },
     });
+
     let newPos = dice + oldPosition;
     let gameStatus = "ACTIVE";
     if (newPos <= 100) {

@@ -65,9 +65,11 @@ function Game() {
       x.game_status = turnUpdate?.game_status;
       x.pending_player_index = turnUpdate?.pending_player_index;
       x.lastPlayTime = turnUpdate?.pending_player_index;
+      if(x.players[turnUpdate?.move.player_index].position){
       x.players[turnUpdate?.move.player_index].position = turnUpdate?.move.to;
-      setGame(x);
       setMsg(`It's ${x.players[turnUpdate?.pending_player_index].name}'s turn`);
+      }
+      setGame(x);
       if (!t) {
         setInterval(() => {
           // if (game && game.game_status.toLowerCase() === "active") {
@@ -99,10 +101,14 @@ function Game() {
       setMsg(gameObject);
       return;
     }
+    if(gameObject?.players?.length<=1 && gameObject?.game_status.toLowerCase()!=="pending"){
+      navigate("/")
+    }
+    else{
     console.log("gameObject");
     console.log(gameObject);
     setGame(gameObject);
-    // drawCanvas(gameObject);
+    }
   };
   function rollDice(elComeOut) {
     var elDiceOne = diceRef?.current;
@@ -134,10 +140,10 @@ function Game() {
       console.log(elComeOut);
 
       elComeOut.onclick = function () {
-        console.log(
-          game.players[game.pending_player_index].name,
-          sessionStorage.getItem("username")
-        );
+        // console.log(
+        //   game.players[game.pending_player_index].name,
+        //   sessionStorage.getItem("username")
+        // );
         // if (
         //   game.players[game.pending_player_index].name ==
         //   sessionStorage.getItem("username")
@@ -165,7 +171,9 @@ function Game() {
     if (game && turnUpdate) {
       const { from, to, dice_outcome, player_index } = turnUpdate.move;
       let newPlayersObject = [...game.players];
-      newPlayersObject[player_index].position = from + dice_outcome;
+      if(player_index < newPlayersObject.length && newPlayersObject[player_index]){
+        newPlayersObject[player_index].position = from + dice_outcome;
+      }
       let gameObject = {
         ...game,
         players: [...newPlayersObject],
@@ -174,7 +182,9 @@ function Game() {
       drawCanvas(gameObject);
       if (from + dice_outcome != to) {
         setTimeout(() => {
-          gameObject.players[player_index].position = to;
+          if(player_index < gameObject.players.length && gameObject.players[player_index]){
+            gameObject.players[player_index].position = to;
+          }
           drawCanvas(game);
         }, 500);
       }
@@ -195,7 +205,7 @@ function Game() {
       const cellH = canvas.height / 10.0;
       //draw pieces:
       for (const p of game.players) {
-        if (p.position === 0) {
+        if (p?.position === 0) {
           continue;
         }
         const { x, y } = pos(p.position);
@@ -262,20 +272,20 @@ function Game() {
                     className={styles.player}
                     style={{
                       color:
-                        player.name ==
-                        game.players[game.pending_player_index].name
+                        player?.name ==
+                        game.players[game?.pending_player_index]?.name
                           ? "rgb(141, 206, 206)"
                           : "black",
                     }}
                   >
                     <td>
-                      <div>{player.name}</div>
+                      <div>{player?.name}</div>
                       <div
                         className={styles.playerColor}
-                        style={{ backgroundColor: player.color }}
+                        style={{ backgroundColor: player?.color }}
                       ></div>
                     </td>
-                    <td>{player.position}</td>
+                    <td>{player?.position}</td>
                   </tr>
                 ))}
               </tbody>
