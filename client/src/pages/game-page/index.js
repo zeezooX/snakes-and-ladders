@@ -62,12 +62,12 @@ function Game() {
     if (game && turnUpdate) {
       console.log("??????????????????");
       let x = cloneDeep(game);
-      x.game_status = turnUpdate.game_status;
-      x.pending_player_index = turnUpdate.pending_player_index;
-      x.lastPlayTime = turnUpdate.pending_player_index;
-      x.players[turnUpdate.move.player_index].position = turnUpdate.move.to;
+      x.game_status = turnUpdate?.game_status;
+      x.pending_player_index = turnUpdate?.pending_player_index;
+      x.lastPlayTime = turnUpdate?.pending_player_index;
+      x.players[turnUpdate?.move.player_index].position = turnUpdate?.move.to;
       setGame(x);
-      setMsg(`It's ${x.players[turnUpdate.pending_player_index].name}'s turn`);
+      setMsg(`It's ${x.players[turnUpdate?.pending_player_index].name}'s turn`);
       if (!t) {
         setInterval(() => {
           // if (game && game.game_status.toLowerCase() === "active") {
@@ -105,15 +105,17 @@ function Game() {
     // drawCanvas(gameObject);
   };
   function rollDice(elComeOut) {
-    var elDiceOne = diceRef.current;
-    for (let i = 1; i <= 6; i++) {
-      elDiceOne.classList.remove("show-" + i);
-      console.log(elComeOut, i);
-      if (elComeOut == i) {
-        elDiceOne.classList.add("show-" + i);
-        console.log(elDiceOne.classList);
+    var elDiceOne = diceRef?.current;
+    if(elDiceOne){
+      for (let i = 1; i <= 6; i++) {
+        elDiceOne.classList.remove("show-" + i);
+        console.log(elComeOut, i);
+        if (elComeOut == i) {
+          elDiceOne.classList.add("show-" + i);
+          console.log(elDiceOne.classList);
+        }
       }
-    }
+  }
   }
   const pos = (pos_1) => {
     const pos_0 = pos_1 - 1;
@@ -255,7 +257,7 @@ function Game() {
                 <th>Position</th>
               </thead>
               <tbody>
-                {game.players.map((player) => (
+                {game?.players?.map((player) => (
                   <tr
                     className={styles.player}
                     style={{

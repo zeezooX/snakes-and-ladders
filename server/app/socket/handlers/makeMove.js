@@ -27,6 +27,7 @@ const makeMove = async (game_id, user, io) => {
     const gp = await GP.findOne({
       where: { gameID: gameID, playerId: currentPlayer },
     });
+    if(!gp){return}
     const oldPosition = gp.lastPosition;
 
     const currentOrder = gp.order;
@@ -136,9 +137,16 @@ const makeMove = async (game_id, user, io) => {
     Players.sort((a, b) => a.order - b.order);
 
 
-    const last_player_index = Players.findIndex((p) => p.id === currentPlayer)
-    const next_player_index = Players.findIndex((p) => p.id === nextGp.playerId)
+    let last_player_index = Players.findIndex((p) => p.id === currentPlayer)
+    let next_player_index = Players.findIndex((p) => p.id === nextGp.playerId)
 
+    if(last_player_index==-1){
+      last_player_index = 0
+    }
+    if(last_player_index==-1){
+      next_player_index = 0
+    }
+    
 
     return {
       game_status: gameStatus,
