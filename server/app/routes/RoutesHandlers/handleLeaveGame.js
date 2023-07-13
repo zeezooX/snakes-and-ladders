@@ -14,18 +14,18 @@ const handleLeaveGame = (socket) => {
       let player = await GamePlayer.findOne({ where: { playerId, gameId } });
       if (!player) throw new Error("Player Not in The Game");
       let game = await Game.findByPk(gameId);
-      const p_num = game.playersNumber 
+      const p_num = game.playersNumber
       if (!game) throw new Error("Game Doesn't Exist");
-      
 
-      if(game.currentPlayer === parseInt(playerId)){
+
+      if (game.currentPlayer === parseInt(playerId)) {
         const currentOrder = player.order;
         let nextOrder = Infinity;
         let nextPlayerId = game.currentPlayer;
 
-        const players = await GamePlayer.findAll({where:{gameID:gameId}})
-        for(const element of players){
-          if(element.order>currentOrder && element.order < nextOrder ){
+        const players = await GamePlayer.findAll({ where: { gameID: gameId } })
+        for (const element of players) {
+          if (element.order > currentOrder && element.order < nextOrder) {
             nextOrder = element.order;
             nextPlayerId = element.playerId;
           }
@@ -38,13 +38,17 @@ const handleLeaveGame = (socket) => {
       }
 
       await GamePlayer.destroy({ where: { playerId } });
-      const num = await Game.update(
-        { playersNumber: p_num-1 },
-        { where: { Id: gameId } }
-      );
-      if (num != 1) throw new Error("Can't Update Game");
-      console.log("AUUUUUUUUUUUUUUUUUGH");
-      
+      if (parseInt(p_num) === 1) {
+        await Game.destroy({ where: { Id:gameId } })
+      }
+      else {
+        await Game.update(
+          { playersNumber: p_num - 1 },
+          { where: { Id: gameId } }
+        );
+      }
+
+
       fetchTurn(gameId).then((data) => {
         socket.in(process.env.ROOMPREFIX + String(gameId)).emit('room-update', data)
       });

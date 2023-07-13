@@ -27,7 +27,7 @@ const makeMove = async (game_id, user, io) => {
     const gp = await GP.findOne({
       where: { gameID: gameID, playerId: currentPlayer },
     });
-    if(!gp){return}
+    if(!gp){return"The bot won't dare to play for a gone player :/"}
 
     
     const currentOrder = gp.order;
