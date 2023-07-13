@@ -16,8 +16,8 @@ function Game() {
   let diceRef = useRef(null);
   let rollRef = useRef(null);
   let [timer, setTimer] = useState(Date.now());
-
   let [lastPlayTime, setLastPlayTime] = useState(Date.now());
+  const [t,setT] = useState(false)
   /*  
   const g = {
       game_status: game.status,
@@ -36,11 +36,6 @@ function Game() {
   */
   useEffect(() => {
     io.subscribeToRoom(gameId, handleTurnUpdate, handleRoomUpdate);
-    setInterval(() => {
-      if(game && game.game_status.toLowerCase() === "active"){
-        setTimer(p => p + 1000)
-      }
-    }, 1000);
   }, []);
 
   useEffect(() => {
@@ -71,6 +66,14 @@ function Game() {
       x.players[turnUpdate.move.player_index].position = turnUpdate.move.to
       setGame(x)
       setMsg(`It's ${x.players[turnUpdate.pending_player_index].name}'s turn`)
+      if(!t){
+        setInterval(() => {
+          if(game && game.game_status.toLowerCase() === "active"){
+            setTimer(p => p + 1000)
+          }
+        }, 1000);
+        setT(true)
+      }
     }
   }, [turnUpdate])
   const handleTurnUpdate = (gameTurnObject) => {
@@ -96,7 +99,6 @@ function Game() {
     console.log("gameObject");
     console.log(gameObject)
     setGame(gameObject);
-    setLastPlayTime(new Date(gameObject.lastPlayTime))
   };
   function rollDice(elComeOut) {
     var elDiceOne = diceRef.current;
@@ -209,6 +211,7 @@ function Game() {
           <canvas ref={canvasRef} width={749} height={749} />
 
           <div className={styles.timerDiceContainer}>
+          <div className="msg"> {msg} </div>
             <div className={styles.timer}>
               <Box sx={{ position: "relative", display: "inline-flex" }}>
                 <CircularProgress
@@ -250,6 +253,7 @@ function Game() {
                 </Box>
 
               </Box>
+
             </div>
 
             <div ref={rollRef}>
@@ -290,7 +294,6 @@ function Game() {
               </div>
             </div>
           </div>
-          {/* <div className="msg"> {msg} </div> */}
 
           
         </div>
