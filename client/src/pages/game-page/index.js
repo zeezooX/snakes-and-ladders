@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import {useNavigate} from "react-router-dom";
 import cloneDeep from 'lodash/cloneDeep';
 import styles from "./styles.module.css";
 import "./style.css";
@@ -6,10 +7,13 @@ import CircularProgress from "@mui/material/CircularProgress";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import * as io from "../../socket/socket";
+import axios from "axios";
+
 function Game() {
+  const navigate = useNavigate();
   const canvasRef = useRef(null);
   const [progress, setProgress] = React.useState(0);
-  const gameId = 9;
+  let gameId;
   let [game, setGame] = useState(null);
   let [turnUpdate, setturnUpdate] = useState(null)
   const [msg, setMsg] = useState("The game is Loading")
@@ -18,6 +22,24 @@ function Game() {
   let [timer, setTimer] = useState(Date.now());
   let [lastPlayTime, setLastPlayTime] = useState(Date.now());
   const [t,setT] = useState(false)
+
+  useEffect(() => {
+    const headers = {
+      "x-access-token": sessionStorage.getItem("authenticated"),
+    };
+    axios
+      .get(`/currentGame`, { headers: headers })
+      .then((res) => {
+        console.log("RESPONSE RECEIVED: ", res);
+        gameId = res.data.Id;
+        console.log("Id: " + gameId);
+        io.subscribeToRoom(gameId, handleTurnUpdate, handleRoomUpdate);
+      })
+      .catch((err) => {
+        console.log("AXIOS ERROR: ", err);
+        navigate("/");
+      });
+  }, []);
   /*  
   const g = {
       game_status: game.status,
@@ -34,9 +56,6 @@ function Game() {
       id: p.userId
   }
   */
-  useEffect(() => {
-    io.subscribeToRoom(gameId, handleTurnUpdate, handleRoomUpdate);
-  }, []);
 
   useEffect(() => {
     setProgress((timer - lastPlayTime) / 1000.0)
