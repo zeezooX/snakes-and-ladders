@@ -4,10 +4,14 @@
 #msssg {
   position: relative;
   bottom: 20px;
-  color: aliceblue;
-  text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black,
-    1px 1px 0 black;
-  font-size: 18px;
+  color: rgb(255, 255, 255);
+  font-size: 32px;
+  -webkit-text-stroke-color: black;
+  -webkit-text-stroke-width: 2px;
+  /* text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black,
+    1px 1px 0 rgb(174, 131, 0); */
+  font-weight: 700;
+  
 }
 .leaveGame {
   position: relative;

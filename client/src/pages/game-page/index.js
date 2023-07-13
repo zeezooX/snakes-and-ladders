@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useReducer } from "react";
 import { useNavigate } from "react-router-dom";
 import cloneDeep from "lodash/cloneDeep";
 import styles from "./styles.module.css";
@@ -7,16 +7,11 @@ import CircularProgress from "@mui/material/CircularProgress";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import * as io from "../../socket/socket";
-import axios from "axios";
-import board1 from "../../boardImages/board1.jpg";
-import board2 from "../../boardImages/board2.jpg";
-import board3 from "../../boardImages/board3.png";
-import board4 from "../../boardImages/board4.jpg";
-import board5 from "../../boardImages/board5.jpg";
-import board6 from "../../boardImages/board6.jpeg";
 
+import axios from "axios";
+
+import boards from "../../boards";
 function Game() {
-  const boards = [board1, board2, board3, board4, board5, board6];
   const navigate = useNavigate();
   const canvasRef = useRef(null);
   const [progress, setProgress] = React.useState(0);
@@ -29,6 +24,7 @@ function Game() {
   let [timer, setTimer] = useState(Date.now());
   let [lastPlayTime, setLastPlayTime] = useState(Date.now());
   const [t, setT] = useState(false);
+  const [, forceUpdate] = useReducer(x => x + 1, 0);
 
   useEffect(() => {
     const headers = {
@@ -59,22 +55,19 @@ function Game() {
   }, [timer]);
 
   useEffect(() => {
-    if (game && turnUpdate) {
-      console.log("??????????????????");
+    if (game && turnUpdate && turnUpdate.move) {
       let x = cloneDeep(game);
       x.game_status = turnUpdate?.game_status;
-      x.pending_player_index = turnUpdate?.pending_player_index;
-      x.lastPlayTime = turnUpdate?.pending_player_index;
-      if(x.players[turnUpdate?.move.player_index].position){
-      x.players[turnUpdate?.move.player_index].position = turnUpdate?.move.to;
-      setMsg(`It's ${x.players[turnUpdate?.pending_player_index].name}'s turn`);
+      x.pending_player_index = x.players.findIndex((a)=>a.id === turnUpdate.pending_player_index)
+      x.lastPlayTime = turnUpdate.pending_player_index;
+      setMsg(`It's ${x.players[turnUpdate.pending_player_index].name}'s turn`);
+      if(x.players[turnUpdate.move.player_index].position){        
+      x.players[turnUpdate.move.player_index].position = turnUpdate.move.to;
       }
       setGame(x);
       if (!t) {
         setInterval(() => {
-          // if (game && game.game_status.toLowerCase() === "active") {
           setTimer((p) => p + 1000);
-          // }
         }, 1000);
         setT(true);
       }
@@ -86,10 +79,12 @@ function Game() {
       setMsg(gameTurnObject);
       return;
     }
+    if(gameTurnObject.move){
     rollDice(gameTurnObject.move.dice_outcome);
     setTimeout(() => {
       setturnUpdate(gameTurnObject);
     }, 1000);
+    }
     console.log(gameTurnObject);
     const { lastPlayTime } = gameTurnObject;
     setLastPlayTime(lastPlayTime);
@@ -105,6 +100,8 @@ function Game() {
     console.log("gameObject");
     console.log(gameObject);
     setGame(gameObject);
+    setMsg(`It's ${gameObject.players[gameObject.pending_player_index].name}'s turn`);
+    // forceUpdate();
     }
   };
   function rollDice(elComeOut) {
@@ -137,16 +134,6 @@ function Game() {
       console.log(elComeOut);
 
       elComeOut.onclick = function () {
-        // console.log(
-        //   game.players[game.pending_player_index].name,
-        //   sessionStorage.getItem("username")
-        // );
-        // if (
-        //   game.players[game.pending_player_index].name ==
-        //   sessionStorage.getItem("username")
-        // ) {
-        //   io.rollDice(gameId);
-        // }
         io.rollDice(gameId.current);
       };
     }
@@ -189,11 +176,9 @@ function Game() {
   }, [game]);
 
   let drawCanvas = (game) => {
-    console.log(game, "mmmmmmmmmm");
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
     const img = new Image();
-    //img.src = `./assets/board${game.board_id}.jpg`;
     img.src = boards[game.board_id - 1];
     img.onload = function () {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -255,7 +240,14 @@ function Game() {
 
   return (
     <>
-      {!game ? null : (
+      {!game ? 
+      <Box sx={{ display: "flex", justifyContent: "center"}}>
+        <CircularProgress style={{
+                    width: "50vh",
+                    height: "50vh",
+                  }}/>
+      </Box>
+      : (
         <div className={styles.gameContainer}>
           <div className={styles.playersList}>
             <table className={styles.playersTable}>

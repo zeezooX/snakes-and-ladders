@@ -8,14 +8,13 @@ const handleCurrentGame = async (req, res, next) => {
       where: { playerId: user.userId },
     });
     for (let playerGame of playerGames) {
-      console.log(playerGame + "tttttt");
       let game = await Game.findOne({ where: { Id: playerGame.gameId } });
-      if (game.status == "active" || game.status == "pending") {
+      if (game.status.toLowerCase() === "active" || game.status.toLowerCase() == "pending") {
         res.status(200).send(game);
+        return;
       }
     }
     const error = new Error("User Is Not In A Game");
-    error.status = 404;
     throw error;
   } catch (e) {
     next(e);

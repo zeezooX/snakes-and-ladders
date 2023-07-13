@@ -8,10 +8,13 @@ export const socket = io("http://localhost:8080", {
 
 export const subscribeToRoom = (gameId, turnUpdate, roomUpdate) => {
   socket.connect().on("connect", () => {
-    socket.on("room-update", roomUpdate);
-    socket.on("turn-update", turnUpdate);
     socket.emit("join-game", gameId);
-    loadGame(gameId, roomUpdate);
+    loadGame(gameId, (data)=>{
+      roomUpdate(data)
+      socket.on("room-update", roomUpdate);
+      socket.on("turn-update", turnUpdate);
+    }
+    );
   });
 };
 

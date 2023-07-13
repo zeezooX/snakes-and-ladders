@@ -1,10 +1,5 @@
 import "./JoinRoom.css";
-import board1 from "../../boardImages/board1.jpg";
-import board2 from "../../boardImages/board2.jpg";
-import board3 from "../../boardImages/board3.png";
-import board4 from "../../boardImages/board4.jpg";
-import board5 from "../../boardImages/board5.jpg";
-import board6 from "../../boardImages/board6.jpeg";
+import boards from "../../boards";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
@@ -16,7 +11,6 @@ const headers = {
 
 const JoinRoom = () => {
   const navigate = useNavigate();
-  const boards = [board1, board2, board3, board4, board5, board6];
 
   const [games, setGames] = useState([]);
   const [gameId, setGameId] = useState(-1);

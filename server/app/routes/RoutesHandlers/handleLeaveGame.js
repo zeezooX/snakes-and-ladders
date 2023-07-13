@@ -59,7 +59,7 @@ const handleLeaveGame = (socket) => {
 
 
       fetchTurn(gameId).then((data) => {
-        socket.in(process.env.ROOMPREFIX + String(gameId)).emit('room-update', data)
+        socket.to(process.env.ROOMPREFIX + String(gameId)).emit('room-update', data)
       });
       res.status(200).send("Done");
     } catch (e) {

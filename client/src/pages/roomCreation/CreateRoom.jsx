@@ -1,10 +1,5 @@
 import "./CreateRoom.css";
-import board1 from "../../boardImages/board1.jpg";
-import board2 from "../../boardImages/board2.jpg";
-import board3 from "../../boardImages/board3.png";
-import board4 from "../../boardImages/board4.jpg";
-import board5 from "../../boardImages/board5.jpg";
-import board6 from "../../boardImages/board6.jpeg";
+import boards from "../../boards";
 import axios from "axios";
 import React, { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
@@ -52,7 +47,15 @@ const CreateRoom = () => {
         <ToastContainer />
         <h2 className="chooseMap">Choose a map</h2>
         <div onChange={onChangeRadio} className="mapsContainer">
-          <div className="map">
+        {boards.map((b,index)=>
+          <div className="map" key={index}>
+            <input class="input-hidden" type="radio" id = {`${index+1}`} name="board" />
+            <label htmlFor={`${index+1}`}>
+              <img src={b} alt="" />
+            </label>
+          </div>
+          )}
+          {/* <div className="map">
             <input class="input-hidden" type="radio" id="1" name="board" />
             <label htmlFor="1">
               <img src={board1} alt="" />
@@ -70,12 +73,7 @@ const CreateRoom = () => {
               <img src={board3} alt="" />
             </label>
           </div>
-          <div className="map">
-            <input class="input-hidden" type="radio" id="4" name="board" />
-            <label htmlFor="4">
-              <img src={board4} alt="" />
-            </label>
-          </div>
+
           <div className="map">
             <input class="input-hidden" type="radio" id="5" name="board" />
             <label htmlFor="5">
@@ -87,7 +85,7 @@ const CreateRoom = () => {
             <label htmlFor="6">
               <img src={board6} alt="" />
             </label>
-          </div>
+          </div> */}
         </div>
         <div onChange={onChangeText} className="playerNumbers">
           <input type="text" placeholder="Enter players number:" />
