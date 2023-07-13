@@ -36,11 +36,11 @@
   height: 100px;
   -webkit-transform-style: preserve-3d;
   transform-style: preserve-3d;
-  -webkit-transition: -webkit-transform 1s;
-  transition: -webkit-transform 1s;
-  -o-transition: transform 1s;
-  transition: transform 1s;
-  transition: transform 1s, -webkit-transform 1s;
+  -webkit-transition: -webkit-transform 600ms;
+  transition: -webkit-transform 600ms;
+  -o-transition: transform 600ms;
+  transition: transform 600ms;
+  transition: transform 600ms, -webkit-transform 600ms;
 }
 
 .dot {

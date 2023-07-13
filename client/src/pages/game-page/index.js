@@ -162,8 +162,12 @@ function Game() {
     if (game && turnUpdate) {
       const { from, to, dice_outcome, player_index } = turnUpdate.move;
       let newPlayersObject = [...game.players];
+      let intermediate =  from + dice_outcome;
+      if(intermediate>100){
+        intermediate = to;
+      }
       if(player_index < newPlayersObject.length && newPlayersObject[player_index]){
-        newPlayersObject[player_index].position = from + dice_outcome;
+        newPlayersObject[player_index].position = intermediate;
       }
       let gameObject = {
         ...game,
@@ -171,7 +175,7 @@ function Game() {
       };
       console.log("hiii");
       drawCanvas(gameObject);
-      if (from + dice_outcome !== to) {
+      if (intermediate !== to) {
         setTimeout(() => {
           if(player_index < gameObject.players.length && gameObject.players[player_index]){
             gameObject.players[player_index].position = to;
@@ -292,11 +296,11 @@ function Game() {
                     }}
                   >
                     <td>
-                      <div>{player?.name}</div>
                       <div
                         className={styles.playerColor}
                         style={{ backgroundColor: player?.color }}
-                      ></div>
+                        ></div>
+                        <div>{player?.name}</div>
                     </td>
                     <td>{player?.position}</td>
                   </tr>
