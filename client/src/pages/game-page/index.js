@@ -101,9 +101,6 @@ function Game() {
       setMsg(gameObject);
       return;
     }
-    if(gameObject?.players?.length<=1 && gameObject?.game_status.toLowerCase()!=="pending"){
-      navigate("/")
-    }
     else{
     console.log("gameObject");
     console.log(gameObject);

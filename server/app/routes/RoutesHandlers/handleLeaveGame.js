@@ -14,38 +14,41 @@ const handleLeaveGame = (socket) => {
       let player = await GamePlayer.findOne({ where: { playerId, gameId } });
       if (!player) throw new Error("Player Not in The Game");
       let game = await Game.findByPk(gameId);
+      const p_num = game.playersNumber 
       if (!game) throw new Error("Game Doesn't Exist");
-      await Game.update(
-        { playersNumber: game.playersNumber - 1 },
-        { where: { Id: gameId } }
-      );
-      // if (num != 1) throw new Error("Can't Update Game");
-      const ord = player.ord
-      await GamePlayer.decrement(
-        { order: 1 },
-        {
-          where: {
-            Id: gameId, order: {
-              [Op.gt]: ord
-            }
+      
+
+      if(game.currentPlayer === parseInt(playerId)){
+        const currentOrder = player.order;
+        let nextOrder = Infinity;
+        let nextPlayerId = game.currentPlayer;
+
+        const players = await GamePlayer.findAll({where:{gameID:gameId}})
+        for(const element of players){
+          if(element.order>currentOrder && element.order < nextOrder ){
+            nextOrder = element.order;
+            nextPlayerId = element.playerId;
           }
         }
-        )
-        
-      let gamePlayers = await GamePlayer.findAll({ where: { gameId } });
-      await GamePlayer.destroy({ where: { playerId } });
-      if (gamePlayers.length == 0) {
-        let num = await Game.update(
-          { status: "finished" },
+
+        await Game.update(
+          { currentPlayer: nextPlayerId },
           { where: { Id: gameId } }
         );
-        // if (num != 1) throw new Error("Can't Update Game");
       }
-      res.status(200).send("Done");
 
+      await GamePlayer.destroy({ where: { playerId } });
+      const num = await Game.update(
+        { playersNumber: p_num-1 },
+        { where: { Id: gameId } }
+      );
+      if (num != 1) throw new Error("Can't Update Game");
+      console.log("AUUUUUUUUUUUUUUUUUGH");
+      
       fetchTurn(gameId).then((data) => {
         socket.in(process.env.ROOMPREFIX + String(gameId)).emit('room-update', data)
       });
+      res.status(200).send("Done");
     } catch (e) {
       next(e);
     }

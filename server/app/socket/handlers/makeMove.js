@@ -28,14 +28,21 @@ const makeMove = async (game_id, user, io) => {
       where: { gameID: gameID, playerId: currentPlayer },
     });
     if(!gp){return}
-    const oldPosition = gp.lastPosition;
 
+    
     const currentOrder = gp.order;
-    const nextOrder = (currentOrder % game.playersNumber) + 1;
-    const nextGp = await GP.findOne({
-      where: { gameID: gameID, order: nextOrder },
-    });
-
+    let nextOrder = Infinity;
+    let next_player_id = currentPlayer;
+    
+    const players = await GP.findAll({where:{gameID:gameID}})
+    for(const element of players){
+      if(element.order>currentOrder && element.order <nextOrder ){
+        nextOrder = element.order;
+        next_player_id = element.playerId;
+      }
+    }
+    
+    const oldPosition = gp.lastPosition;
     let newPos = dice + oldPosition;
     let gameStatus = "ACTIVE";
     if (newPos <= 100) {
@@ -70,7 +77,7 @@ const makeMove = async (game_id, user, io) => {
     const t = Date.now();
     await Game.update(
       {
-        currentPlayer: nextGp.playerId,
+        currentPlayer:next_player_id,
         lastPlayTime: t,
       },
       {
@@ -94,7 +101,7 @@ const makeMove = async (game_id, user, io) => {
           makeMove(
             gameID,
             {
-              userId: nextGp.playerId,
+              userId: next_player_id,
             },
             io
           ).then((update) => {
@@ -139,7 +146,7 @@ const makeMove = async (game_id, user, io) => {
 
 
     let last_player_index = Players.findIndex((p) => p.id === currentPlayer)
-    let next_player_index = Players.findIndex((p) => p.id === nextGp.playerId)
+    let next_player_index = Players.findIndex((p) => p.id === next_player_id)
 
     if(last_player_index==-1){
       last_player_index = 0
