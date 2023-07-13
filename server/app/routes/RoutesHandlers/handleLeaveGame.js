@@ -6,7 +6,8 @@ require("dotenv").config()
 
 const handleLeaveGame = (socket) => {
 return async (req, res, next) => {
-  const { playerId, gameId } = req.body;
+  const playerId = req.user.userId
+  const {gameId} = req.body;
   try {
     let player = await GamePlayer.findOne({ where: { playerId, gameId } });
     if (!player) throw new Error("Player Not in The Game");

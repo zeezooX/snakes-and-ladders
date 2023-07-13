@@ -11,8 +11,11 @@ import Game from "./pages/game-page";
 import Mock from "./pages/mockPage/Mock";
 import CreateRoom from "./pages/roomCreation/CreateRoom";
 import JoinRoom from "./pages/joinRoom/JoinRoom";
+import { useEffect, useState } from "react";
 
 const App = () => {
+  const [isGaming, setIsGaming] = useState(false);
+
   axios.defaults.baseURL = "http://localhost:8080/";
   const ProtectedRoute = ({ children }) => {
     if (!sessionStorage.getItem("authenticated")) {
@@ -20,12 +23,34 @@ const App = () => {
       return <Navigate to="/login" />;
     } else return children;
   };
+  const OngoingGame = async ({ children }) => {
+    if(isGaming)
+      return <Navigate to="/game"/>;
+    return children;
+  };
+  useEffect(() => {
+    const headers = {
+      "x-access-token": sessionStorage.getItem("authenticated"),
+    };
+    axios
+      .get(`/currentGame`, { headers: headers })
+      .then((res) => {
+        console.log("RESPONSE RECEIVED: ", res);
+        setIsGaming(true);
+      })
+      .catch((err) => {
+        console.log("AXIOS ERROR: ", err);
+        setIsGaming(false);
+      });
+  }, []);
   const router = createBrowserRouter([
     {
       path: "/",
       element: (
         <ProtectedRoute>
-          <Home />
+          <OngoingGame>
+            <Home />
+          </OngoingGame>
         </ProtectedRoute>
       ),
     },
@@ -53,7 +78,9 @@ const App = () => {
       path: "/createRoom",
       element: (
         <ProtectedRoute>
-          <CreateRoom />
+          <OngoingGame>
+            <CreateRoom />
+          </OngoingGame>
         </ProtectedRoute>
       ),
     },
@@ -61,7 +88,9 @@ const App = () => {
       path: "/joinRoom",
       element: (
         <ProtectedRoute>
-          <JoinRoom />
+          <OngoingGame>
+            <JoinRoom />
+          </OngoingGame>
         </ProtectedRoute>
       ),
     },
