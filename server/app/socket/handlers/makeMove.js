@@ -34,12 +34,23 @@ const makeMove = async (game_id, user, io) => {
     let nextOrder = Infinity;
     let next_player_id = currentPlayer;
     
-    const players = await GP.findAll({where:{gameID:gameID}})
-    for(const element of players){
-      if(element.order>currentOrder && element.order <nextOrder ){
+    let foundHigher = false;
+    let min = Infinity;
+    let minPlayerId = game.currentPlayer;
+    const players = await GP.findAll({ where: { gameID: gameID } })
+    for (const element of players) {
+      if (element.order > currentOrder && element.order < nextOrder) {
         nextOrder = element.order;
         next_player_id = element.playerId;
+        foundHigher = true;
       }
+      if(element.order < min){
+        minPlayerId = element.playerId
+        min = element.order
+      }
+    }
+    if(!foundHigher){
+      next_player_id = minPlayerId
     }
     
     const oldPosition = gp.lastPosition;

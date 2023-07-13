@@ -22,15 +22,24 @@ const handleLeaveGame = (socket) => {
         const currentOrder = player.order;
         let nextOrder = Infinity;
         let nextPlayerId = game.currentPlayer;
-
+        let foundHigher = false;
+        let min = Infinity;
+        let minPlayerId = game.currentPlayer;
         const players = await GamePlayer.findAll({ where: { gameID: gameId } })
         for (const element of players) {
           if (element.order > currentOrder && element.order < nextOrder) {
             nextOrder = element.order;
             nextPlayerId = element.playerId;
+            foundHigher = true;
+          }
+          if(element.order < min){
+            minPlayerId = element.playerId
+            min = element.order
           }
         }
-
+        if(!foundHigher){
+          nextPlayerId = minPlayerId
+        }
         await Game.update(
           { currentPlayer: nextPlayerId },
           { where: { Id: gameId } }
