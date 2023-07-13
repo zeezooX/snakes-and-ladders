@@ -20,9 +20,9 @@ const makeMove = async (game_id, user, io) => {
   if (game && game.status.toUpperCase() === "ACTIVE") {
     const currentPlayer = game.currentPlayer;
     const authUserId = user.userId;
-    // if (authUserId !== currentPlayer) {
-    //     return ("No! Wait for your turn");
-    // }
+    if (authUserId !== currentPlayer) {
+        return ("No! Wait for your turn");
+    }
     const boardId = game.boardId;
     const gp = await GP.findOne({
       where: { gameID: gameID, playerId: currentPlayer },
@@ -88,13 +88,13 @@ const makeMove = async (game_id, user, io) => {
         if (
           lastPlay &&
           new Date(t).toISOString().slice(0, -4) ===
-            lastPlay.toISOString().slice(0, -4)
+          lastPlay.toISOString().slice(0, -4)
         ) {
           console.log("the bot is playing");
           makeMove(
             gameID,
             {
-              userId: nextGp.userId,
+              userId: nextGp.playerId,
             },
             io
           ).then((update) => {
@@ -138,24 +138,24 @@ const makeMove = async (game_id, user, io) => {
     Players.sort((a, b) => a.order - b.order);
 
 
-            const last_player_index = Players.findIndex((p) => p.id === authUserId)
-            const next_player_index = Players.findIndex((p) => p.id === nextGp.playerId)
+    const last_player_index = Players.findIndex((p) => p.id === currentPlayer)
+    const next_player_index = Players.findIndex((p) => p.id === nextGp.playerId)
 
 
-            return {
-                game_status: gameStatus,
-                pending_player_index: next_player_index,
-                lastPlayTime: t,
-                move: {
-                    player_index: last_player_index,
-                    dice_outcome: dice,
-                    from: oldPosition,
-                    to: newPos
-                }
-            }
-        } else {
-            return ("No such on-going game exists");
-        }
-
+    return {
+      game_status: gameStatus,
+      pending_player_index: next_player_index,
+      lastPlayTime: t,
+      move: {
+        player_index: last_player_index,
+        dice_outcome: dice,
+        from: oldPosition,
+        to: newPos
+      }
     }
+  } else {
+    return ("No such on-going game exists");
+  }
+
+}
 module.exports = makeMove;

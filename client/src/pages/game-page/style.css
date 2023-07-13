@@ -1,3 +1,8 @@
+.msg{
+  width: 100vh;
+  height: 100vh;
+  text-align: center;
+}
 .dice {
   position: relative;
   width: 100px;
@@ -10,6 +15,7 @@
   transition: transform 1s;
   transition: transform 1s, -webkit-transform 1s;
 }
+
 
 .dot {
   position: absolute;

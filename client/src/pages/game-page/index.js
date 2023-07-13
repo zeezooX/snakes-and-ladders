@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import cloneDeep from 'lodash/cloneDeep';
 import styles from "./styles.module.css";
 import "./style.css";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -8,64 +9,91 @@ import * as io from "../../socket/socket";
 function Game() {
   const canvasRef = useRef(null);
   const [progress, setProgress] = React.useState(0);
-  const gameId = 24;
+  const gameId = 9;
   let [game, setGame] = useState(null);
+  let [turnUpdate, setturnUpdate] = useState(null)
+  const [msg, setMsg] = useState("The game is Loading")
   let diceRef = useRef(null);
   let rollRef = useRef(null);
-  let [timeOutId, setTimeOutId] = useState(null);
-  //   const g = {
-  //     game_status: game.status,
-  //     board_id: game.boardId,
-  //     pending_player_index: pending_player_index,
-  //     players: Players,
-  //     lastPlayTime: game.lastPlayTime
-  // }
-  //   const player= {
-  //     name: p.userName,
-  //     color: p.GamePlayer.color,
-  //     position: p.GamePlayer.lastPosition,
-  //     order:p.GamePlayer.order,
-  //     id: p.userId
-  // }
+  let [timer, setTimer] = useState(Date.now());
+
+  let [lastPlayTime, setLastPlayTime] = useState(Date.now());
+  /*  
+  const g = {
+      game_status: game.status,
+      board_id: game.boardId,
+      pending_player_index: pending_player_index,
+      players: Players,
+      lastPlayTime: game.lastPlayTime
+  }
+    const player= {
+      name: p.userName,
+      color: p.GamePlayer.color,
+      position: p.GamePlayer.lastPosition,
+      order:p.GamePlayer.order,
+      id: p.userId
+  }
+  */
   useEffect(() => {
     io.subscribeToRoom(gameId, handleTurnUpdate, handleRoomUpdate);
-    return () => {
-      if (timeOutId) clearInterval(timeOutId);
-    };
+    setInterval(() => {
+      setTimer(p => p + 500)
+    }, 1000);
   }, []);
+
+  useEffect(() => {
+    setProgress((timer - lastPlayTime) / 1000)
+  }, [timer]);
+
+  /*
+  {
+      game_status: gameStatus,
+      pending_player_index: next_player_index,
+      lastPlayTime: t,
+      move: {
+          player_index: last_player_index,
+          dice_outcome: dice,
+          from: oldPosition,
+          to: newPos
+      }
+  }
+  */
+
+  useEffect(() => {
+    if (game && turnUpdate) {
+      console.log("??????????????????")
+      let x = cloneDeep(game)
+      x.game_status = turnUpdate.game_status
+      x.pending_player_index = turnUpdate.pending_player_index
+      x.lastPlayTime = turnUpdate.pending_player_index
+      x.players[turnUpdate.move.player_index].position = turnUpdate.move.to
+      setGame(x)
+    }
+  }, [turnUpdate, lastPlayTime])
   const handleTurnUpdate = (gameTurnObject) => {
-    if (timeOutId) setTimeOutId(null);
-    clearInterval(timeOutId);
-    setProgress(0);
+    if (typeof gameTurnObject === 'string') {
+      setMsg(gameTurnObject)
+      return
+    }
+    setturnUpdate(gameTurnObject);
     console.log(gameTurnObject);
     const {
-      game_status,
-      board_id,
-      pending_player_index,
-      players,
-      lastPlayTime,
+      lastPlayTime
     } = gameTurnObject;
     rollDice(gameTurnObject.move.dice_outcome);
-    setGame({
-      game_status,
-      board_id,
-      pending_player_index,
-      players,
-      lastPlayTime,
-    });
-    let id = setInterval(() => {
-      setProgress((prevProgress) =>
-        prevProgress >= 10 ? 0 : prevProgress + 1
-      );
-    }, 1000);
-    setTimeOutId(id);
+    setLastPlayTime(lastPlayTime)
+    setTimer(lastPlayTime)
   };
-  useEffect(() => {
-    console.log(progress);
-  }, [progress]);
+
   const handleRoomUpdate = (gameObject) => {
+    if (typeof gameObject === 'string') {
+      setMsg(gameObject)
+      return
+    }
     console.log("gameObject");
+    console.log(gameObject)
     setGame(gameObject);
+    setLastPlayTime(new Date(gameObject.lastPlayTime))
   };
   function rollDice(elComeOut) {
     var elDiceOne = diceRef.current;
@@ -77,6 +105,15 @@ function Game() {
         console.log(elDiceOne.classList);
       }
     }
+  }
+  const pos = (pos_1) => {
+    const pos_0 = pos_1 - 1
+    const y = 9 - Math.floor(pos_0 / 10)
+    let x = pos_0 % 10
+    if (y % 2 == 0) {
+      x = 9 - x
+    }
+    return { x, y }
   }
   useEffect(() => {
     if (diceRef.current && rollRef.current && canvasRef.current && game) {
@@ -94,30 +131,43 @@ function Game() {
         ) {
           io.rollDice(gameId);
         }
+        io.rollDice(gameId)
       };
       const canvas = canvasRef.current;
       const ctx = canvas.getContext("2d");
       const img = new Image();
       img.src = `./assets/board${game.board_id}.jpg`;
       img.onload = function () {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        const cellW = canvas.width / 10.0
+        const cellH = canvas.height / 10.0
+        //draw pieces:
+        for (const p of game.players) {
+          if (p.position === 0) {
+            continue;
+          }
+          const { x, y } = pos(p.position)
+
+          ctx.beginPath();
+          ctx.arc(x * cellW + cellW / 2.0, y * cellH + cellH / 2.0, cellW / 3.0, 0, 2 * Math.PI);
+          ctx.fillStyle = 'white';
+          ctx.fill();
+
+          ctx.beginPath();
+          ctx.arc(x * cellW + cellW / 2.0, y * cellH + cellH / 2.0, cellW / 3.3, 0, 2 * Math.PI);
+          ctx.fillStyle = p.color;
+          ctx.fill();
+        }
       };
+      
+
     }
   }, [diceRef.current, rollRef.current, canvasRef.current, game]);
-  // React.useEffect(() => {
-  //   const timer = setInterval(() => {
-  //     setProgress((prevProgress) =>
-  //       prevProgress >= 10 ? 0 : prevProgress + 1
-  //     );
-  //   }, 1000);
 
-  //   return () => {
-  //     clearInterval(timer);
-  //   };
-  // }, []);
   return (
     <>
-      {!game ? null : (
+      {!game ? <div className="msg"> {msg} </div> : (
         <div className={styles.gameContainer}>
           <div className={styles.playersList}>
             <table className={styles.playersTable}>
@@ -132,7 +182,7 @@ function Game() {
                     style={{
                       color:
                         player.name ==
-                        game.players[game.pending_player_index].name
+                          game.players[game.pending_player_index].name
                           ? "rgb(141, 206, 206)"
                           : "black",
                     }}

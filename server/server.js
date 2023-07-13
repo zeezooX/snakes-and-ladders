@@ -41,9 +41,14 @@ socketIO.use(socketAuth).on("connection", (socket) => {
     });
   });
   socket.on("load-game", (gameId, callback) => {
+    try{
     fetchTurn(gameId).then((game) => {
       callback(game);
     });
+    }
+    catch(e){
+      console.log("Error occured"+e)
+    }
   });
 
   socket.on("make-move", (gameID) => {
