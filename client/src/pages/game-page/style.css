@@ -1,5 +1,13 @@
-.msg{
+.msg {
   text-align: center;
+}
+#msssg {
+  position: relative;
+  bottom: 20px;
+  color: aliceblue;
+  text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black,
+    1px 1px 0 black;
+  font-size: 18px;
 }
 .dice {
   position: relative;
@@ -13,7 +21,6 @@
   transition: transform 1s;
   transition: transform 1s, -webkit-transform 1s;
 }
-
 
 .dot {
   position: absolute;
