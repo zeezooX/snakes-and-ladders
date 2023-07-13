@@ -6,7 +6,7 @@ import board4 from "../../boardImages/board4.jpg";
 import board5 from "../../boardImages/board5.jpg";
 import board6 from "../../boardImages/board6.jpeg";
 import { useEffect, useState } from "react";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
 
@@ -48,9 +48,16 @@ const JoinRoom = () => {
           toast.error("Game Started");
         } else if (res.data.game.playersNumber === res.data.game.capacity) {
           toast.error("Game Full");
+          setGames((prevGames) =>
+            prevGames.filter((G) => G?.Id !== parseInt(gameId))
+          );
         } else {
           axios
-            .post(`/joinGame`, {gameId: parseInt(gameId)}, { headers: headers })
+            .post(
+              `/joinGame`,
+              { gameId: parseInt(gameId) },
+              { headers: headers }
+            )
             .then((res) => {
               console.log("RESPONSE RECEIVED: ", res);
               navigate("/game");
