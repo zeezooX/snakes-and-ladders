@@ -923,7 +923,7 @@ async function seed() {
       }
     );
 
-    await sequelize.sync({ force: true });
+    await sequelize.sync();
 
     await Board.bulkCreate(boardData, {
       ignoreDuplicates: true,

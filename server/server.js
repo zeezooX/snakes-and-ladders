@@ -56,7 +56,12 @@ socketIO.use(socketAuth).on("connection", (socket) => {
       makeMove(gameID, socket.user, socketIO).then((update) => {
         console.log(`${socket.id} made a move in (team-C room-${gameID})`);
         console.log(update);
-        socketIO.in(`team-C room-` + `${gameID}`).emit("turn-update", update);
+        if(typeof update == 'string'){
+            socketIO.to(socket.id).emit("turn-update", update);
+        }
+        else{
+          socketIO.in(`team-C room-` + `${gameID}`).emit("turn-update", update);
+        }
       });
     } catch (e) {
       console.log(e);
@@ -107,4 +112,4 @@ const PORT = process.env.PORT || 8080;
 http.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });
-// seed();
+seed();

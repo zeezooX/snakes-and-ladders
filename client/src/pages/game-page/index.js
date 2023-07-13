@@ -37,12 +37,14 @@ function Game() {
   useEffect(() => {
     io.subscribeToRoom(gameId, handleTurnUpdate, handleRoomUpdate);
     setInterval(() => {
-      setTimer(p => p + 500)
+      if(game && game.game_status.toLowerCase() === "active"){
+        setTimer(p => p + 1000)
+      }
     }, 1000);
   }, []);
 
   useEffect(() => {
-    setProgress((timer - lastPlayTime) / 1000)
+    setProgress((timer - lastPlayTime) / 1000.0)
   }, [timer]);
 
   /*
@@ -68,8 +70,9 @@ function Game() {
       x.lastPlayTime = turnUpdate.pending_player_index
       x.players[turnUpdate.move.player_index].position = turnUpdate.move.to
       setGame(x)
+      setMsg(`It's ${x.players[turnUpdate.pending_player_index].name}'s turn`)
     }
-  }, [turnUpdate, lastPlayTime])
+  }, [turnUpdate])
   const handleTurnUpdate = (gameTurnObject) => {
     if (typeof gameTurnObject === 'string') {
       setMsg(gameTurnObject)
@@ -167,7 +170,7 @@ function Game() {
 
   return (
     <>
-      {!game ? <div className="msg"> {msg} </div> : (
+      {!game ? null : (
         <div className={styles.gameContainer}>
           <div className={styles.playersList}>
             <table className={styles.playersTable}>
@@ -200,7 +203,11 @@ function Game() {
               </tbody>
             </table>
           </div>
+
+
+
           <canvas ref={canvasRef} width={749} height={749} />
+
           <div className={styles.timerDiceContainer}>
             <div className={styles.timer}>
               <Box sx={{ position: "relative", display: "inline-flex" }}>
@@ -239,9 +246,12 @@ function Game() {
                   >
                     {`${progress}`}
                   </Typography>
+
                 </Box>
+
               </Box>
             </div>
+
             <div ref={rollRef}>
               <div className="dice dice-one" ref={diceRef}>
                 <div id="dice-one-side-one" className="side one">
@@ -280,7 +290,11 @@ function Game() {
               </div>
             </div>
           </div>
+          {/* <div className="msg"> {msg} </div> */}
+
+          
         </div>
+        
       )}
     </>
   );

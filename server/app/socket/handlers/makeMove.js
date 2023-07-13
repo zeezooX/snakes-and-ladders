@@ -75,10 +75,8 @@ const makeMove = async (game_id, user, io) => {
         where: { Id: gameID },
       }
     );
-    console.log("setting time out !!!!!!!!!!!!!!");
     setTimeout(
       async (t, gameID) => {
-        console.log("call back !!!!!!!!!!!!!!");
         const g = await Game.findOne({ where: { Id: gameID } });
         console.log(g);
         if (!g) {
