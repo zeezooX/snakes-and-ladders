@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import cloneDeep from "lodash/cloneDeep";
+import {useNavigate} from "react-router-dom";
+import cloneDeep from 'lodash/cloneDeep';
 import styles from "./styles.module.css";
 import "./style.css";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -15,13 +15,31 @@ function Game() {
   const [progress, setProgress] = React.useState(0);
   let gameId;
   let [game, setGame] = useState(null);
-  let [turnUpdate, setturnUpdate] = useState(null);
-  const [msg, setMsg] = useState("The game is Loading");
+  let [turnUpdate, setturnUpdate] = useState(null)
+  const [msg, setMsg] = useState("The game is Loading")
   let diceRef = useRef(null);
   let rollRef = useRef(null);
   let [timer, setTimer] = useState(Date.now());
   let [lastPlayTime, setLastPlayTime] = useState(Date.now());
-  const [t, setT] = useState(false);
+  const [t,setT] = useState(false)
+
+  useEffect(() => {
+    const headers = {
+      "x-access-token": sessionStorage.getItem("authenticated"),
+    };
+    axios
+      .get(`/currentGame`, { headers: headers })
+      .then((res) => {
+        console.log("RESPONSE RECEIVED: ", res);
+        gameId = res.data.Id;
+        console.log("Id: " + gameId);
+        io.subscribeToRoom(gameId, handleTurnUpdate, handleRoomUpdate);
+      })
+      .catch((err) => {
+        console.log("AXIOS ERROR: ", err);
+        navigate("/");
+      });
+  }, []);
   /*  
   const g = {
       game_status: game.status,
@@ -40,7 +58,7 @@ function Game() {
   */
 
   useEffect(() => {
-    setProgress((timer - lastPlayTime) / 1000.0);
+    setProgress((timer - lastPlayTime) / 1000.0)
   }, [timer]);
 
   /*
@@ -59,44 +77,46 @@ function Game() {
 
   useEffect(() => {
     if (game && turnUpdate) {
-      console.log("??????????????????");
-      let x = cloneDeep(game);
-      x.game_status = turnUpdate.game_status;
-      x.pending_player_index = turnUpdate.pending_player_index;
-      x.lastPlayTime = turnUpdate.pending_player_index;
-      x.players[turnUpdate.move.player_index].position = turnUpdate.move.to;
-      setGame(x);
-      setMsg(`It's ${x.players[turnUpdate.pending_player_index].name}'s turn`);
-      if (!t) {
+      console.log("??????????????????")
+      let x = cloneDeep(game)
+      x.game_status = turnUpdate.game_status
+      x.pending_player_index = turnUpdate.pending_player_index
+      x.lastPlayTime = turnUpdate.pending_player_index
+      x.players[turnUpdate.move.player_index].position = turnUpdate.move.to
+      setGame(x)
+      setMsg(`It's ${x.players[turnUpdate.pending_player_index].name}'s turn`)
+      if(!t){
         setInterval(() => {
-          if (game && game.game_status.toLowerCase() === "active") {
-            setTimer((p) => p + 1000);
+          if(game && game.game_status.toLowerCase() === "active"){
+            setTimer(p => p + 1000)
           }
         }, 1000);
-        setT(true);
+        setT(true)
       }
     }
-  }, [turnUpdate]);
+  }, [turnUpdate])
   const handleTurnUpdate = (gameTurnObject) => {
-    if (typeof gameTurnObject === "string") {
-      setMsg(gameTurnObject);
-      return;
+    if (typeof gameTurnObject === 'string') {
+      setMsg(gameTurnObject)
+      return
     }
     setturnUpdate(gameTurnObject);
     console.log(gameTurnObject);
-    const { lastPlayTime } = gameTurnObject;
+    const {
+      lastPlayTime
+    } = gameTurnObject;
     rollDice(gameTurnObject.move.dice_outcome);
-    setLastPlayTime(lastPlayTime);
-    setTimer(lastPlayTime);
+    setLastPlayTime(lastPlayTime)
+    setTimer(lastPlayTime)
   };
 
   const handleRoomUpdate = (gameObject) => {
-    if (typeof gameObject === "string") {
-      setMsg(gameObject);
-      return;
+    if (typeof gameObject === 'string') {
+      setMsg(gameObject)
+      return
     }
     console.log("gameObject");
-    console.log(gameObject);
+    console.log(gameObject)
     setGame(gameObject);
   };
   function rollDice(elComeOut) {
@@ -111,14 +131,14 @@ function Game() {
     }
   }
   const pos = (pos_1) => {
-    const pos_0 = pos_1 - 1;
-    const y = 9 - Math.floor(pos_0 / 10);
-    let x = pos_0 % 10;
+    const pos_0 = pos_1 - 1
+    const y = 9 - Math.floor(pos_0 / 10)
+    let x = pos_0 % 10
     if (y % 2 == 0) {
-      x = 9 - x;
+      x = 9 - x
     }
-    return { x, y };
-  };
+    return { x, y }
+  }
   useEffect(() => {
     if (diceRef.current && rollRef.current && canvasRef.current && game) {
       var elComeOut = rollRef.current;
@@ -135,7 +155,7 @@ function Game() {
         ) {
           io.rollDice(gameId);
         }
-        io.rollDice(gameId);
+        io.rollDice(gameId)
       };
       const canvas = canvasRef.current;
       const ctx = canvas.getContext("2d");
@@ -144,38 +164,28 @@ function Game() {
       img.onload = function () {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-        const cellW = canvas.width / 10.0;
-        const cellH = canvas.height / 10.0;
+        const cellW = canvas.width / 10.0
+        const cellH = canvas.height / 10.0
         //draw pieces:
         for (const p of game.players) {
           if (p.position === 0) {
             continue;
           }
-          const { x, y } = pos(p.position);
+          const { x, y } = pos(p.position)
 
           ctx.beginPath();
-          ctx.arc(
-            x * cellW + cellW / 2.0,
-            y * cellH + cellH / 2.0,
-            cellW / 3.0,
-            0,
-            2 * Math.PI
-          );
-          ctx.fillStyle = "white";
+          ctx.arc(x * cellW + cellW / 2.0, y * cellH + cellH / 2.0, cellW / 3.0, 0, 2 * Math.PI);
+          ctx.fillStyle = 'white';
           ctx.fill();
 
           ctx.beginPath();
-          ctx.arc(
-            x * cellW + cellW / 2.0,
-            y * cellH + cellH / 2.0,
-            cellW / 3.3,
-            0,
-            2 * Math.PI
-          );
+          ctx.arc(x * cellW + cellW / 2.0, y * cellH + cellH / 2.0, cellW / 3.3, 0, 2 * Math.PI);
           ctx.fillStyle = p.color;
           ctx.fill();
         }
       };
+      
+
     }
   }, [diceRef.current, rollRef.current, canvasRef.current, game]);
 
@@ -196,7 +206,7 @@ function Game() {
                     style={{
                       color:
                         player.name ==
-                        game.players[game.pending_player_index].name
+                          game.players[game.pending_player_index].name
                           ? "rgb(141, 206, 206)"
                           : "black",
                     }}
@@ -215,13 +225,12 @@ function Game() {
             </table>
           </div>
 
+
+
           <canvas ref={canvasRef} width={749} height={749} />
 
           <div className={styles.timerDiceContainer}>
-            <div className="msg" id="msssg">
-              {" "}
-              {msg}{" "}
-            </div>
+          <div className="msg"> {msg} </div>
             <div className={styles.timer}>
               <Box sx={{ position: "relative", display: "inline-flex" }}>
                 <CircularProgress
@@ -259,8 +268,11 @@ function Game() {
                   >
                     {`${progress}`}
                   </Typography>
+
                 </Box>
+
               </Box>
+
             </div>
 
             <div ref={rollRef}>
@@ -301,7 +313,10 @@ function Game() {
               </div>
             </div>
           </div>
+
+          
         </div>
+        
       )}
     </>
   );
