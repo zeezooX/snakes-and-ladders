@@ -93,6 +93,10 @@ const App = () => {
         </ProtectedRoute>
       ),
     },
+    {
+      path: "*",
+      element: <Navigate to="/" />,
+    },
   ]);
   return <RouterProvider router={router} />;
 };
