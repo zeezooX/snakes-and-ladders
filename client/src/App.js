@@ -23,7 +23,7 @@ const App = () => {
       return <Navigate to="/login" />;
     } else return children;
   };
-  const OngoingGame = async ({ children }) => {
+  const OngoingGame = ({ children }) => {
     if(isGaming)
       return <Navigate to="/game"/>;
     return children;
