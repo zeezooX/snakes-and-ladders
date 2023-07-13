@@ -8,13 +8,13 @@ const handleJoinGame = async (req, res, next) => {
   const playerId = req.user.userId
   const {gameId} = req.body;
   try {
-    if(isPlayerGaming(playerId)){
+    if(await isPlayerGaming(playerId)){
       throw new Error("You are already in a game")
     }
     let game = await Game.findByPk(gameId);
     if (!game) throw new Error("Game Doesn't Exist");
     if (game.playersNumber == game.capacity) throw new Error("Game Is Full");
-    let user = User.findByPk(playerId);
+    let user = await User.findByPk(playerId);
     if (!user) throw new Error("Player Doesn't Exist");
     let players = await GamePlayer.findAll({ where: { gameId } });
     let playerOrder = 1;
