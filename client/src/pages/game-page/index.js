@@ -97,19 +97,18 @@ function Game() {
       return;
     }
     else{
-    console.log("gameObject");
-    console.log(gameObject);
-    setGame(gameObject);
-    if(gameObject.game_status.toLowerCase()==="pending" && gameObject.players){
-      setMsg(`Waiting for more players [${gameObject.players.length}/${gameObject.game_capacity}] ...`);
-    }
-    else if(gameObject.game_status.toLowerCase()==="finished" && gameObject.players){
-      const W = gameObject.players.findIndex((a)=>Number(a.position) === 100)
-      setMsg(`${W.name} HAS WON !`); 
-    }
-    else{
-      setMsg(`It's ${gameObject.players[gameObject.pending_player_index].name}'s turn`);
-    }
+      console.log(gameObject)
+      if(gameObject.game_status.toLowerCase()==="pending" && gameObject.players){
+        setMsg(`Waiting for more players [${gameObject.players.length}/${gameObject.game_capacity}] ...`);
+      }
+      else if(gameObject.game_status.toLowerCase()==="finished" && gameObject.players){
+        const W = gameObject.players.findIndex((a)=>Number(a.position) === 100)
+        setMsg(`${W.name} HAS WON !`); 
+      }
+      else{
+        setMsg(`It's ${gameObject.players[gameObject.pending_player_index].name}'s turn`);
+      }
+      setGame(gameObject);
     }
   };
   function rollDice(elComeOut) {
@@ -172,18 +171,26 @@ function Game() {
       };
       console.log("hiii");
       drawCanvas(gameObject);
-      if (from + dice_outcome != to) {
+      if (from + dice_outcome !== to) {
         setTimeout(() => {
           if(player_index < gameObject.players.length && gameObject.players[player_index]){
             gameObject.players[player_index].position = to;
           }
           drawCanvas(game);
-        }, 500);
+        }, 1000);
+      }
+    }
+    else{
+      if(game){
+        drawCanvas(game)
       }
     }
   }, [game]);
 
   let drawCanvas = (game) => {
+    if(!game){
+      return
+    }
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
     const img = new Image();
@@ -194,6 +201,7 @@ function Game() {
       const cellW = canvas.width / 10.0;
       const cellH = canvas.height / 10.0;
       //draw pieces:
+      let i = 0;
       for (const p of game.players) {
         if (p?.position === 0) {
           continue;
@@ -204,18 +212,35 @@ function Game() {
         ctx.arc(
           x * cellW + cellW / 2.0,
           y * cellH + cellH / 2.0,
+          cellW,
+          0,
+          2 * Math.PI
+        );
+        ctx.fillStyle = "rgba(255, 255, 255, 0.3)";
+        i=i+1;
+        ctx.fill();
+        
+        ctx.beginPath();
+        ctx.arc(
+          x * cellW + cellW / 2.0,
+          y * cellH + cellH / 2.0,
           cellW / 3.0,
           0,
           2 * Math.PI
         );
-        ctx.fillStyle = "white";
+        if(p === game.players[game.pending_player_index]){
+          ctx.fillStyle = "green";
+        }
+        else{
+          ctx.fillStyle = "white";
+        }
         ctx.fill();
 
         ctx.beginPath();
         ctx.arc(
           x * cellW + cellW / 2.0,
           y * cellH + cellH / 2.0,
-          cellW / 3.3,
+          cellW / 3.5,
           0,
           2 * Math.PI
         );
@@ -247,15 +272,6 @@ function Game() {
   };
 
   return (
-    <>
-      {!game ? 
-      <Box sx={{ display: "flex", justifyContent: "center"}}>
-        <CircularProgress style={{
-                    width: "50vh",
-                    height: "50vh",
-                  }}/>
-      </Box>
-      : (
         <div className={styles.gameContainer}>
           <div className={styles.playersList}>
             <table className={styles.playersTable}>
@@ -265,7 +281,7 @@ function Game() {
               </thead>
               <tbody>
                 {game?.players?.map((player) => (
-                  <tr
+                  <tr key={player.id}
                     className={styles.player}
                     style={{
                       color:
@@ -378,9 +394,7 @@ function Game() {
             </div>
           </div>
         </div>
-      )}
-    </>
-  );
+          );
 }
 
 export default Game;
