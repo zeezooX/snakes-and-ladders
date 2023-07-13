@@ -22,7 +22,7 @@ const CreateRoom = () => {
   };
   const handleClick = (e) => {
     if (board === -1) {
-      toast.error("Choose a Map");
+      toast.error("Choose a Board");
       return;
     }
     if (isNaN(capacity) || capacity > 10 || capacity < 2) {
