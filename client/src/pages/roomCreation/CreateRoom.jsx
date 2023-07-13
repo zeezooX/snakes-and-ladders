@@ -8,9 +8,12 @@ import board6 from "../../boardImages/board6.jpeg";
 import axios from "axios";
 import React, { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 
 const CreateRoom = () => {
+  const navigate = useNavigate();
+
   const [board, setBoard] = useState(-1);
   const [capacity, setCapacity] = useState(-1);
   const onChangeText = (e) => {
@@ -37,6 +40,7 @@ const CreateRoom = () => {
       .post(`/createGame`, data, { headers: headers })
       .then((res) => {
         console.log("RESPONSE RECEIVED: ", res);
+        navigate("/game");
       })
       .catch((err) => {
         console.log("AXIOS ERROR: ", err);

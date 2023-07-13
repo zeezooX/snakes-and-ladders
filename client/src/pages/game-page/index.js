@@ -8,12 +8,19 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import * as io from "../../socket/socket";
 import axios from "axios";
+import board1 from "../../boardImages/board1.jpg";
+import board2 from "../../boardImages/board2.jpg";
+import board3 from "../../boardImages/board3.png";
+import board4 from "../../boardImages/board4.jpg";
+import board5 from "../../boardImages/board5.jpg";
+import board6 from "../../boardImages/board6.jpeg";
 
 function Game() {
+  const boards = [board1, board2, board3, board4, board5, board6];
   const navigate = useNavigate();
   const canvasRef = useRef(null);
   const [progress, setProgress] = React.useState(0);
-  let gameId;
+  const gameId = useRef(null);
   let [game, setGame] = useState(null);
   let [turnUpdate, setturnUpdate] = useState(null);
   const [msg, setMsg] = useState("The game is Loading");
@@ -31,49 +38,25 @@ function Game() {
       .get(`/currentGame`, { headers: headers })
       .then((res) => {
         console.log("RESPONSE RECEIVED: ", res);
-        gameId = res.data.Id;
-        console.log("Id: " + gameId);
-        io.subscribeToRoom(gameId, handleTurnUpdate, handleRoomUpdate);
+        gameId.current = res.data.Id;
+        console.log("Id: " + gameId.current);
+        io.subscribeToRoom(gameId.current, handleTurnUpdate, handleRoomUpdate);
       })
       .catch((err) => {
         console.log("AXIOS ERROR: ", err);
         navigate("/");
       });
   }, []);
-  /*  
-  const g = {
-      game_status: game.status,
-      board_id: game.boardId,
-      pending_player_index: pending_player_index,
-      players: Players,
-      lastPlayTime: game.lastPlayTime
-  }
-    const player= {
-      name: p.userName,
-      color: p.GamePlayer.color,
-      position: p.GamePlayer.lastPosition,
-      order:p.GamePlayer.order,
-      id: p.userId
-  }
-  */
 
   useEffect(() => {
-    setProgress((timer - lastPlayTime) / 1000.0);
+    if (
+      game &&
+      game.game_status.toLowerCase() === "active" &&
+      (timer - lastPlayTime) / 1000.0 <= 10
+    ) {
+      setProgress((timer - lastPlayTime) / 1000.0);
+    }
   }, [timer]);
-
-  /*
-  {
-      game_status: gameStatus,
-      pending_player_index: next_player_index,
-      lastPlayTime: t,
-      move: {
-          player_index: last_player_index,
-          dice_outcome: dice,
-          from: oldPosition,
-          to: newPos
-      }
-  }
-  */
 
   useEffect(() => {
     if (game && turnUpdate) {
@@ -87,23 +70,26 @@ function Game() {
       setMsg(`It's ${x.players[turnUpdate.pending_player_index].name}'s turn`);
       if (!t) {
         setInterval(() => {
-          if (game && game.game_status.toLowerCase() === "active") {
-            setTimer((p) => p + 1000);
-          }
+          // if (game && game.game_status.toLowerCase() === "active") {
+          setTimer((p) => p + 1000);
+          // }
         }, 1000);
         setT(true);
       }
     }
   }, [turnUpdate]);
+
   const handleTurnUpdate = (gameTurnObject) => {
     if (typeof gameTurnObject === "string") {
       setMsg(gameTurnObject);
       return;
     }
-    setturnUpdate(gameTurnObject);
+    rollDice(gameTurnObject.move.dice_outcome);
+    setTimeout(() => {
+      setturnUpdate(gameTurnObject);
+    }, 1000);
     console.log(gameTurnObject);
     const { lastPlayTime } = gameTurnObject;
-    rollDice(gameTurnObject.move.dice_outcome);
     setLastPlayTime(lastPlayTime);
     setTimer(lastPlayTime);
   };
@@ -116,6 +102,7 @@ function Game() {
     console.log("gameObject");
     console.log(gameObject);
     setGame(gameObject);
+    // drawCanvas(gameObject);
   };
   function rollDice(elComeOut) {
     var elDiceOne = diceRef.current;
@@ -138,7 +125,9 @@ function Game() {
     return { x, y };
   };
   useEffect(() => {
-    if (diceRef.current && rollRef.current && canvasRef.current && game) {
+    //
+    if (diceRef.current && rollRef.current && canvasRef.current) {
+      drawCanvas(game);
       var elComeOut = rollRef.current;
       console.log(elComeOut);
 
@@ -147,75 +136,112 @@ function Game() {
           game.players[game.pending_player_index].name,
           sessionStorage.getItem("username")
         );
-        if (
-          game.players[game.pending_player_index].name ==
-          sessionStorage.getItem("username")
-        ) {
-          io.rollDice(gameId);
-        }
-        io.rollDice(gameId);
-      };
-      const canvas = canvasRef.current;
-      const ctx = canvas.getContext("2d");
-      const img = new Image();
-      img.src = `./assets/board${game.board_id}.jpg`;
-      img.onload = function () {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-        const cellW = canvas.width / 10.0;
-        const cellH = canvas.height / 10.0;
-        //draw pieces:
-        for (const p of game.players) {
-          if (p.position === 0) {
-            continue;
-          }
-          const { x, y } = pos(p.position);
-
-          ctx.beginPath();
-          ctx.arc(
-            x * cellW + cellW / 2.0,
-            y * cellH + cellH / 2.0,
-            cellW / 3.0,
-            0,
-            2 * Math.PI
-          );
-          ctx.fillStyle = "white";
-          ctx.fill();
-
-          ctx.beginPath();
-          ctx.arc(
-            x * cellW + cellW / 2.0,
-            y * cellH + cellH / 2.0,
-            cellW / 3.3,
-            0,
-            2 * Math.PI
-          );
-          ctx.fillStyle = p.color;
-          ctx.fill();
-        }
+        // if (
+        //   game.players[game.pending_player_index].name ==
+        //   sessionStorage.getItem("username")
+        // ) {
+        //   io.rollDice(gameId);
+        // }
+        io.rollDice(gameId.current);
       };
     }
-  }, [diceRef.current, rollRef.current, canvasRef.current, game]);
+  }, [diceRef.current, rollRef.current, canvasRef.current]);
+  /*
+  {
+      game_status: gameStatus,
+      pending_player_index: next_player_index,
+      lastPlayTime: t,
+      move: {
+          player_index: last_player_index,
+          dice_outcome: dice,
+          from: oldPosition,
+          to: newPos
+      }
+  }
+  */
+  useEffect(() => {
+    if (game && turnUpdate) {
+      const { from, to, dice_outcome, player_index } = turnUpdate.move;
+      let newPlayersObject = [...game.players];
+      newPlayersObject[player_index].position = from + dice_outcome;
+      let gameObject = {
+        ...game,
+        players: [...newPlayersObject],
+      };
+      console.log("hiii");
+      drawCanvas(gameObject);
+      if (from + dice_outcome != to) {
+        setTimeout(() => {
+          gameObject.players[player_index].position = to;
+          drawCanvas(game);
+        }, 500);
+      }
+    }
+  }, [game]);
+
+  let drawCanvas = (game) => {
+    console.log(game, "mmmmmmmmmm");
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext("2d");
+    const img = new Image();
+    //img.src = `./assets/board${game.board_id}.jpg`;
+    img.src = boards[game.board_id - 1];
+    img.onload = function () {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      const cellW = canvas.width / 10.0;
+      const cellH = canvas.height / 10.0;
+      //draw pieces:
+      for (const p of game.players) {
+        if (p.position === 0) {
+          continue;
+        }
+        const { x, y } = pos(p.position);
+
+        ctx.beginPath();
+        ctx.arc(
+          x * cellW + cellW / 2.0,
+          y * cellH + cellH / 2.0,
+          cellW / 3.0,
+          0,
+          2 * Math.PI
+        );
+        ctx.fillStyle = "white";
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.arc(
+          x * cellW + cellW / 2.0,
+          y * cellH + cellH / 2.0,
+          cellW / 3.3,
+          0,
+          2 * Math.PI
+        );
+        ctx.fillStyle = p.color;
+        ctx.fill();
+      }
+    };
+  };
+
   const leaveGame = (e) => {
+    e.preventDefault();
+    console.log("lol" + gameId.current);
     const headers = {
       "x-access-token": sessionStorage.getItem("authenticated"),
     };
     axios
       .post(
         `/leaveGame`,
-        {
-          gameId: gameId,
-        },
+        { gameId: parseInt(gameId.current) },
         { headers: headers }
       )
       .then((res) => {
         console.log("RESPONSE RECEIVED: ", res);
-        navigate("/");
+        window.location.reload(true);
       })
       .catch((err) => {
         console.log("AXIOS ERROR: ", err);
       });
-    e.preventDefault();
   };
 
   return (
