@@ -18,8 +18,8 @@ const handleLeaveGame = (socket) => {
       if (!game) throw new Error("Game Doesn't Exist");
 
       if (parseInt(p_num) === 1) {
-        await Game.destroy({ where: { Id:gameId } })
         await GamePlayer.destroy({ where: { playerId } });
+        await Game.destroy({ where: { Id:gameId } })
       }
       else {
         if (game.currentPlayer === parseInt(playerId)) {
