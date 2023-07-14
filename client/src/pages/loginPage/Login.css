@@ -11,7 +11,7 @@
   -ms-flex-pack: center;
   justify-content: center;
   background: url("../../../public/assets/rsz_snakes_and_ladders_board_game_a4.png");
-  font-family: "Gaegu", cursive;
+  /* font-family: "Gaegu", cursive; */
   /*background-color: #9c5050;*/
   background-size: cover;
 }
@@ -59,7 +59,7 @@
   margin-top: 10px;
   margin-bottom: 30px;
   padding-left: 15px;
-  font-family: "Gaegu", cursive;
+  /* font-family: "Gaegu", cursive; */
 }
 
 .container .card .left .reg {
@@ -67,7 +67,7 @@
   font-weight: bold;
   font-size: 22px;
   padding-left: 15px;
-  font-family: "Gaegu", cursive;
+  /* font-family: "Gaegu", cursive; */
 }
 
 .container .card .left .text {
@@ -77,21 +77,20 @@
   font-weight: bold;
   color: white;
   padding-left: 15px;
-  font-family: "Gaegu", cursive;
+  /* font-family: "Gaegu", cursive; */
 }
 .container .card .left .register {
-  width: 70%;
+  width: 50%;
   padding: 5px;
   color: white;
   margin-top: 10px;
-  /* margin-bottom: 100%; */
   cursor: pointer;
-  background: rgba(0, 0, 0, 0.297);
-  border: 2px solid #ffffff;
+  background: none;
+  border: 1px solid #c06363;
   font-weight: bold;
   font-size: 20px;
   margin-left: 15px;
-  font-family: "Gaegu", cursive;
+  /* font-family: "Gaegu", cursive; */
 }
 
 .container .card .right {
@@ -112,7 +111,7 @@
   color: #464646;
   font-size: 40px;
   margin-bottom: 20px;
-  font-family: "Gaegu", cursive;
+  /* font-family: "Gaegu", cursive; */
 }
 
 .container .card .right form {
@@ -123,14 +122,14 @@
   -webkit-box-direction: normal;
   -ms-flex-direction: column;
   flex-direction: column;
-  font-family: "Gaegu", cursive;
+  /* font-family: "Gaegu", cursive; */
   gap: 30px;
 }
 
 .container .card .right form input {
   border: none;
   font-size: larger;
-  font-family: "Gaegu", cursive;
+  /* font-family: "Gaegu", cursive; */
   border-bottom: 1px solid rgb(162, 69, 69);
   padding: 5px 10px;
 }
@@ -147,5 +146,5 @@
   font-weight: bold;
   font-size: 20px;
   cursor: pointer;
-  font-family: "Gaegu", cursive;
+  /* font-family: "Gaegu", cursive; */
 }
