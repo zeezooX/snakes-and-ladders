@@ -24,7 +24,7 @@ function Game() {
   let [timer, setTimer] = useState(Date.now());
   let [lastPlayTime, setLastPlayTime] = useState(Date.now());
   const [t, setT] = useState(false);
-  const [, forceUpdate] = useReducer(x => x + 1, 0);
+  const [, forceUpdate] = useReducer((x) => x + 1, 0);
 
   useEffect(() => {
     const headers = {
@@ -58,11 +58,13 @@ function Game() {
     if (game && turnUpdate && turnUpdate.move) {
       let x = cloneDeep(game);
       x.game_status = turnUpdate?.game_status;
-      x.pending_player_index = x.players.findIndex((a)=>a.id === turnUpdate.pending_player_index)
+      x.pending_player_index = x.players.findIndex(
+        (a) => a.id === turnUpdate.pending_player_index
+      );
       x.lastPlayTime = turnUpdate.pending_player_index;
       setMsg(`It's ${x.players[turnUpdate.pending_player_index].name}'s turn`);
-      if(x.players[turnUpdate.move.player_index].position){        
-      x.players[turnUpdate.move.player_index].position = turnUpdate.move.to;
+      if (x.players[turnUpdate.move.player_index].position) {
+        x.players[turnUpdate.move.player_index].position = turnUpdate.move.to;
       }
       setGame(x);
       if (!t) {
@@ -79,11 +81,11 @@ function Game() {
       setMsg(gameTurnObject);
       return;
     }
-    if(gameTurnObject.move){
-    rollDice(gameTurnObject.move.dice_outcome);
-    setTimeout(() => {
-      setturnUpdate(gameTurnObject);
-    }, 1000);
+    if (gameTurnObject.move) {
+      rollDice(gameTurnObject.move.dice_outcome);
+      setTimeout(() => {
+        setturnUpdate(gameTurnObject);
+      }, 1000);
     }
     console.log(gameTurnObject);
     const { lastPlayTime } = gameTurnObject;
@@ -95,25 +97,36 @@ function Game() {
     if (typeof gameObject === "string") {
       setMsg(gameObject);
       return;
-    }
-    else{
-      console.log(gameObject)
-      if(gameObject.game_status.toLowerCase()==="pending" && gameObject.players){
-        setMsg(`Waiting for more players [${gameObject.players.length}/${gameObject.game_capacity}] ...`);
-      }
-      else if(gameObject.game_status.toLowerCase()==="finished" && gameObject.players){
-        const W = gameObject.players.findIndex((a)=>Number(a.position) === 100)
-        setMsg(`${W.name} HAS WON !`); 
-      }
-      else{
-        setMsg(`It's ${gameObject.players[gameObject.pending_player_index].name}'s turn`);
+    } else {
+      console.log(gameObject);
+      if (
+        gameObject.game_status.toLowerCase() === "pending" &&
+        gameObject.players
+      ) {
+        setMsg(
+          `Waiting for more players [${gameObject.players.length}/${gameObject.game_capacity}] ...`
+        );
+      } else if (
+        gameObject.game_status.toLowerCase() === "finished" &&
+        gameObject.players
+      ) {
+        const W = gameObject.players.findIndex(
+          (a) => Number(a.position) === 100
+        );
+        setMsg(`${W.name} HAS WON !`);
+      } else {
+        setMsg(
+          `It's ${
+            gameObject.players[gameObject.pending_player_index].name
+          }'s turn`
+        );
       }
       setGame(gameObject);
     }
   };
   function rollDice(elComeOut) {
     var elDiceOne = diceRef?.current;
-    if(elDiceOne){
+    if (elDiceOne) {
       for (let i = 1; i <= 6; i++) {
         elDiceOne.classList.remove("show-" + i);
         console.log(elComeOut, i);
@@ -122,7 +135,7 @@ function Game() {
           console.log(elDiceOne.classList);
         }
       }
-  }
+    }
   }
   const pos = (pos_1) => {
     const pos_0 = pos_1 - 1;
@@ -162,11 +175,14 @@ function Game() {
     if (game && turnUpdate) {
       const { from, to, dice_outcome, player_index } = turnUpdate.move;
       let newPlayersObject = [...game.players];
-      let intermediate =  from + dice_outcome;
-      if(intermediate>100){
+      let intermediate = from + dice_outcome;
+      if (intermediate > 100) {
         intermediate = to;
       }
-      if(player_index < newPlayersObject.length && newPlayersObject[player_index]){
+      if (
+        player_index < newPlayersObject.length &&
+        newPlayersObject[player_index]
+      ) {
         newPlayersObject[player_index].position = intermediate;
       }
       let gameObject = {
@@ -177,23 +193,25 @@ function Game() {
       drawCanvas(gameObject);
       if (intermediate !== to) {
         setTimeout(() => {
-          if(player_index < gameObject.players.length && gameObject.players[player_index]){
+          if (
+            player_index < gameObject.players.length &&
+            gameObject.players[player_index]
+          ) {
             gameObject.players[player_index].position = to;
           }
           drawCanvas(game);
         }, 1000);
       }
-    }
-    else{
-      if(game){
-        drawCanvas(game)
+    } else {
+      if (game) {
+        drawCanvas(game);
       }
     }
   }, [game]);
 
   let drawCanvas = (game) => {
-    if(!game){
-      return
+    if (!game) {
+      return;
     }
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
@@ -221,9 +239,9 @@ function Game() {
           2 * Math.PI
         );
         ctx.fillStyle = "rgba(255, 255, 255, 0.3)";
-        i=i+1;
+        i = i + 1;
         ctx.fill();
-        
+
         ctx.beginPath();
         ctx.arc(
           x * cellW + cellW / 2.0,
@@ -232,10 +250,9 @@ function Game() {
           0,
           2 * Math.PI
         );
-        if(p === game.players[game.pending_player_index]){
+        if (p === game.players[game.pending_player_index]) {
           ctx.fillStyle = "green";
-        }
-        else{
+        } else {
           ctx.fillStyle = "white";
         }
         ctx.fill();
@@ -276,129 +293,471 @@ function Game() {
   };
 
   return (
-        <div className={styles.gameContainer}>
-          <div className={styles.playersList}>
-            <table className={styles.playersTable}>
-              <thead>
-                <th>Player</th>
-                <th>Position</th>
-              </thead>
-              <tbody>
-                {game?.players?.map((player) => (
-                  <tr key={player.id}
-                    className={styles.player}
-                    style={{
-                      color:
-                        player?.name ==
-                        game.players[game?.pending_player_index]?.name
-                          ? "rgb(141, 206, 206)"
-                          : "black",
-                    }}
-                  >
-                    <td>
-                      <div
-                        className={styles.playerColor}
-                        style={{ backgroundColor: player?.color }}
-                        ></div>
-                        <div>{player?.name}</div>
-                    </td>
-                    <td>{player?.position}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-          <canvas ref={canvasRef} width={749} height={749} />
-
-          <div className={styles.timerDiceContainer}>
-            <button className="leaveGame" onClick={(e) => leaveGame(e)}>
-              Leave
-            </button>
-            <div className="msg" id="msssg">
-              {msg}
-            </div>
-            <div className={styles.timer}>
-              <Box sx={{ position: "relative", display: "inline-flex" }}>
-                <CircularProgress
-                  variant="determinate"
-                  value={(progress / 10) * 100}
+    <>
+      <div
+        className="confetti-container"
+        id="celebration"
+        style={{
+          display:
+            game?.game_status.toLowerCase() === "finished" ? "block" : "none",
+        }}
+      >
+        <div className="confetti">
+          <i style={{ "--speed": 10, "--bg": "yellow" }} className="square"></i>
+          <i
+            style={{ "--speed": 18, "--bg": "white" }}
+            className="pentagram"
+          ></i>
+          <i
+            style={{ "--speed": 29, "--bg": "green" }}
+            className="rectangle"
+          ></i>
+          <i style={{ "--speed": 17, "--bg": "blue" }} className="hexagram"></i>
+          <i style={{ "--speed": 33, "--bg": "red" }} className="pentagram"></i>
+          <i
+            style={{ "--speed": 26, "--bg": "yellow" }}
+            className="dodecagram"
+          ></i>
+          <i
+            style={{ "--speed": 24, "--bg": "pink" }}
+            className="wavy-line"
+          ></i>
+          <i style={{ "--speed": 5, "--bg": "blue" }} className="wavy-line"></i>
+          <i style={{ "--speed": 40, "--bg": "white" }} className="square"></i>
+          <i
+            style={{ "--speed": 17, "--bg": "green" }}
+            className="rectangle"
+          ></i>
+          <i style={{ "--speed": 25, "--bg": "white" }} className="square"></i>
+          <i
+            style={{ "--speed": 18, "--bg": "green" }}
+            className="rectangle"
+          ></i>
+          <i
+            style={{ "--speed": 15, "--bg": "yellow" }}
+            className="wavy-line"
+          ></i>
+          <i
+            style={{ "--speed": 32, "--bg": "yellow" }}
+            className="pentagram"
+          ></i>
+          <i style={{ "--speed": 25, "--bg": "white" }} className="square"></i>
+          <i
+            style={{ "--speed": 18, "--bg": "green" }}
+            className="rectangle"
+          ></i>
+          <i
+            style={{ "--speed": 37, "--bg": "yellow" }}
+            className="dodecagram"
+          ></i>
+          <i
+            style={{ "--speed": 23, "--bg": "pink" }}
+            className="wavy-line"
+          ></i>
+          <i
+            style={{ "--speed": 37, "--bg": "red" }}
+            className="dodecagram"
+          ></i>
+          <i
+            style={{ "--speed": 37, "--bg": "pink" }}
+            className="wavy-line"
+          ></i>
+          <i
+            style={{ "--speed": 36, "--bg": "white" }}
+            className="hexagram"
+          ></i>
+          <i
+            style={{ "--speed": 32, "--bg": "green" }}
+            className="wavy-line"
+          ></i>
+          <i
+            style={{ "--speed": 32, "--bg": "yellow" }}
+            className="pentagram"
+          ></i>
+          <i style={{ "--speed": 29, "--bg": "white" }} className="square"></i>
+          <i
+            style={{ "--speed": 18, "--bg": "green" }}
+            className="rectangle"
+          ></i>
+          <i
+            style={{ "--speed": 37, "--bg": "red" }}
+            className="dodecagram"
+          ></i>
+          <i
+            style={{ "--speed": 23, "--bg": "pink" }}
+            className="wavy-line"
+          ></i>
+          <i
+            style={{ "--speed": 30, "--bg": "pink" }}
+            className="rectangle"
+          ></i>
+          <i style={{ "--speed": 30, "--bg": "red" }} className="square"></i>
+          <i style={{ "--speed": 18, "--bg": "red" }} className="pentagram"></i>
+          <i
+            style={{ "--speed": 19, "--bg": "green" }}
+            className="rectangle"
+          ></i>
+          <i style={{ "--speed": 16, "--bg": "blue" }} className="hexagram"></i>
+          <i style={{ "--speed": 23, "--bg": "red" }} className="pentagram"></i>
+          <i
+            style={{ "--speed": 34, "--bg": "yellow" }}
+            className="dodecagram"
+          ></i>
+          <i
+            style={{ "--speed": 39, "--bg": "pink" }}
+            className="wavy-line"
+          ></i>
+          <i style={{ "--speed": 40, "--bg": "purple" }} className="square"></i>
+          <i
+            style={{ "--speed": 21, "--bg": "green" }}
+            className="rectangle"
+          ></i>
+          <i style={{ "--speed": 14, "--bg": "white" }} className="square"></i>
+          <i
+            style={{ "--speed": 38, "--bg": "green" }}
+            className="rectangle"
+          ></i>
+          <i
+            style={{ "--speed": 19, "--bg": "red" }}
+            className="dodecagram"
+          ></i>
+          <i
+            style={{ "--speed": 29, "--bg": "pink" }}
+            className="wavy-line"
+          ></i>
+          <i
+            style={{ "--speed": 21, "--bg": "white" }}
+            className="hexagram"
+          ></i>
+          <i
+            style={{ "--speed": 17, "--bg": "purple" }}
+            className="wavy-line"
+          ></i>
+          <i
+            style={{ "--speed": 32, "--bg": "yellow" }}
+            className="pentagram"
+          ></i>
+          <i style={{ "--speed": 23, "--bg": "white" }} className="square"></i>
+          <i
+            style={{ "--speed": 18, "--bg": "green" }}
+            className="rectangle"
+          ></i>
+          <i
+            style={{ "--speed": 37, "--bg": "red" }}
+            className="dodecagram"
+          ></i>
+          <i
+            style={{ "--speed": 48, "--bg": "pink" }}
+            className="wavy-line"
+          ></i>
+          <i
+            style={{ "--speed": 38, "--bg": "pink" }}
+            className="rectangle"
+          ></i>
+          <i style={{ "--speed": 13, "--bg": "red" }} className="pentagram"></i>
+          <i
+            style={{ "--speed": 49, "--bg": "yellow" }}
+            className="dodecagram"
+          ></i>
+          <i
+            style={{ "--speed": 19, "--bg": "cyan" }}
+            className="wavy-line"
+          ></i>
+          <i
+            style={{ "--speed": 15, "--bg": "steelblue" }}
+            className="square"
+          ></i>
+          <i style={{ "--speed": 10, "--bg": "yellow" }} className="square"></i>
+          <i
+            style={{ "--speed": 18, "--bg": "white" }}
+            className="pentagram"
+          ></i>
+          <i
+            style={{ "--speed": 29, "--bg": "green" }}
+            className="rectangle"
+          ></i>
+          <i style={{ "--speed": 17, "--bg": "blue" }} className="hexagram"></i>
+          <i style={{ "--speed": 33, "--bg": "red" }} className="pentagram"></i>
+          <i
+            style={{ "--speed": 26, "--bg": "yellow" }}
+            className="dodecagram"
+          ></i>
+          <i
+            style={{ "--speed": 24, "--bg": "pink" }}
+            className="wavy-line"
+          ></i>
+          <i
+            style={{ "--speed": 5, "--bg": "white" }}
+            className="wavy-line"
+          ></i>
+          <i style={{ "--speed": 40, "--bg": "purple" }} className="square"></i>
+          <i
+            style={{ "--speed": 17, "--bg": "green" }}
+            className="rectangle"
+          ></i>
+          <i style={{ "--speed": 25, "--bg": "white" }} className="square"></i>
+          <i
+            style={{ "--speed": 18, "--bg": "green" }}
+            className="rectangle"
+          ></i>
+          <i
+            style={{ "--speed": 15, "--bg": "cyan" }}
+            className="wavy-line"
+          ></i>
+          <i
+            style={{ "--speed": 32, "--bg": "yellow" }}
+            className="pentagram"
+          ></i>
+          <i style={{ "--speed": 45, "--bg": "white" }} className="square"></i>
+          <i
+            style={{ "--speed": 18, "--bg": "green" }}
+            className="rectangle"
+          ></i>
+          <i
+            style={{ "--speed": 37, "--bg": "red" }}
+            className="dodecagram"
+          ></i>
+          <i
+            style={{ "--speed": 23, "--bg": "pink" }}
+            className="wavy-line"
+          ></i>
+          <i
+            style={{ "--speed": 37, "--bg": "red" }}
+            className="dodecagram"
+          ></i>
+          <i
+            style={{ "--speed": 37, "--bg": "pink" }}
+            className="wavy-line"
+          ></i>
+          <i
+            style={{ "--speed": 26, "--bg": "white" }}
+            className="hexagram"
+          ></i>
+          <i
+            style={{ "--speed": 32, "--bg": "cyan" }}
+            className="wavy-line"
+          ></i>
+          <i
+            style={{ "--speed": 32, "--bg": "yellow" }}
+            className="pentagram"
+          ></i>
+          <i style={{ "--speed": 45, "--bg": "white" }} className="square"></i>
+          <i
+            style={{ "--speed": 18, "--bg": "green" }}
+            className="rectangle"
+          ></i>
+          <i
+            style={{ "--speed": 37, "--bg": "red" }}
+            className="dodecagram"
+          ></i>
+          <i
+            style={{ "--speed": 23, "--bg": "pink" }}
+            className="wavy-line"
+          ></i>
+          <i
+            style={{ "--speed": 50, "--bg": "pink" }}
+            className="rectangle"
+          ></i>
+          <i style={{ "--speed": 30, "--bg": "red" }} className="square"></i>
+          <i style={{ "--speed": 18, "--bg": "red" }} className="pentagram"></i>
+          <i
+            style={{ "--speed": 19, "--bg": "green" }}
+            className="rectangle"
+          ></i>
+          <i style={{ "--speed": 16, "--bg": "blue" }} className="hexagram"></i>
+          <i style={{ "--speed": 23, "--bg": "red" }} className="pentagram"></i>
+          <i
+            style={{ "--speed": 33, "--bg": "yellow" }}
+            className="dodecagram"
+          ></i>
+          <i
+            style={{ "--speed": 39, "--bg": "white" }}
+            className="wavy-line"
+          ></i>
+          <i style={{ "--speed": 40, "--bg": "orange" }} className="square"></i>
+          <i
+            style={{ "--speed": 21, "--bg": "green" }}
+            className="rectangle"
+          ></i>
+          <i style={{ "--speed": 14, "--bg": "white" }} className="square"></i>
+          <i
+            style={{ "--speed": 38, "--bg": "green" }}
+            className="rectangle"
+          ></i>
+          <i
+            style={{ "--speed": 19, "--bg": "red" }}
+            className="dodecagram"
+          ></i>
+          <i
+            style={{ "--speed": 29, "--bg": "pink" }}
+            className="wavy-line"
+          ></i>
+          <i
+            style={{ "--speed": 34, "--bg": "white" }}
+            className="hexagram"
+          ></i>
+          <i
+            style={{ "--speed": 17, "--bg": "indigo" }}
+            className="wavy-line"
+          ></i>
+          <i
+            style={{ "--speed": 32, "--bg": "yellow" }}
+            className="pentagram"
+          ></i>
+          <i style={{ "--speed": 23, "--bg": "white" }} className="square"></i>
+          <i
+            style={{ "--speed": 18, "--bg": "green" }}
+            className="rectangle"
+          ></i>
+          <i
+            style={{ "--speed": 37, "--bg": "red" }}
+            className="dodecagram"
+          ></i>
+          <i
+            style={{ "--speed": 48, "--bg": "pink" }}
+            className="wavy-line"
+          ></i>
+          <i
+            style={{ "--speed": 38, "--bg": "pink" }}
+            className="rectangle"
+          ></i>
+          <i style={{ "--speed": 13, "--bg": "red" }} className="pentagram"></i>
+          <i
+            style={{ "--speed": 49, "--bg": "yellow" }}
+            className="dodecagram"
+          ></i>
+          <i
+            style={{ "--speed": 19, "--bg": "purple" }}
+            className="wavy-line"
+          ></i>
+          <i style={{ "--speed": 15, "--bg": "cyan" }} className="square"></i>
+        </div>
+      </div>
+      <div className={styles.gameContainer}>
+        <div className={styles.playersList}>
+          <table className={styles.playersTable}>
+            <thead>
+              <th>Player</th>
+              <th>Position</th>
+            </thead>
+            <tbody>
+              {game?.players?.map((player) => (
+                <tr
+                  key={player.id}
+                  className={styles.player}
                   style={{
-                    width: "150px",
-                    height: "150px",
-                    color: "rgb(141, 206, 206)",
-                    backgroundColor: "#fff",
-                    borderRadius: "50%",
-                  }}
-                />
-                <Box
-                  sx={{
-                    top: 0,
-                    left: 0,
-                    bottom: 0,
-                    right: 0,
-                    position: "absolute",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
+                    color:
+                      player?.name ==
+                      game.players[game?.pending_player_index]?.name
+                        ? "rgb(141, 206, 206)"
+                        : "black",
                   }}
                 >
-                  <Typography
-                    variant="caption"
-                    component="div"
-                    color="text.secondary"
-                    style={{
-                      fontSize: "4rem",
-                      color: "black",
-                      fontFamily: "Bungee",
-                    }}
-                  >
-                    {`${progress}`}
-                  </Typography>
-                </Box>
-              </Box>
-            </div>
+                  <td>
+                    <div
+                      className={styles.playerColor}
+                      style={{ backgroundColor: player?.color }}
+                    ></div>
+                    <div>{player?.name}</div>
+                  </td>
+                  <td>{player?.position}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
 
-            <div ref={rollRef}>
-              <div className="dice dice-one" ref={diceRef}>
-                <div id="dice-one-side-one" className="side one">
-                  <div className="dot one-1"></div>
-                </div>
-                <div id="dice-one-side-two" className="side two">
-                  <div className="dot two-1"></div>
-                  <div className="dot two-2"></div>
-                </div>
-                <div id="dice-one-side-three" className="side three">
-                  <div className="dot three-1"></div>
-                  <div className="dot three-2"></div>
-                  <div className="dot three-3"></div>
-                </div>
-                <div id="dice-one-side-four" className="side four">
-                  <div className="dot four-1"></div>
-                  <div className="dot four-2"></div>
-                  <div className="dot four-3"></div>
-                  <div className="dot four-4"></div>
-                </div>
-                <div id="dice-one-side-five" className="side five">
-                  <div className="dot five-1"></div>
-                  <div className="dot five-2"></div>
-                  <div className="dot five-3"></div>
-                  <div className="dot five-4"></div>
-                  <div className="dot five-5"></div>
-                </div>
-                <div id="dice-one-side-six" className="side six">
-                  <div className="dot six-1"></div>
-                  <div className="dot six-2"></div>
-                  <div className="dot six-3"></div>
-                  <div className="dot six-4"></div>
-                  <div className="dot six-5"></div>
-                  <div className="dot six-6"></div>
-                </div>
+        <canvas ref={canvasRef} width={749} height={749} />
+
+        <div className={styles.timerDiceContainer}>
+          <button className="leaveGame" onClick={(e) => leaveGame(e)}>
+            Leave
+          </button>
+          <div className="msg" id="msssg">
+            {msg}
+          </div>
+          <div className={styles.timer}>
+            <Box sx={{ position: "relative", display: "inline-flex" }}>
+              <CircularProgress
+                variant="determinate"
+                value={(progress / 10) * 100}
+                style={{
+                  width: "150px",
+                  height: "150px",
+                  color: "rgb(141, 206, 206)",
+                  backgroundColor: "#fff",
+                  borderRadius: "50%",
+                }}
+              />
+              <Box
+                sx={{
+                  top: 0,
+                  left: 0,
+                  bottom: 0,
+                  right: 0,
+                  position: "absolute",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Typography
+                  variant="caption"
+                  component="div"
+                  color="text.secondary"
+                  style={{
+                    fontSize: "4rem",
+                    color: "black",
+                    fontFamily: "Bungee",
+                  }}
+                >
+                  {`${progress}`}
+                </Typography>
+              </Box>
+            </Box>
+          </div>
+
+          <div ref={rollRef}>
+            <div className="dice dice-one" ref={diceRef}>
+              <div id="dice-one-side-one" className="side one">
+                <div className="dot one-1"></div>
+              </div>
+              <div id="dice-one-side-two" className="side two">
+                <div className="dot two-1"></div>
+                <div className="dot two-2"></div>
+              </div>
+              <div id="dice-one-side-three" className="side three">
+                <div className="dot three-1"></div>
+                <div className="dot three-2"></div>
+                <div className="dot three-3"></div>
+              </div>
+              <div id="dice-one-side-four" className="side four">
+                <div className="dot four-1"></div>
+                <div className="dot four-2"></div>
+                <div className="dot four-3"></div>
+                <div className="dot four-4"></div>
+              </div>
+              <div id="dice-one-side-five" className="side five">
+                <div className="dot five-1"></div>
+                <div className="dot five-2"></div>
+                <div className="dot five-3"></div>
+                <div className="dot five-4"></div>
+                <div className="dot five-5"></div>
+              </div>
+              <div id="dice-one-side-six" className="side six">
+                <div className="dot six-1"></div>
+                <div className="dot six-2"></div>
+                <div className="dot six-3"></div>
+                <div className="dot six-4"></div>
+                <div className="dot six-5"></div>
+                <div className="dot six-6"></div>
               </div>
             </div>
           </div>
         </div>
-          );
+      </div>
+    </>
+  );
 }
 
 export default Game;
