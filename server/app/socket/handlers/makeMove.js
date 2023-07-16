@@ -133,9 +133,6 @@ const makeMove = async (game_id, user, io, force=false) => {
         );
       }
     }
-    else{
-      newPos = oldPosition;
-    }
 
 
     const t = Date.now();

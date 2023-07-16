@@ -2,9 +2,6 @@ import {
   createBrowserRouter,
   RouterProvider,
   Navigate,
-  HashRouter,
-  Route,
-  Routes,
 } from "react-router-dom";
 import Login from "./pages/loginPage/Login";
 import Register from "./pages/registerPage/Register";
@@ -45,54 +42,63 @@ const App = () => {
         setIsGaming(false);
       });
   }, []);
-  return (
-    <HashRouter>
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <ProtectedRoute>
-              <OngoingGame>
-                <Home />
-              </OngoingGame>
-            </ProtectedRoute>
-          }
-        />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route
-          path="/game"
-          element={
-            <ProtectedRoute>
-              <Game />
-            </ProtectedRoute>
-          }
-        />
-        <Route path="/mock" element={<Mock />} />
-        <Route
-          path="/createRoom"
-          element={
-            <ProtectedRoute>
-              <OngoingGame>
-                <CreateRoom />
-              </OngoingGame>
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/joinRoom"
-          element={
-            <ProtectedRoute>
-              <OngoingGame>
-                <JoinRoom />
-              </OngoingGame>
-            </ProtectedRoute>
-          }
-        />
-        <Route path="*" element={<Navigate to="/" />} />
-      </Routes>
-    </HashRouter>
-  );
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: (
+        <ProtectedRoute>
+          <OngoingGame>
+            <Home />
+          </OngoingGame>
+        </ProtectedRoute>
+      ),
+    },
+    {
+      path: "/login",
+      element: <Login />,
+    },
+    {
+      path: "/register",
+      element: <Register />,
+    },
+    {
+      path: "/game",
+      element: (
+        <ProtectedRoute>
+          <Game />
+        </ProtectedRoute>
+      ),
+    },
+    {
+      path: "/mock",
+      element: <Mock />,
+    },
+    {
+      path: "/createRoom",
+      element: (
+        <ProtectedRoute>
+          <OngoingGame>
+            <CreateRoom />
+          </OngoingGame>
+        </ProtectedRoute>
+      ),
+    },
+    {
+      path: "/joinRoom",
+      element: (
+        <ProtectedRoute>
+          <OngoingGame>
+            <JoinRoom />
+          </OngoingGame>
+        </ProtectedRoute>
+      ),
+    },
+    {
+      path: "*",
+      element: <Navigate to="/" />,
+    },
+  ]);
+  return <RouterProvider router={router} />;
 };
 
 export default App;
