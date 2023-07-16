@@ -19,7 +19,7 @@ import { useEffect, useState } from "react";
 const App = () => {
   const [isGaming, setIsGaming] = useState(false);
 
-  axios.defaults.baseURL = "https://snakes-and-ladders.up.railway.app/";
+  axios.defaults.baseURL = "https://snakes-ladders.up.railway.app/";
   const ProtectedRoute = ({ children }) => {
     if (!sessionStorage.getItem("authenticated")) {
       console.log(sessionStorage.getItem("authenticated"));

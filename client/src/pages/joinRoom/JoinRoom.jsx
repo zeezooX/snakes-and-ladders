@@ -1,7 +1,7 @@
 import "./JoinRoom.css";
 import boards from "../../boards";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
 
@@ -69,10 +69,18 @@ const JoinRoom = () => {
   return (
     <>
       <div className="createRoom">
+        <Link to="/" className="back">
+          <span class="material-symbols-outlined">arrow_back</span>
+        </Link>
         <ToastContainer />
         <h2 className="chooseRoom">Join a game</h2>
         <div className="mapsContainer">
-          {games.length !== 0 &&
+          {games.length === 0 ? (
+            <div className="noGames">
+              OOPS!! No available rooms at the moment 🥺
+            </div>
+          ) : (
+            games.length !== 0 &&
             games.map((G) => (
               <div className="map" key={G?.Id}>
                 <input
@@ -87,7 +95,8 @@ const JoinRoom = () => {
                 </label>
                 <span>{`players joined ${G?.playersNumber}/${G?.capacity}`}</span>
               </div>
-            ))}
+            ))
+          )}
         </div>
         <button onClick={handleClick}>Join</button>
       </div>
