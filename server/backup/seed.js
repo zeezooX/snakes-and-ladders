@@ -6,17 +6,6 @@ const seedData = require("./boardData");
 
 async function seed() {
   try {
-      
-    db.User.sync().then(()=>{
-      db.Board.sync().then(()=>{
-        db.BoardElement.sync();
-        db.Game.sync().then(()=>{
-          db.GamePlayer.sync();
-        });
-      })
-    });
-    
-    
     const sequelize = db.sequelize;
     const Board = db.Board;
     const BoardElement = db.BoardElement;

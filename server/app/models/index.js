@@ -36,7 +36,7 @@ db.Game = require("./game.model.js")(sequelize, Sequelize, db);
 db.BoardElement = require("./boardelement.model.js")(sequelize, Sequelize, db);
 db.GamePlayer = require("./gameplayer.model.js")(sequelize, Sequelize, db);
 
-
+db.sequelize.sync();
 
 db.Board.hasMany(db.Game, {
   foreignKey: "boardId",
