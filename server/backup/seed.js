@@ -7,6 +7,7 @@ const seedData = require("./boardData");
 async function seed() {
   try {
     const sequelize = db.sequelize;
+    await sequelize.sync();
     const Board = db.Board;
     const BoardElement = db.BoardElement;
 

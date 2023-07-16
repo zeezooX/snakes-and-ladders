@@ -5,9 +5,6 @@ const Sequelize = require("sequelize");
 // Override timezone formatting
 Sequelize.DATE.prototype._stringify = function _stringify(date, options) {
   date = this._applyTimezone(date, options);
-
-  // Z here means current timezone, _not_ UTC
-  // return date.format('YYYY-MM-DD HH:mm:ss.SSS Z');
   return date.format('YYYY-MM-DD HH:mm:ss.SSS');
 };
 
@@ -36,8 +33,6 @@ db.Game = require("./game.model.js")(sequelize, Sequelize, db);
 db.BoardElement = require("./boardelement.model.js")(sequelize, Sequelize, db);
 db.GamePlayer = require("./gameplayer.model.js")(sequelize, Sequelize, db);
 
-db.sequelize.sync();
-
 db.Board.hasMany(db.Game, {
   foreignKey: "boardId",
   targetKey: "boardID"
@@ -55,13 +50,13 @@ db.Game.belongsTo(db.User, {
   targetKey: "userId"
 });
 
-db.GamePlayer.hasMany(db.User, {
-  foreignKey: "userId",
-  targetKey: "playerId"
+db.User.hasMany(db.GamePlayer, {
+  foreignKey: "playerId",
+  targetKey: "userId"
 })
-db.User.belongsTo(db.GamePlayer, {
-  foreignKey: "userId",
-  targetKey: "playerId"
+db.GamePlayer.belongsTo(db.User, {
+  foreignKey: "playerId",
+  targetKey: "userId"
 })
 
 db.Game.hasMany(db.GamePlayer,{
