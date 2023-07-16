@@ -34,7 +34,7 @@ const Home = () => {
                 <div class="charactor__face2"></div>
                 <div class="charactor__body"></div>
               </div>
-              <div class="character">
+              <div class="character wakeup">
                 <div class="character__face"></div>
                 <div class="charactor__face2"></div>
                 <div class="charactor__body"></div>
@@ -55,7 +55,7 @@ const Home = () => {
                 <div class="character__face"></div>
                 <div class="charactor__face2"></div>
               </div>
-              <div class="character">
+              <div class="character wakeup">
                 <div class="character__face"></div>
                 <div class="charactor__face2"></div>
               </div>

@@ -52,10 +52,10 @@ const Login = () => {
           <div className="left">
             <h1>Snakes and Ladders</h1>
             <p className="text">
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Esse
-              omnis, vero assumenda nobis cum accusantium consectetur!
-              Accusantium velit ex eligendi quia nesciunt blanditiis, explicabo
-              alias aliquam quod consequatur deserunt beatae!
+              Ready to embark on a wild adventure? Enter the secret code to
+              unlock the gate and join the realm of Snakes and Ladders! Get
+              ready to roll the dice, climb ladders, and dodge slippery snakes
+              as you chase victory and loads of fun!.
             </p>
             <span className="reg">Don't have an account?</span>
             <Link to="/register">
