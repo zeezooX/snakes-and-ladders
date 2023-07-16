@@ -56,7 +56,7 @@ const handleLeaveGame = (socket) => {
         );
       }
       fetchTurn(gameId).then((data) => {
-        socket.to(process.env.ROOMPREFIX + String(gameId)).emit('room-update', data)
+        socket.to("team-C room-" + String(gameId)).emit('room-update', data)
       });
       res.status(200).send("Done");
     } catch (e) {

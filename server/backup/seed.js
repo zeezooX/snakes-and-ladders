@@ -912,11 +912,11 @@ const boardElementData = [
 async function seed() {
   try {
     const sequelize = new Sequelize(
-      "testdb",
+      process.env.DB,
       process.env.DBUSER,
       process.env.DBPASS,
       {
-        host: "localhost",
+        host: process.env.HOST,
         dialect: "mysql",
       }
     );
