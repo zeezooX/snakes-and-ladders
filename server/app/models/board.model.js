@@ -18,6 +18,7 @@ module.exports = (sequelize, Sequelize) => {
     },
     {
       tableName: "boards",
+      modelName: "Board",
     }
   );
 

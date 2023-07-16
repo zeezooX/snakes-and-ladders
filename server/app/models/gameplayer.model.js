@@ -1,5 +1,5 @@
 const { DataTypes } = require("sequelize");
-module.exports = (sequelize, Sequelize) => {
+module.exports = (sequelize, Sequelize, db) => {
   const GamePlayer = sequelize.define(
     "GamePlayer",
     {
@@ -11,14 +11,14 @@ module.exports = (sequelize, Sequelize) => {
       playerId: {
         type: Sequelize.INTEGER,
         references: {
-          model: "User",
+          model: db.User,
           key: "userId",
         },
       },
       gameId: {
         type: Sequelize.INTEGER,
         references: {
-          model: "Game",
+          model: db.Game,
           key: "Id",
         },
       },

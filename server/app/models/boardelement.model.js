@@ -1,4 +1,4 @@
-module.exports = (sequelize, Sequelize) => {
+module.exports = (sequelize, Sequelize, db) => {
   const BoardElement = sequelize.define(
     "BoardElement",
     {
@@ -10,7 +10,7 @@ module.exports = (sequelize, Sequelize) => {
       boardId: {
         type: Sequelize.INTEGER,
         references: {
-          model: "Board",
+          model: db.Board,
           key: "boardID",
         },
       },
