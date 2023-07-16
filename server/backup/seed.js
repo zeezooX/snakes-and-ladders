@@ -916,7 +916,7 @@ async function seed() {
       process.env.DBUSER,
       process.env.DBPASS,
       {
-        host: process.env.HOST,
+        host: process.env.DBHOST,
         dialect: "mysql",
       }
     );
