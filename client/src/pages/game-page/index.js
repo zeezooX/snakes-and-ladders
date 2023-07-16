@@ -94,11 +94,11 @@ function Game() {
   };
 
   const handleRoomUpdate = (gameObject) => {
+    console.log(gameObject)
     if (typeof gameObject === "string") {
       setMsg(gameObject);
       return;
     } else {
-      console.log(gameObject);
       if (
         gameObject.game_status.toLowerCase() === "pending" &&
         gameObject.players

@@ -1,13 +1,14 @@
 import io from "socket.io-client";
 
 const authToken = sessionStorage.getItem("authenticated");
-export const socket = io("https://spicy-humans-retire.loca.lt/", {
+export const socket = io("http://localhost:8080/", {
   auth: { authToken },
   autoConnect: false,
 });
 
 export const subscribeToRoom = (gameId, turnUpdate, roomUpdate) => {
-  socket.connect().on("connect", () => {
+  socket.on("connect", () => {
+    console.log("connected");
     socket.emit("join-game", gameId);
     loadGame(gameId, (data) => {
       roomUpdate(data);
@@ -15,6 +16,8 @@ export const subscribeToRoom = (gameId, turnUpdate, roomUpdate) => {
       socket.on("turn-update", turnUpdate);
     });
   });
+  socket.connect();
+  // loadGame(gameId,roomUpdate);
 };
 
 export const loadGame = (gameId, roomUpdate) => {

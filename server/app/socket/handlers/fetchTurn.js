@@ -36,12 +36,13 @@ const fetchTurn = async (game_id) => {
         }]
         , attributes: ['userId', 'userName']
     });
+    console.log(Players)
     Players = Players.map(p => {
         return {
             name: p.userName,
-            color: p.GamePlayer.color,
-            position: p.GamePlayer.lastPosition,
-            order:p.GamePlayer.order,
+            color: p.GamePlayers[0].color,
+            position: p.GamePlayers[0].lastPosition,
+            order:p.GamePlayers[0].order,
             id: p.userId
         }
     })
