@@ -82,6 +82,7 @@
   color: white;
   padding-left: 15px;
   font-family: "Gaegu", cursive;
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
 .Register .card .left .login {
   width: 50%;
