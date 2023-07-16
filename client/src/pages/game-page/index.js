@@ -116,7 +116,8 @@ function Game() {
         setMsg(`${W.name} HAS WON !`);
       } else {
         setMsg(
-          `It's ${gameObject.players[gameObject.pending_player_index].name
+          `It's ${
+            gameObject.players[gameObject.pending_player_index].name
           }'s turn`
         );
       }
@@ -647,7 +648,7 @@ function Game() {
                   style={{
                     color:
                       player?.name ==
-                        game.players[game?.pending_player_index]?.name
+                      game.players[game?.pending_player_index]?.name
                         ? "rgb(141, 206, 206)"
                         : "black",
                   }}
