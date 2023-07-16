@@ -1,7 +1,7 @@
 import io from "socket.io-client";
 
 const authToken = sessionStorage.getItem("authenticated");
-export const socket = io("https://spicy-humans-retire.loca.lt/", {
+export const socket = io("https://snakes-and-ladders.up.railway.app/", {
   auth: { authToken },
   autoConnect: false,
 });
