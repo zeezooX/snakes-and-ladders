@@ -918,10 +918,13 @@ async function seed() {
       {
         host: process.env.HOST,
         dialect: "mysql",
+        port: process.env.DBPORT || "3306"
       }
     );
 
     await sequelize.sync();
+
+    
 
     await Board.bulkCreate(boardData, {
       ignoreDuplicates: true,

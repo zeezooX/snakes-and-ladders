@@ -107,8 +107,8 @@ app.use((error, req, res, next) => {
   res.status(error.status ?? 500).json({ message: " exception : " + error });
 });
 // set port, listen for requests
-const PORT = process.env.PORT || 8080;
-http.listen(PORT, () => {
+const PORT =  8080;
+http.listen(process.env.PORT || PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });
 seed();
