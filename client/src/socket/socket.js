@@ -7,7 +7,8 @@ export const socket = io("https://snakes-and-ladders.up.railway.app/", {
 });
 
 export const subscribeToRoom = (gameId, turnUpdate, roomUpdate) => {
-  socket.connect().on("connect", () => {
+  socket.on("connect", () => {
+    console.log("connected");
     socket.emit("join-game", gameId);
     loadGame(gameId, (data) => {
       roomUpdate(data);
@@ -15,6 +16,8 @@ export const subscribeToRoom = (gameId, turnUpdate, roomUpdate) => {
       socket.on("turn-update", turnUpdate);
     });
   });
+  socket.connect();
+  // loadGame(gameId,roomUpdate);
 };
 
 export const loadGame = (gameId, roomUpdate) => {

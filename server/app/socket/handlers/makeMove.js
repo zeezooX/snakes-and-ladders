@@ -193,21 +193,12 @@ const makeMove = async (game_id, user, io, force=false) => {
       attributes: ["userId", "userName"],
     });
 
-    Players = Players.map((p) => {
-      return {
-        name: p.userName,
-        color: p.GamePlayer.color,
-        position: p.GamePlayer.lastPosition,
-        order: p.GamePlayer.order,
-        id: p.userId,
-      };
-    });
 
     Players.sort((a, b) => a.order - b.order);
 
 
-    let last_player_index = Players.findIndex((p) => p.id === currentPlayer)
-    let next_player_index = Players.findIndex((p) => p.id === next_player_id)
+    let last_player_index = Players.findIndex((p) => p.userId === currentPlayer)
+    let next_player_index = Players.findIndex((p) => p.userId === next_player_id)
 
     if(last_player_index==-1){
       last_player_index = 0

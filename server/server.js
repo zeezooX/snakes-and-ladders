@@ -25,6 +25,9 @@ socketIO.use(socketAuth).on("connection", (socket) => {
     if (socket.rooms.has(`team-C room-${gameId}`)) {
       return;
     }
+    if(!socket.user){
+      return;
+    }
     const actual_game_id = await isPlayerGaming(socket.user.userId);
     console.log(actual_game_id);
     console.log(gameId);
@@ -43,6 +46,7 @@ socketIO.use(socketAuth).on("connection", (socket) => {
   socket.on("load-game", (gameId, callback) => {
     try{
     fetchTurn(gameId).then((game) => {
+      console.log("loading ?")
       callback(game);
     });
     }
