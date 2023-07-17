@@ -27,7 +27,7 @@ const Login = () => {
             sessionStorage.setItem("authenticated", Isvalid?.data.token);
             sessionStorage.setItem("username", person.userName);
             // navigate(`/`);
-            window.location.reload();
+            window.location.replace('/game')
             e.preventDefault();
           } else {
             alert("Wrong credentials");

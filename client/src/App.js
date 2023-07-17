@@ -39,6 +39,7 @@ const App = () => {
       .then((res) => {
         console.log("RESPONSE RECEIVED: ", res);
         setIsGaming(true);
+        // window.location.reload();
       })
       .catch((err) => {
         console.log("AXIOS ERROR: ", err);
