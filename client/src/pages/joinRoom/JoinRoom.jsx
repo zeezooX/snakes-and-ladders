@@ -14,21 +14,8 @@ const JoinRoom = () => {
   const headers = {
     "x-access-token": sessionStorage.getItem("authenticated"),
   };
-
-  const fetchGame = ()=>{
-    const headers = {
-      "x-access-token": sessionStorage.getItem("authenticated"),
-    };
-    return axios.get(`/currentGame`, { headers: headers })
-  }
   useEffect(() => {
-
-    fetchGame().then((res) => {
-      console.log("RESPONSE RECEIVED: ", res);
-      navigate("/game")
-    })
-    .catch((err) => {
-      axios
+    axios
       .get(`/retrieveGames?status=pending`, { headers: headers })
       .then((res) => {
         console.log("RESPONSE RECEIVED: ", res);
@@ -38,8 +25,6 @@ const JoinRoom = () => {
       .catch((err) => {
         console.log("AXIOS ERROR: ", err);
       });
-      console.log("AXIOS ERROR: ", err);
-    });
   }, []);
 
   const onChangeRadio = (e) => {
