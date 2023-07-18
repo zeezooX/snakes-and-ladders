@@ -51,7 +51,7 @@ socketIO.use(socketAuth).on("connection", (socket) => {
     }
     socket.leave(room);
     fetchTurn(gameId).then((data) => {
-      socket.in(`team-C room-` + `${gameId}`).emit("room-update", data);
+      socketIO.in(`team-C room-` + `${gameId}`).emit("room-update", data);
     });
   })
   socket.on("load-game", (gameId, callback) => {

@@ -83,7 +83,7 @@ function Game() {
   }, [turnUpdate]);
 
   const handleTurnUpdate = (gameTurnObject) => {
-    if (typeof gameTurnObject === "string") {
+    if (typeof gameTurnObject === "string" && gameTurnObject.toLowerCase().includes('wait')) {
       setMsg(gameTurnObject);
       return;
     }
@@ -173,19 +173,6 @@ function Game() {
       };
     }
   }, [diceRef.current, rollRef.current, canvasRef.current]);
-  /*
-  {
-      game_status: gameStatus,
-      pending_player_index: next_player_index,
-      lastPlayTime: t,
-      move: {
-          player_index: last_player_index,
-          dice_outcome: dice,
-          from: oldPosition,
-          to: newPos
-      }
-  }
-  */
   useEffect(() => {
     if (game && turnUpdate) {
       const { from, to, dice_outcome, player_index } = turnUpdate.move;
